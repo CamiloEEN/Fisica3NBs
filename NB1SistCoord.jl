@@ -325,6 +325,14 @@ md"""!!! danger "Tarea:"
 	3. $\hat{a}_\rho \times \hat{a}_\phi=\hat{a}_z$
 	4. $\hat{a}_\phi \times \hat{a}_z=\hat{a}_\rho$
 	5. $\hat{a}_z \times \hat{a}_\rho=\hat{a}_\phi$
+
+	__Ejemplo:__ Se puede demostrar la segunda propiedad ($\hat{a}_\rho\cdot\hat{a}_\phi = 0$) usando la represntación de los vectores unitarios en coordenadas cartesianas:
+
+	$\hat{a}_\rho = \begin{pmatrix} \cos(\phi) \\ \sin(\phi) \\ 0 \end{pmatrix}, \qquad \hat{a}_\phi = \begin{pmatrix} -\sin(\phi) \\ \cos(\phi) \\ 0 \end{pmatrix} \quad y \quad \hat{a}_z = \begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix}$
+
+	El producto punto se calcula de la misma forma que se calcula con cualquier vector en coordenadas cartesianas:
+
+	$\hat{a}_\rho\cdot\hat{a}_\phi =\begin{pmatrix} \cos(\phi) \\ \sin(\phi) \\ 0 \end{pmatrix}\cdot \begin{pmatrix} -\sin(\phi) \\ \cos(\phi) \\ 0 \end{pmatrix} = -\cos(\phi)\sin(\phi) + \sin(\phi)\cos(\phi) = 0$
 """
 
 # ╔═╡ a070cc75-fcf1-4b71-9bd0-11a3c5270034
@@ -345,7 +353,7 @@ PlutoUI = "~0.7.60"
 PLUTO_MANIFEST_TOML_CONTENTS = """
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.11.2"
+julia_version = "1.11.3"
 manifest_format = "2.0"
 project_hash = "2a9e968af38149110879fb552eb47d7cd062f694"
 
@@ -1533,7 +1541,7 @@ version = "1.4.1+1"
 # ╟─c0207bc9-0c9f-4b46-a337-4e0a51ec1368
 # ╟─7f74dc08-8239-41d3-89bc-c5cf94157a29
 # ╟─31c55c8a-11fe-4d63-808e-79615a349d30
-# ╟─7466266c-d0c2-4cdf-b78c-56998acf54ad
+# ╠═7466266c-d0c2-4cdf-b78c-56998acf54ad
 # ╠═a070cc75-fcf1-4b71-9bd0-11a3c5270034
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
