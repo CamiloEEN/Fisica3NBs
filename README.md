@@ -41,13 +41,13 @@ Para instalar **Pluto.jl**, sigue estos pasos:
 
    ```julia
    using Pkg
-   Pkg.add("Pluto")```
+   Pkg.add("Pluto")
 
 3. Para abrir los notebooks, simplemente ejecuta:
 
     ```julia
    using Pluto
-   Pluto.run()```
+   Pluto.run()
 
 ### Contribuciones
 
