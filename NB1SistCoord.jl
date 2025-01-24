@@ -19,7 +19,7 @@ end
 # ╔═╡ 2a3bd802-d86b-11ef-3aa1-f913532f16ae
 begin
 	using PlutoUI
-	PlutoUI.TableOfContents(title="📚 Table of Contents", indent=true, depth=4, aside=true, include_definitions=true)
+	PlutoUI.TableOfContents(title="📚 Tabla de contenido", indent=true, depth=4, aside=true, include_definitions=true)
 end
 
 # ╔═╡ db7fd9d7-0835-4d70-9559-aec22f403a73
@@ -283,6 +283,11 @@ md"""!!! success "Transformaciones entre puntos:"
 	$z=z \qquad \qquad \qquad z=z$
 """
 
+# ╔═╡ d76436e7-76f7-4b6f-ba98-fbc07292eb5b
+md"""!!! danger "Cuidado!" 
+	Hay que tener mucho cuidado cuando se utiliza la transformación $\tan(\phi)=\frac{y}{x}$ para obtener el ángulo $\phi$ pues esta solo proporciona el ángulo correcto si este se encuentra en el primer cuadrante del plano cartesiano xy. En el primer taller se mostrará como calcular dicho ángulo de forma segura.
+"""
+
 # ╔═╡ c0207bc9-0c9f-4b46-a337-4e0a51ec1368
 md"Puede parecer absurdo pero es mejor escribir esa última por si las moscas."
 
@@ -336,7 +341,297 @@ md"""!!! danger "Tarea:"
 """
 
 # ╔═╡ a070cc75-fcf1-4b71-9bd0-11a3c5270034
+md"""
+#### Transformación de vectores
+Se mencionó sin prueba que:
 
+$\hat{a}_\rho =\cos(\phi) \hat{a}_x+\sin(\phi)\hat{a}_y$
+$\hat{a}_\phi =-\sin(\phi) \hat{a}_x+\cos(\phi)\hat{a}_y$
+$\hat{a}_z=\hat{a}_z$
+
+Ahora veamos como se puede usar esta información para transformar un vector $\vec{A}$ en coordenadas cílindricas a cartesianas:
+
+Como se mencionó anteriormente $\vec{A}$ se puede escribir como:
+
+$(A_\rho,A_\phi,A_z) \quad  o  \quad A_\rho \hat{a}_\rho + A_\phi \hat{a}_\phi + A_z \hat{a}_z$
+
+usaremos la segunda notación:
+
+$\vec{A}=A_\rho \hat{a}_\rho + A_\phi \hat{a}_\phi + A_z \hat{a}_z$
+
+suponga que se __conocen__ los valores de $A_\rho$, $A_\phi$ y $A_z$. Se desea transformar el vector $\vec{A}$ a la forma:
+
+$\vec{A}=A_x \hat{a}_x + A_y \hat{a}_y + A_z \hat{a}_z$
+
+pero se __desconocen__ los valores de $A_x$, $A_y$. Sin embargo, se sabe que:
+
+$\hat{a}_\rho =\cos(\phi) \hat{a}_x+\sin(\phi)\hat{a}_y$
+$\hat{a}_\phi =-\sin(\phi) \hat{a}_x+\cos(\phi)\hat{a}_y$
+$\hat{a}_z=\hat{a}_z$
+
+por lo tanto
+
+$\vec{A}=A_\rho \hat{a}_\rho + A_\phi \hat{a}_\phi + A_z \hat{a}_z$
+$\vec{A}=A_\rho (\cos(\phi) \hat{a}_x+\sin(\phi)\hat{a}_y) + A_\phi (-\sin(\phi) \hat{a}_x+\cos(\phi)\hat{a}_y) + A_z \hat{a}_z$
+
+agrupando terminos tenemos que
+
+$\vec{A}=(A_\rho \cos(\phi) -A_\phi\sin(\phi) )\hat{a}_x + (A_\rho\sin(\phi)+A_\phi\cos(\phi))\hat{a}_y + A_z \hat{a}_z$
+
+Si lo comparamos con $\vec{A}=A_x \hat{a}_x + A_y \hat{a}_y + A_z \hat{a}_z$ nos damos cuenta que:
+
+$A_x = A_\rho \cos(\phi) -A_\phi\sin(\phi)$  
+$A_y = A_\rho\sin(\phi)+A_\phi\cos(\phi)$
+
+y como la coordenada z es la misma en ambos sistemas de coordenadas
+
+$A_z=A_z$
+
+
+"""
+
+# ╔═╡ 172da9f3-e2ee-4ca5-b5e6-c43c5183258c
+md"""
+Una forma más comoda de expresar este resultado es la siguiente:
+
+$A_x = A_\rho \cos(\phi) -A_\phi\sin(\phi) + (0)A_z$  
+$A_y = A_\rho\sin(\phi)+A_\phi\cos(\phi) + (0)A_z$
+$A_z=(0)A_\rho+(0)A_\phi+(1)A_z$
+
+esto nos permite escribir la transformación en forma matricial
+
+$\begin{pmatrix}
+A_x \\
+A_y \\
+A_z
+\end{pmatrix}
+=
+\begin{pmatrix}
+\cos(\phi) & -\sin(\phi) & 0 \\
+\sin(\phi) & \cos(\phi) & 0 \\
+0 & 0 & 1
+\end{pmatrix}
+\begin{pmatrix}
+A_\rho \\
+A_\phi \\
+A_z
+\end{pmatrix}$
+
+"""
+
+# ╔═╡ cab1e21e-f14b-426d-aa17-3c0369025d17
+md"""!!! danger "Tarea:"
+	Demuestre que:
+
+	$\begin{pmatrix}
+	A_\rho \\
+	A_\phi \\
+	A_z
+	\end{pmatrix}
+	=
+	\begin{pmatrix}
+	\cos(\phi) & \sin(\phi) & 0 \\
+	-\sin(\phi) & \cos(\phi) & 0 \\
+	0 & 0 & 1
+	\end{pmatrix}
+	\begin{pmatrix}
+	A_x \\
+	A_y \\
+	A_z
+	\end{pmatrix}$
+
+	Recuerde que puede hacerlo de dos formas: de forma analoga a como se obtuvo la primera matriz o usando esa matriz calculando su inversa.
+"""
+
+# ╔═╡ 947553f4-47a8-47bf-99e9-a0783a274bd7
+md"""
+## Coordenadas esféricas
+"""
+
+# ╔═╡ 10b17de2-bebd-4625-a4b8-d5399fb977a4
+md"""
+Las coordenadas esféricas describen todo punto en el espacio con una tripleta de números $(r, \theta, \phi)$ de las cuales las últimas dos son angulares. En este caso $r$ representa la distancia del punto hacia el origen, $\phi$ es una coordenada angular que permite rotar el punto alrededor del eje z (se conoce como ángulo azimutal) y $\theta$ es el ángulo que hace el vector posición de dicho punto con el eje z.
+"""
+
+# ╔═╡ 2c6318ff-a091-41df-95e8-9d74ab43f176
+md"A continuación podrás ver como se ubica un punto en el espacio en coordenadas esféricas. Observa como cambia la posición del punto a medida que alteras los valores de las coordenadas $(r, \theta, \phi)$:"
+
+# ╔═╡ 45e1e8d2-0031-4e03-b53d-dec490081204
+# Create sliders for r, θ, ϕ
+@bind sphCoord PlutoUI.combine() do Child
+	md""" r = $(Child( Slider(0:10; default=6, show_value=true))),  θ = $(Child( Slider(0:0.15:π ; default=1.5, show_value=true))), ϕ= $(Child( Slider(0:0.5:2π ; default=3.5, show_value=true)))"""
+
+end
+
+# ╔═╡ ae269805-49ef-41eb-bb9e-89793f143eb8
+begin
+    # Transform spherical coordinates to cartesian coordinates
+x_plotSph = sphCoord[1] * sin(sphCoord[2]) * cos(sphCoord[3])
+y_plotSph = sphCoord[1] * sin(sphCoord[2]) * sin(sphCoord[3])
+z_plotSph = sphCoord[1] * cos(sphCoord[2])
+    
+    # Create the 3D plot
+plot((x_plotSph, y_plotSph, z_plotSph), seriestype = :scatter3d, label = "Punto: $sphCoord", legend = true, markersize = 5,
+         xlims = (-10, 10), ylims = (-10, 10), zlims = (-10, 10), 
+         xlabel = "X", ylabel = "Y", zlabel = "Z", 
+         background_color = :white, 
+         grid = true, 
+         ticks = 5)
+
+# Add axes manually by creating lines at each axis
+plot!([0, axis_length], [0, 0], [0, 0], color=:red, linewidth=2, label = nothing)  # X-axis
+plot!([0, 0], [0, axis_length], [0, 0], color=:green, linewidth=2, label = nothing)  # Y-axis
+plot!([0, 0], [0, 0], [0, axis_length], color=:blue, linewidth=2, label = nothing) # Z-axis
+
+# Add labels along the axes lines
+annotate!(axis_length+1, 0, 0, text("X", :red, 12))  # X-axis label at the end of X coordinate
+annotate!(0, axis_length+1, 0, text("Y", :green, 12))  # Y-axis label at the end of Y coordinate
+annotate!(0, 0, axis_length+1, text("Z", :blue, 12))   # Z-axis label at the end of Z coordinate
+
+# Add the distance line (from the point to the origin)
+plot!([0, x_plotSph], [0, y_plotSph], [0, z_plotSph], color=:black, linewidth=2, label = nothing)
+
+# Label the distance as r (distance from the origin)
+annotate!(x_plotSph/2, y_plotSph/2, z_plotSph/2+1, text("r", :black, 12))
+
+# Projection to the XY plane (dotted light green line)
+plot!([x_plotSph, x_plotSph], [y_plotSph, y_plotSph], [z_plotSph, 0], color=:lightgreen, linewidth=2, label = nothing, linestyle=:dash)
+
+# Add label for the projection
+annotate!(x_plotSph, y_plotSph, 0, text("", :black, 12))
+
+# Create the curve to represent the φ angle
+t_plotSph = LinRange(0, sphCoord[3], 100)  # Parametric range for the angle φ
+curve_x_plotSph = sphCoord[1] * sin(sphCoord[2]) * cos.(t_plotSph)
+curve_y_plotSph = sphCoord[1] * sin(sphCoord[2]) * sin.(t_plotSph)
+curve_z_plotSph = zeros(100)
+
+# Create the curve to represent the φ angle at φ/2
+phi_center_x = sphCoord[1] * sin(sphCoord[2]) * cos(sphCoord[3] / 2)
+phi_center_y = sphCoord[1] * sin(sphCoord[2]) * sin(sphCoord[3] / 2)
+phi_center_z = 1
+
+# Add a label for the φ angle at the center of the curve (at φ/2)
+annotate!(phi_center_x, phi_center_y, phi_center_z, text("φ", :lightgreen, 12))
+
+# Plot the curve on the XY plane
+plot!(curve_x_plotSph, curve_y_plotSph, curve_z_plotSph, color=:lightgreen, linewidth=2, label = nothing, linestyle=:dash)
+
+# Create the curve to represent the θ angle
+t_plotSph_theta = LinRange(0, sphCoord[2], 100)  # Parametric range for the angle θ
+curve_x_plotSph_theta = sphCoord[1] * sin.(t_plotSph_theta) * cos(sphCoord[3])  # Along the X axis in the spherical system
+curve_y_plotSph_theta = sphCoord[1] * sin.(t_plotSph_theta) * sin(sphCoord[3])  # Along the Y axis in the spherical system
+curve_z_plotSph_theta = sphCoord[1] * cos.(t_plotSph_theta)  # Along the Z axis in the spherical system
+
+# Plot the curve for the θ angle
+plot!(curve_x_plotSph_theta, curve_y_plotSph_theta, curve_z_plotSph_theta, color=:orange, linewidth=2, label = nothing, linestyle=:dash)
+
+# Add a label for the θ angle at the center of the curve (at θ/2)
+theta_center_x = sphCoord[1] * sin(sphCoord[2] / 2) * cos(sphCoord[3])
+theta_center_y = sphCoord[1] * sin(sphCoord[2] / 2) * sin(sphCoord[3])
+theta_center_z = sphCoord[1] * cos(sphCoord[2] / 2)
+
+annotate!(theta_center_x, theta_center_y, theta_center_z, text("θ", :orange, 12))
+
+
+	
+##########################################################################
+# Set the scaling factor for the unit vectors (controls their size)
+#vector_scale = 3  # You can change this value to control the size of the unit vectors
+    
+# Add the unit vectors at the point (x, y, z) in spherical coordinates
+
+# Radial unit vector (e_r)
+e_r_x = sin(sphCoord[2]) * cos(sphCoord[3])  # Along the X axis in the spherical coordinate system
+e_r_y = sin(sphCoord[2]) * sin(sphCoord[3])  # Along the Y axis in the spherical coordinate system
+e_r_z = cos(sphCoord[2])  # Along the Z axis in the spherical coordinate system
+plot!([0, x_plotSph + vector_scale * e_r_x], 
+      [0, y_plotSph + vector_scale * e_r_y], 
+      [0, z_plotSph + vector_scale * e_r_z], color=:purple, linewidth=2, label = "\$\\hat{a}_r\$")
+
+# Add label for radial unit vector
+annotate!(x_plotSph + vector_scale * e_r_x, 
+          y_plotSph + vector_scale * e_r_y, 
+          z_plotSph + vector_scale * e_r_z, text("\$\\hat{a}_r\$", :purple, 12))
+
+# Polar unit vector (e_θ)
+e_theta_x = cos(sphCoord[2]) * cos(sphCoord[3])  # Along the X axis in the spherical system
+e_theta_y = cos(sphCoord[2]) * sin(sphCoord[3])  # Along the Y axis in the spherical system
+e_theta_z = -sin(sphCoord[2])  # Along the Z axis in the spherical system
+plot!([x_plotSph, x_plotSph + vector_scale * e_theta_x], 
+      [y_plotSph, y_plotSph + vector_scale * e_theta_y], 
+      [z_plotSph, z_plotSph + vector_scale * e_theta_z], color=:orange, linewidth=2, label = "\$\\hat{a}_\\theta\$")
+
+# Add label for polar unit vector
+annotate!(x_plotSph + vector_scale * e_theta_x, 
+          y_plotSph + vector_scale * e_theta_y, 
+          z_plotSph + vector_scale * e_theta_z, text("\$\\hat{a}_\\theta\$", :orange, 12))
+
+# Azimuthal unit vector (e_φ) — simply along the azimuthal direction
+e_phi_x_sph = -sin(sphCoord[3])  # Along the negative Y direction
+e_phi_y_sph = cos(sphCoord[3])   # Along the positive X direction
+plot!([x_plotSph, x_plotSph + vector_scale * e_phi_x_sph], 
+      [y_plotSph, y_plotSph + vector_scale * e_phi_y_sph], 
+      [z_plotSph, z_plotSph], color=:green, linewidth=2, label = "\$\\hat{a}_\\phi\$")
+
+# Add label for azimuthal unit vector
+annotate!(x_plotSph + vector_scale * e_phi_x_sph, 
+          y_plotSph + vector_scale * e_phi_y_sph, 
+          z_plotSph + 2, text("\$\\hat{a}_\\phi\$", :green, 12))
+end
+
+
+# ╔═╡ ef8dbd4a-0c36-450e-995e-f2d12578523e
+md"""En este sistema las coordenadas pueden tomar los siguientes valores:
+
+$0 \leq r < \infty$
+
+$0 \leq \theta <\pi$
+
+$0 \leq \phi < 2\pi$"""
+
+# ╔═╡ a1b9280e-8421-402e-afd8-1caecae70aeb
+md"""!!! info "Nota 3: otros dominios de las coordenadas" 
+	En __muy raras ocasiones__ suele ser mejor definir el intervalo de las coordenadas  $(r, \theta, \phi)$ como:
+
+	$-\infty < r < \infty$
+	$0 \leq \theta <\frac{\pi}{2}$
+	$0 \leq \phi < 2\pi$
+
+	Si se representan los puntos de esta manera no se podria representar un punto en el plano xy de forma únivoca. 
+"""
+
+# ╔═╡ 09232b38-0520-4d23-9375-e2a0b88f523d
+md"""
+La representación de los vectores no cambia mucho. Un vector $\vec{A}$ se puede expresar en coordenadas esféricas como:
+
+$(A_r,A_\theta,A_\phi) \quad  o  \quad A_r \hat{a}_r + A_\theta \hat{a}_\theta + A_\phi \hat{a}_\phi$
+
+Su magnitud se calcula como:
+
+$|\vec{A}|=\sqrt{A_\rho^2+A_\phi^2+A_z^2}$
+"""
+
+# ╔═╡ 8e030f34-d364-4832-aed3-52f5225cbb23
+md"""!!! danger "Tarea:"
+	Demuestre que para cualquier punto en el espacio:
+	1. $\hat{a}_r\cdot\hat{a}_r = \hat{a}_\theta\cdot\hat{a}_\theta = \hat{a}_\phi\cdot\hat{a}_\phi = 1$
+	2. $\hat{a}_r\cdot\hat{a}_\theta = \hat{a}_\theta\cdot\hat{a}_\phi = \hat{a}_\phi\cdot\hat{a}_r = 0$
+	3. $\hat{a}_r \times \hat{a}_\theta=\hat{a}_\phi$
+	4. $\hat{a}_\theta \times \hat{a}_\phi=\hat{a}_r$
+	5. $\hat{a}_\phi \times \hat{a}_r=\hat{a}_\theta$
+
+	Sabiendo que:
+
+	$\hat{a}_r=\sin(\theta)\cos(\phi)\hat{a}_x + \sin(\theta)\sin(\phi)\hat{a}_y + \cos(\theta)\hat{a}_z$
+	$\hat{a}_\theta=\cos(\theta)\cos(\phi)\hat{a}_x + \cos(\theta)\sin(\phi)\hat{a}_y - \sin(\theta)\hat{a}_z$
+	$\hat{a}_\phi=-\sin(\phi)\hat{a}_x + \cos(\phi)\hat{a}_y$
+"""
+
+# ╔═╡ 191cc489-0dc1-4c09-8d71-137d43506c70
+md"""
+### Transformaciones entre los sistemas coordenadas esféricos y cartesianos.
+"""
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -1538,10 +1833,23 @@ version = "1.4.1+1"
 # ╟─7b0c8858-acfd-45da-9af0-36af30caf670
 # ╟─a9514402-9909-4552-8bb0-0e3fc552b94e
 # ╟─b95ed9b6-e9dc-45fa-a7cb-bd1d2506999d
+# ╟─d76436e7-76f7-4b6f-ba98-fbc07292eb5b
 # ╟─c0207bc9-0c9f-4b46-a337-4e0a51ec1368
 # ╟─7f74dc08-8239-41d3-89bc-c5cf94157a29
 # ╟─31c55c8a-11fe-4d63-808e-79615a349d30
-# ╠═7466266c-d0c2-4cdf-b78c-56998acf54ad
-# ╠═a070cc75-fcf1-4b71-9bd0-11a3c5270034
+# ╟─7466266c-d0c2-4cdf-b78c-56998acf54ad
+# ╟─a070cc75-fcf1-4b71-9bd0-11a3c5270034
+# ╟─172da9f3-e2ee-4ca5-b5e6-c43c5183258c
+# ╟─cab1e21e-f14b-426d-aa17-3c0369025d17
+# ╟─947553f4-47a8-47bf-99e9-a0783a274bd7
+# ╟─10b17de2-bebd-4625-a4b8-d5399fb977a4
+# ╠═2c6318ff-a091-41df-95e8-9d74ab43f176
+# ╟─45e1e8d2-0031-4e03-b53d-dec490081204
+# ╟─ae269805-49ef-41eb-bb9e-89793f143eb8
+# ╟─ef8dbd4a-0c36-450e-995e-f2d12578523e
+# ╟─a1b9280e-8421-402e-afd8-1caecae70aeb
+# ╟─09232b38-0520-4d23-9375-e2a0b88f523d
+# ╟─8e030f34-d364-4832-aed3-52f5225cbb23
+# ╟─191cc489-0dc1-4c09-8d71-137d43506c70
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
