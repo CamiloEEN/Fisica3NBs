@@ -278,7 +278,7 @@ Aunque dichas transformaciones se pueden obtener usando geometría, se prefiere 
 # ╔═╡ b95ed9b6-e9dc-45fa-a7cb-bd1d2506999d
 md"""!!! success "Transformaciones entre puntos:"
 
-	$x=\rho \cos(\phi) \qquad \qquad \qquad \rho=x^2+y^2$
+	$x=\rho \cos(\phi) \qquad \qquad \qquad \rho^2=x^2+y^2$
 	$y=\rho \sin(\phi) \qquad \qquad \qquad \tan(\phi)=\frac{y}{x}$
 	$z=z \qquad \qquad \qquad z=z$
 """
@@ -631,6 +631,239 @@ md"""!!! danger "Tarea:"
 # ╔═╡ 191cc489-0dc1-4c09-8d71-137d43506c70
 md"""
 ### Transformaciones entre los sistemas coordenadas esféricos y cartesianos.
+"""
+
+# ╔═╡ 1e2472bd-f72b-40a9-8bd0-cfab33e2b0df
+md"""
+Las formulas que nos permiten transformar las coordenadas de los puntos se muestran a continuación:
+"""
+
+# ╔═╡ b8d60043-9818-4667-8994-6365adb3f6e5
+md"""!!! success "Transformaciones entre puntos:"
+
+	$x=r \sin(\theta) \cos(\phi) \qquad \qquad \qquad r^2=x^2+y^2+z^2$
+	$y=r \sin(\theta) \sin(\phi) \qquad \qquad \qquad \qquad \tan(\phi)=\frac{y}{x}$
+	$z=r \cos(\theta) \quad \qquad \qquad \qquad \qquad \theta=\arccos\left(\frac{z}{r}\right)$
+"""
+
+# ╔═╡ d2572f56-fb09-41da-9cfd-77959c91ea72
+md"""
+Note que la coordenada $\phi$ mejor conocida como ángulo azimutal es la misma coordenada angular de las coordenadas cilíndricas.
+"""
+
+# ╔═╡ c5a772d7-b72a-484c-9bda-5a05400eca6f
+md"""!!! danger "Tarea:"
+	Un punto ubicado en $(x,y,z)$ tiene un vector posición $\vec{r}$ dado por:
+
+	$\vec{r}=x\hat{a}_x+y\hat{a}_y+z\hat{a}_z$
+
+	Noten como está notación nos permite distinguir un vector de un punto y además nos dice en que sistema de coordenadas está el vector.
+
+	Usando las transformaciones:
+
+	$x=r \sin(\theta) \cos(\phi)$
+	$y=r \sin(\theta) \sin(\phi)$
+	$z=r \cos(\theta)$
+
+	demuestre que dicho vector posición en coordenadas esféricas es:
+
+	$\vec{r}=r\hat{a}_r$
+
+	donde
+
+	$\hat{a}_r=\sin(\theta) \cos(\phi)\hat{a}_x+\sin(\theta) \sin(\phi)\hat{a}_y+\cos(\theta)\hat{a}_z$
+"""
+
+# ╔═╡ b08ec80f-428b-4bb9-a2c5-da469dc08620
+md"""
+Al igual que con las coordenadas cilíndricas, primero se presentan los vectores unitarios que nos permiten pasar un vector de un sistema de coordenadas a otro aunque no sea la forma más eficiente.
+"""
+
+# ╔═╡ fbee4cd5-58ac-40d2-bd95-9083e00ee5ba
+md"""!!! success "Transformaciones entre vectores: forma menos eficiente"
+
+	Se pueden utilizar las siguientes expresiones para pasar un vector de coordenadas esféricas a cartesianas:
+
+	$\hat{a}_r=\sin(\theta)\cos(\phi)\hat{a}_x + \sin(\theta)\sin(\phi)\hat{a}_y + \cos(\theta)\hat{a}_z$
+	$\hat{a}_\theta=\cos(\theta)\cos(\phi)\hat{a}_x + \cos(\theta)\sin(\phi)\hat{a}_y - \sin(\theta)\hat{a}_z$
+	$\hat{a}_\phi=-\sin(\phi)\hat{a}_x + \cos(\phi)\hat{a}_y$
+
+	y de cartesianas a esféricas:
+
+	$\hat{a}_x =\sin(\theta)\cos(\phi) \hat{a}_r+\cos(\theta)\cos(\phi)\hat{a}_\theta-\sin(\phi)\hat{a}_\phi$
+	$\hat{a}_y =\sin(\theta)\sin(\phi) \hat{a}_r+\cos(\theta)\sin(\phi)\hat{a}_\theta+\cos(\phi)\hat{a}_\phi$
+	$\hat{a}_z=\cos(\theta) \hat{a}_r-\sin(\theta)\hat{a}_\theta$
+
+	sin embargo hay formas más eficientes de transformar vectores como veremos enseguida.
+"""
+
+# ╔═╡ a467c6b8-943a-4d9f-8019-a502c180dc86
+md"""
+Para hallar las matrices de transformación se podria realizar el mismo procedimiento mostrado en la sección de coordenadas cilíndricas, sin embargo, es conveniente mostrar __la principal ventaja de un sistema de coordenadas ortogonal__ usando proyecciones.
+"""
+
+# ╔═╡ 62d3f27d-2446-43df-8f96-3861683c4785
+md"""
+Supongamos que tenemos las componentes de un vector $\vec{B}$ en coordenadas cartesianas, esto es,
+
+$\vec{B}=B_x \hat{a}_x + B_y \hat{a}_y + B_z \hat{a}_z$
+
+y se desea encontrar su representación en coordenadas esféricas
+
+$\vec{B}=B_r \hat{a}_r + B_\theta \hat{a}_\theta + B_\phi \hat{a}_\phi$
+
+es decir, se conoce $B_x$, $B_y$, $B_z$ y se desea encontrar $B_r$, $B_\theta$, $B_\phi$
+
+para encontrar $B_r$ por ejemplo, nos disponemos a encontrar la proyección del vector $\vec{B}$ a lo largo de $\hat{a}_r$. Del curso de algebra lineal estoy seguro que ustedes se acuerdan que dicha proyección se encuentra calculando un producto punto y las normas de los vectores involucrados 🙄.
+
+Por si no se acuerdan 👀:
+
+$Proy_\vec{V}\vec{U}= \frac{\vec{U}\cdot\vec{V}}{||\vec{V}||^2}$
+
+Se lee proyección de $\vec{U}$ sobre $\vec{V}$ y aunque parece que es más complicado esta fórmula se simplifica bastante si el vector $\vec{V}$ resulta ser unitario puesto que $||\vec{V}||^2=1$ de ser el caso.
+
+
+
+"""
+
+# ╔═╡ 55a9201c-8fb8-424b-87c9-62924950a4c8
+md"""
+Volviendo a nuestro ejemplo, nos interesa encontrar $B_r=Proy_{\hat{a}_r} \vec{B}$, es decir
+
+$B_r=Proy_{\hat{a}_r} \vec{B}=\frac{\vec{B}\cdot\hat{a}_r}{||\hat{a}_r||^2}$
+
+Ah! pero $\hat{a}_r$ es un vector unitario, es decir, un vector de norma $1$ por lo que $||\hat{a}_r||=1$:
+
+$B_r=Proy_{\hat{a}_r} \vec{B}=\vec{B}\cdot\hat{a}_r$
+
+Solo hay que calcular un producto punto y de manera analoga:
+
+$B_\theta=Proy_{\hat{a}_\theta} \vec{B}=\vec{B}\cdot\hat{a}_\theta$
+$B_\phi=Proy_{\hat{a}_\phi} \vec{B}=\vec{B}\cdot\hat{a}_\phi$
+$B_x=Proy_{\hat{a}_x} \vec{B}=\vec{B}\cdot\hat{a}_x$
+$B_y=Proy_{\hat{a}_y} \vec{B}=\vec{B}\cdot\hat{a}_y$
+$B_z=Proy_{\hat{a}_z} \vec{B}=\vec{B}\cdot\hat{a}_z$
+
+y así sucesivamente, la componente de cualquier vector a lo largo de la dirección de cualquier __vector unitario__ se puede encontrar de esta forma.
+"""
+
+# ╔═╡ 37f3050c-dffd-4ebe-bdab-f0daaaa89fc2
+md"""
+Volviendo al ejemplo
+
+$B_r=\vec{B}\cdot\hat{a}_r=(B_x \hat{a}_x + B_y \hat{a}_y + B_z \hat{a}_z) \cdot\hat{a}_r$
+
+pero 
+
+$\hat{a}_r=\sin(\theta)\cos(\phi)\hat{a}_x + \sin(\theta)\sin(\phi)\hat{a}_y + \cos(\theta)\hat{a}_z$
+
+así que
+
+$B_r=(B_x \hat{a}_x + B_y \hat{a}_y + B_z \hat{a}_z) \cdot (\sin(\theta)\cos(\phi)\hat{a}_x + \sin(\theta)\sin(\phi)\hat{a}_y + \cos(\theta)\hat{a}_z)$
+"""
+
+# ╔═╡ 997189f7-e33f-4c2c-a350-5bfc6c5acbd1
+md"""
+$$\begin{aligned}
+B_r &= B_x\sin(\theta)\cos(\phi)\hat{a}_x\cdot\hat{a}_x + B_x\sin(\theta)\sin(\phi)\hat{a}_x\cdot\hat{a}_y + B_x\cos(\theta)\hat{a}_x\cdot\hat{a}_z \\
+    &+ B_y\sin(\theta)\cos(\phi)\hat{a}_y\cdot\hat{a}_x + B_y\sin(\theta)\sin(\phi)\hat{a}_y\cdot\hat{a}_y + B_y\cos(\theta)\hat{a}_y\cdot\hat{a}_z \\
+	&+ B_z\sin(\theta)\cos(\phi)\hat{a}_z\cdot\hat{a}_x + B_z\sin(\theta)\sin(\phi)\hat{a}_z\cdot\hat{a}_y + B_z\cos(\theta)\hat{a}_z\cdot\hat{a}_z
+\end{aligned}$$
+"""
+
+# ╔═╡ 4d68417c-db95-4492-a791-6d2ad1a60be7
+md"""
+Para poder calcular los 9 productos punto resultantes repitan el siguiente mantra:
+
+	El producto punto entre dos vectores ortogonales es cero...
+	El producto punto entre dos vectores ortogonales es cero...
+	El producto punto entre dos vectores ortogonales es cero...
+	El producto punto entre dos vectores ortogonales es cero...
+	El producto punto entre dos vectores ortogonales es cero...
+los vectores $\hat{a}_x$ y $\hat{a}_y$ forman un ángulo de 90 grados entre ellos y por definición son ortogonales, es decir, $\hat{a}_x\cdot\hat{a}_y=0$, así como $\hat{a}_z\cdot\hat{a}_x=0$ y $\hat{a}_y\cdot\hat{a}_z=0$ lo que nos deja
+"""
+
+# ╔═╡ 309dda6b-7036-4f69-9aa8-18958f3ba76d
+md"""
+$$\begin{aligned}
+B_r &= B_x\sin(\theta)\cos(\phi)\hat{a}_x\cdot\hat{a}_x + B_y\sin(\theta)\sin(\phi)\hat{a}_y\cdot\hat{a}_y + B_z\cos(\theta)\hat{a}_z\cdot\hat{a}_z
+\end{aligned}$$
+"""
+
+# ╔═╡ 20aaa8ab-7612-4a1e-988a-a81ddb92b8c6
+md"""
+Recordemos que $\hat{a}_x\cdot\hat{a}_x=||\hat{a}_x||^2=1$ y lo mismo para los vectores unitarios $\hat{a}_y$ y $\hat{a}_z$. Finalmente se obtiene:
+
+$$\begin{aligned}
+B_r &= B_x\sin(\theta)\cos(\phi) + B_y\sin(\theta)\sin(\phi) + B_z\cos(\theta)
+\end{aligned}$$
+"""
+
+# ╔═╡ 570f7f84-cac0-49f0-9ed6-2083b22d3c49
+md"""
+Si bien parece muy largo el procedimiento se puede simplemente evitar escribir los terminos que contengan productos puntos entre vectores ortogonales ya que se sabe que estos son nulos.
+"""
+
+# ╔═╡ f4599105-08d3-41cd-bc09-c5739671d9cc
+md"""!!! info "Nota 4: producto punto entre vectores ortonormales" 
+	Para todo sistema de coordenadas ortogonal con vectores unitarios $\hat{a}_i$ y $\hat{a}_j$ se cumple:
+
+	$$\begin{aligned}
+	\hat{a}_i \cdot \hat{a}_j &= \delta_{ij} \\
+	\delta_{ij} &= 
+	\begin{cases} 
+	1, & \text{si } i = j \\ 
+	0, & \text{si } i \neq j
+	\end{cases}
+	\end{aligned}$$
+
+	El símbolo $\delta_{ij}$ se conoce como delta de kronecker.
+"""
+
+# ╔═╡ 4ef1c66a-0e1d-460c-a17d-09021e7fcf93
+md"""
+Se deja como tarea al lector encontrar las matrices de transformación correspondientes.
+"""
+
+# ╔═╡ 12c91384-efa8-4ce0-8e39-db2167e6cc92
+md"""!!! danger "Tarea:"
+	Demuestre que:
+
+	$\begin{pmatrix}
+	A_r \\
+	A_\theta \\
+	A_\phi
+	\end{pmatrix}
+	=
+	\begin{pmatrix}
+	\sin(\theta)\cos(\phi) & \sin(\theta)\sin(\phi) & \cos(\theta) \\
+	\cos(\theta)\cos(\phi) & \cos(\theta)\sin(\phi) & -\sin(\theta) \\
+	-\sin(\phi) & \cos(\phi) & 0
+	\end{pmatrix}
+	\begin{pmatrix}
+	A_x \\
+	A_y \\
+	A_z
+	\end{pmatrix}$
+
+	y
+
+	$\begin{pmatrix}
+	A_x \\
+	A_y \\
+	A_z
+	\end{pmatrix}
+	=
+	\begin{pmatrix}
+	\sin(\theta)\cos(\phi) & \cos(\theta)\cos(\phi) & -\sin(\theta) \\
+	\sin(\theta)\sin(\phi) & \cos(\theta)\sin(\phi) & \cos(\theta) \\
+	\cos(\phi) & -\sin(\phi) & 0
+	\end{pmatrix}
+	\begin{pmatrix}
+	A_r \\
+	A_\theta \\
+	A_\phi
+	\end{pmatrix}$
 """
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
@@ -1832,7 +2065,7 @@ version = "1.4.1+1"
 # ╟─996d87af-8443-4241-9c46-abe1916b3bd9
 # ╟─7b0c8858-acfd-45da-9af0-36af30caf670
 # ╟─a9514402-9909-4552-8bb0-0e3fc552b94e
-# ╟─b95ed9b6-e9dc-45fa-a7cb-bd1d2506999d
+# ╠═b95ed9b6-e9dc-45fa-a7cb-bd1d2506999d
 # ╟─d76436e7-76f7-4b6f-ba98-fbc07292eb5b
 # ╟─c0207bc9-0c9f-4b46-a337-4e0a51ec1368
 # ╟─7f74dc08-8239-41d3-89bc-c5cf94157a29
@@ -1843,7 +2076,7 @@ version = "1.4.1+1"
 # ╟─cab1e21e-f14b-426d-aa17-3c0369025d17
 # ╟─947553f4-47a8-47bf-99e9-a0783a274bd7
 # ╟─10b17de2-bebd-4625-a4b8-d5399fb977a4
-# ╠═2c6318ff-a091-41df-95e8-9d74ab43f176
+# ╟─2c6318ff-a091-41df-95e8-9d74ab43f176
 # ╟─45e1e8d2-0031-4e03-b53d-dec490081204
 # ╟─ae269805-49ef-41eb-bb9e-89793f143eb8
 # ╟─ef8dbd4a-0c36-450e-995e-f2d12578523e
@@ -1851,5 +2084,23 @@ version = "1.4.1+1"
 # ╟─09232b38-0520-4d23-9375-e2a0b88f523d
 # ╟─8e030f34-d364-4832-aed3-52f5225cbb23
 # ╟─191cc489-0dc1-4c09-8d71-137d43506c70
+# ╟─1e2472bd-f72b-40a9-8bd0-cfab33e2b0df
+# ╟─b8d60043-9818-4667-8994-6365adb3f6e5
+# ╟─d2572f56-fb09-41da-9cfd-77959c91ea72
+# ╟─c5a772d7-b72a-484c-9bda-5a05400eca6f
+# ╟─b08ec80f-428b-4bb9-a2c5-da469dc08620
+# ╟─fbee4cd5-58ac-40d2-bd95-9083e00ee5ba
+# ╟─a467c6b8-943a-4d9f-8019-a502c180dc86
+# ╟─62d3f27d-2446-43df-8f96-3861683c4785
+# ╟─55a9201c-8fb8-424b-87c9-62924950a4c8
+# ╟─37f3050c-dffd-4ebe-bdab-f0daaaa89fc2
+# ╟─997189f7-e33f-4c2c-a350-5bfc6c5acbd1
+# ╟─4d68417c-db95-4492-a791-6d2ad1a60be7
+# ╟─309dda6b-7036-4f69-9aa8-18958f3ba76d
+# ╟─20aaa8ab-7612-4a1e-988a-a81ddb92b8c6
+# ╟─570f7f84-cac0-49f0-9ed6-2083b22d3c49
+# ╟─f4599105-08d3-41cd-bc09-c5739671d9cc
+# ╟─4ef1c66a-0e1d-460c-a17d-09021e7fcf93
+# ╟─12c91384-efa8-4ce0-8e39-db2167e6cc92
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
