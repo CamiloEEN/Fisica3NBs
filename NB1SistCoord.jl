@@ -73,10 +73,10 @@ annotate!(0, 0, axis_length+1, text("Z", :blue, 12))   # Z-axis label at the end
 end
 
 # ╔═╡ e91fd914-6bea-487d-b1aa-2b20e6e49603
-md"""!!! info "Definición: Sistema de Coordenadas Ortogonal"
-	Es aquel cuyos ejes de coordenadas son mutuamente perpendiculares, es decir, forman un ángulo de 90 grados.
+md"""!!! info "📑 Definición: Sistema de Coordenadas Ortogonal"
+	Es aquel cuyos ejes de coordenadas son mutuamente perpendiculares, es decir, forman un ángulo de 90 grados ⊾.
 
-	Todos los sistemas de coordenadas que se usaran a lo largo del curso seran ortogonales.
+	Todos los sistemas de coordenadas que se usaran a lo largo del curso seran ortogonales. 🤓
 """
 
 # ╔═╡ cbb37868-0d60-450e-95ac-522bf997dc0c
@@ -100,13 +100,15 @@ $\hat{a}_x = \begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix}, \qquad \hat{a}_y = \begi
 son los vectores unitarios a lo largo de los ejes x, y y z. "
 
 # ╔═╡ a0f6defe-5a76-48eb-a807-b7c8675ff4c8
-md"""!!! info "Nota 1: Dirección de vectores unitarios" 
+md"""!!! info "📚 Nota 1: Dirección de vectores unitarios" 
 	Los vectores unitarios apuntan en la dirección en la cual aumenta el valor de la respectiva coordenada. Como se verá más adelante, esto se cumple para todos los vectores unitarios de todos los sistemas de coordenadas.
 """
 
 # ╔═╡ 31770c81-3a03-41b3-81a0-cd6b28cae2ce
-md"""!!! warning "Cuidado!" 
-	Cuando se habla de vectores se debe entender que por defecto son vectores columna. La diferencia entre vectores fila y columna no tendrá grandes efectos a lo cargo de este curso pero puede ser esencial en otros cursos.
+md"""
+!!! warning "⚠️ ¡Cuidado!"
+	📌 Cuando se habla de vectores, se debe entender que por defecto son **vectores columna**.  
+	📏 La diferencia entre **vectores fila** y **vectores columna** no tendrá grandes efectos a lo largo de este curso, pero 🧠 puede ser **esencial** en otros cursos.
 """
 
 # ╔═╡ 7d474c97-8391-4bf2-af7b-d08d190d5db9
@@ -121,7 +123,7 @@ md"A continuación podrás ver como se ubica un punto en el espacio en coordenad
 # ╔═╡ 08c42422-0918-4afa-88b8-92daf6b9fa6a
 # Create sliders for ρ, φ, z
 @bind cilindCoord PlutoUI.combine() do Child
-	md""" ρ = $(Child( Slider(0:10; default=6, show_value=true))),  ϕ = $(Child( Slider(0:0.5:2π ; default=3.5, show_value=true))), z= $(Child( Slider(-10:10; default=6, show_value=true)))"""
+	md""" ρ = $(Child( Slider(0:10; default=10, show_value=true))),  ϕ = $(Child( Slider(0:0.5:2π ; default=3.5, show_value=true))), z= $(Child( Slider(-10:10; default=4, show_value=true)))"""
 
 end
 
@@ -227,10 +229,10 @@ md"""En este sistema las coordenadas pueden tomar los siguientes valores:
         $-\infty < z < \infty$"""
 
 # ╔═╡ 831bb2f4-0401-4ec1-857b-90bc9bc4e1b7
-md"""!!! info "Nota 2: Puntos ambigüos en el espacio" 
+md"""!!! info "📚 Nota 2: Puntos ambigüos en el espacio" 
 	En coordenadas cilíndricas, las coordenadas $(\rho, \phi, z)$ describen de forma casi unívoca cualquier punto en el espacio. Esto quiere decir que existe más de una combinación de valores $(\rho, \phi, z)$ que describe un mismo punto en el espacio. Esta ambigüedad solo ocurre en algunos puntos del espacio de este sistema de coordenadas. 
 	
-	¿Jugando con los valores de las coordenadas del gráfico anterior puede el lector averigüar cuales son dichos puntos?
+	¿Jugando con los valores de las coordenadas del gráfico anterior puede el lector averigüar cuales son dichos puntos? 🎲🎳
 """
 
 # ╔═╡ 37f48743-e2e2-458b-a5b4-80cfda837e04
@@ -251,10 +253,10 @@ $\hat{a}_z=0 \hat{a}_x+0\hat{a}_y+1\hat{a}_z$"
 md"Note que ambas formas de escribir vectores son equivalentes pero la segunda deja claro explícitamente en que sistema de coordenadas se está trabajando. Además se pudo haber ignorado los vectores unitarios multiplicados por 0, sin embargo, se escribieron para mayor claridad."
 
 # ╔═╡ 206f1801-9642-4fc2-88ad-0d773530f8a9
-md"""!!! warning "Cuidado!" 
-	Si se comparan los vectores unitarios de las coordenadas cartesianas y las cilíndricas se puede notar que los vectores $\hat{a}_\rho$ y $\hat{a}_\phi$ dependen del angulo $\phi$. Se invita al lector a modificar los valores de la coordenada $\phi$ en el gráfico y verifique que si bien ningún vector unitario cambia de magnitud, los vectores $\hat{a}_\rho$ y $\hat{a}_\phi$ cambian de dirección con el ángulo $\phi$.
+md"""!!! warning "⚠️ ¡Cuidado!" 
+	Si se comparan los vectores unitarios de las coordenadas cartesianas y las cilíndricas se puede notar que los vectores $\hat{a}_\rho$ y $\hat{a}_\phi$ dependen del angulo $\phi$. Se invita al lector a modificar los valores de la coordenada $\phi$ en el gráfico y verifique que si bien ningún vector unitario cambia de magnitud, los vectores $\hat{a}_\rho$ y $\hat{a}_\phi$ cambian de dirección con el ángulo $\phi$ y por lo tanto __¡no son vectores constantes!__
 
-	__Pero... ¿Por que hay que tener cuidado?__ Cuando el estudiante se vea obligado a integrar campos vectoriales se dará cuenta porque.
+	__Pero... ¿Por que hay que tener cuidado?__🤔  Cuando el estudiante se vea obligado a integrar campos vectoriales se dará cuenta porque.
 """
 
 # ╔═╡ 158661b9-35f7-463d-98b8-f4613014152f
@@ -266,7 +268,7 @@ md"""
 md"Muy seguramente el lector se estará preguntando que relación hay entre las coordenadas cartesianas y las coordenadas cilíndricas. __¿Se puede pasar de un sistema de coordenadas a otro?__ La respuesta es __si__ pero antes debe quedar claro dos cosas: se pueden __transformar puntos__ de un sistema de coordenadas a otro y se pueden __transformar vectores__ de un sistema de coordenadas a otro. "
 
 # ╔═╡ 7b0c8858-acfd-45da-9af0-36af30caf670
-md"""!!! danger "Cuidado!" 
+md"""!!! danger "❌ ¡Cuidado!" 
 	Un gatico 🐱 muere cada vez que alguien confunde un punto con un vector. Tengan mucho cuidado pues convertir un punto de cartesianas a cilíncdricas es muy diferente a convertir un vector.
 """
 
@@ -276,7 +278,7 @@ Aunque dichas transformaciones se pueden obtener usando geometría, se prefiere 
 """
 
 # ╔═╡ b95ed9b6-e9dc-45fa-a7cb-bd1d2506999d
-md"""!!! success "Transformaciones entre puntos:"
+md"""!!! success "📏 Transformaciones entre puntos:"
 
 	$x=\rho \cos(\phi) \qquad \qquad \qquad \rho^2=x^2+y^2$
 	$y=\rho \sin(\phi) \qquad \qquad \qquad \tan(\phi)=\frac{y}{x}$
@@ -284,7 +286,7 @@ md"""!!! success "Transformaciones entre puntos:"
 """
 
 # ╔═╡ d76436e7-76f7-4b6f-ba98-fbc07292eb5b
-md"""!!! danger "Cuidado!" 
+md"""!!! danger "👀 ¡Ojo!" 
 	Hay que tener mucho cuidado cuando se utiliza la transformación $\tan(\phi)=\frac{y}{x}$ para obtener el ángulo $\phi$ pues esta solo proporciona el ángulo correcto si este se encuentra en el primer cuadrante del plano cartesiano xy. En el primer taller se mostrará como calcular dicho ángulo de forma segura.
 """
 
@@ -292,7 +294,7 @@ md"""!!! danger "Cuidado!"
 md"Puede parecer absurdo pero es mejor escribir esa última por si las moscas."
 
 # ╔═╡ 7f74dc08-8239-41d3-89bc-c5cf94157a29
-md"""!!! success "Transformaciones entre vectores: forma menos eficiente"
+md"""!!! success "📏 Transformaciones entre vectores: forma menos eficiente"
 
 	Se pueden utilizar las siguientes expresiones para pasar un vector de coordenadas cilíndricas a cartesianas:
 
@@ -323,7 +325,7 @@ $|\vec{A}|=\sqrt{A_\rho^2+A_\phi^2+A_z^2}$
 """
 
 # ╔═╡ 7466266c-d0c2-4cdf-b78c-56998acf54ad
-md"""!!! danger "Tarea:"
+md"""!!! danger "🏠 Tarea:"
 	Demuestre que para cualquier punto en el espacio:
 	1. $\hat{a}_\rho\cdot\hat{a}_\rho = \hat{a}_\phi\cdot\hat{a}_\phi = \hat{a}_z\cdot\hat{a}_z = 1$
 	2. $\hat{a}_\rho\cdot\hat{a}_\phi = \hat{a}_\phi\cdot\hat{a}_z = \hat{a}_z\cdot\hat{a}_\rho = 0$
@@ -420,7 +422,7 @@ A_z
 """
 
 # ╔═╡ cab1e21e-f14b-426d-aa17-3c0369025d17
-md"""!!! danger "Tarea:"
+md"""!!! danger "🏠 Tarea:"
 	Demuestre que:
 
 	$\begin{pmatrix}
@@ -459,7 +461,7 @@ md"A continuación podrás ver como se ubica un punto en el espacio en coordenad
 # ╔═╡ 45e1e8d2-0031-4e03-b53d-dec490081204
 # Create sliders for r, θ, ϕ
 @bind sphCoord PlutoUI.combine() do Child
-	md""" r = $(Child( Slider(0:10; default=6, show_value=true))),  θ = $(Child( Slider(0:0.15:π ; default=1.5, show_value=true))), ϕ= $(Child( Slider(0:0.5:2π ; default=3.5, show_value=true)))"""
+	md""" r = $(Child( Slider(0:10; default=10, show_value=true))),  θ = $(Child( Slider(0:0.15:π ; default=1.5, show_value=true))), ϕ= $(Child( Slider(0:0.5:2π ; default=3.5, show_value=true)))"""
 
 end
 
@@ -591,7 +593,7 @@ $0 \leq \theta <\pi$
 $0 \leq \phi < 2\pi$"""
 
 # ╔═╡ a1b9280e-8421-402e-afd8-1caecae70aeb
-md"""!!! info "Nota 3: otros dominios de las coordenadas" 
+md"""!!! info "📚 Nota 3: otros dominios de las coordenadas" 
 	En __muy raras ocasiones__ suele ser mejor definir el intervalo de las coordenadas  $(r, \theta, \phi)$ como:
 
 	$-\infty < r < \infty$
@@ -613,7 +615,7 @@ $|\vec{A}|=\sqrt{A_\rho^2+A_\phi^2+A_z^2}$
 """
 
 # ╔═╡ 8e030f34-d364-4832-aed3-52f5225cbb23
-md"""!!! danger "Tarea:"
+md"""!!! danger "🏠 Tarea:"
 	Demuestre que para cualquier punto en el espacio:
 	1. $\hat{a}_r\cdot\hat{a}_r = \hat{a}_\theta\cdot\hat{a}_\theta = \hat{a}_\phi\cdot\hat{a}_\phi = 1$
 	2. $\hat{a}_r\cdot\hat{a}_\theta = \hat{a}_\theta\cdot\hat{a}_\phi = \hat{a}_\phi\cdot\hat{a}_r = 0$
@@ -639,7 +641,7 @@ Las formulas que nos permiten transformar las coordenadas de los puntos se muest
 """
 
 # ╔═╡ b8d60043-9818-4667-8994-6365adb3f6e5
-md"""!!! success "Transformaciones entre puntos:"
+md"""!!! success "📏 Transformaciones entre puntos:"
 
 	$x=r \sin(\theta) \cos(\phi) \qquad \qquad \qquad r^2=x^2+y^2+z^2$
 	$y=r \sin(\theta) \sin(\phi) \qquad \qquad \qquad \qquad \tan(\phi)=\frac{y}{x}$
@@ -652,7 +654,7 @@ Note que la coordenada $\phi$ mejor conocida como ángulo azimutal es la misma c
 """
 
 # ╔═╡ c5a772d7-b72a-484c-9bda-5a05400eca6f
-md"""!!! danger "Tarea:"
+md"""!!! danger "🏠 Tarea:"
 	Un punto ubicado en $(x,y,z)$ tiene un vector posición $\vec{r}$ dado por:
 
 	$\vec{r}=x\hat{a}_x+y\hat{a}_y+z\hat{a}_z$
@@ -680,7 +682,7 @@ Al igual que con las coordenadas cilíndricas, primero se presentan los vectores
 """
 
 # ╔═╡ fbee4cd5-58ac-40d2-bd95-9083e00ee5ba
-md"""!!! success "Transformaciones entre vectores: forma menos eficiente"
+md"""!!! success "📏 Transformaciones entre vectores: forma menos eficiente"
 
 	Se pueden utilizar las siguientes expresiones para pasar un vector de coordenadas esféricas a cartesianas:
 
@@ -714,9 +716,9 @@ $\vec{B}=B_r \hat{a}_r + B_\theta \hat{a}_\theta + B_\phi \hat{a}_\phi$
 
 es decir, se conoce $B_x$, $B_y$, $B_z$ y se desea encontrar $B_r$, $B_\theta$, $B_\phi$
 
-para encontrar $B_r$ por ejemplo, nos disponemos a encontrar la proyección del vector $\vec{B}$ a lo largo de $\hat{a}_r$. Del curso de algebra lineal estoy seguro que ustedes se acuerdan que dicha proyección se encuentra calculando un producto punto y las normas de los vectores involucrados 🙄.
+para encontrar $B_r$ por ejemplo, nos disponemos a encontrar la proyección del vector $\vec{B}$ a lo largo de $\hat{a}_r$. Del curso de algebra lineal estoy seguro que ustedes se acuerdan que dicha proyección se encuentra calculando un producto punto y las normas de los vectores involucrados. 🙄
 
-Por si no se acuerdan 👀:
+Por si no se acuerdan: 👀
 
 $Proy_\vec{V}\vec{U}= \frac{\vec{U}\cdot\vec{V}}{||\vec{V}||^2}$
 
@@ -775,11 +777,11 @@ B_r &= B_x\sin(\theta)\cos(\phi)\hat{a}_x\cdot\hat{a}_x + B_x\sin(\theta)\sin(\p
 md"""
 Para poder calcular los 9 productos punto resultantes repitan el siguiente mantra:
 
-	El producto punto entre dos vectores ortogonales es cero...
-	El producto punto entre dos vectores ortogonales es cero...
-	El producto punto entre dos vectores ortogonales es cero...
-	El producto punto entre dos vectores ortogonales es cero...
-	El producto punto entre dos vectores ortogonales es cero...
+	🔵 **El producto punto entre dos vectores ortogonales es cero...**  
+	🔵 **El producto punto entre dos vectores ortogonales es cero...**  
+	🔵 **El producto punto entre dos vectores ortogonales es cero...**  
+	🔵 **El producto punto entre dos vectores ortogonales es cero...**  
+	🔵 **El producto punto entre dos vectores ortogonales es cero...**
 los vectores $\hat{a}_x$ y $\hat{a}_y$ forman un ángulo de 90 grados entre ellos y por definición son ortogonales, es decir, $\hat{a}_x\cdot\hat{a}_y=0$, así como $\hat{a}_z\cdot\hat{a}_x=0$ y $\hat{a}_y\cdot\hat{a}_z=0$ lo que nos deja
 """
 
@@ -805,8 +807,8 @@ Si bien parece muy largo el procedimiento se puede simplemente evitar escribir l
 """
 
 # ╔═╡ f4599105-08d3-41cd-bc09-c5739671d9cc
-md"""!!! info "Nota 4: producto punto entre vectores ortonormales" 
-	Para todo sistema de coordenadas ortogonal con vectores unitarios $\hat{a}_i$ y $\hat{a}_j$ se cumple:
+md"""!!! info "📚 Nota 4: producto punto entre vectores ortonormales" 
+	Para todo sistema de coordenadas ortogonal con vectores unitarios $\hat{a}_i$ y $\hat{a}_j$ se cumple si o si:
 
 	$$\begin{aligned}
 	\hat{a}_i \cdot \hat{a}_j &= \delta_{ij} \\
@@ -817,16 +819,16 @@ md"""!!! info "Nota 4: producto punto entre vectores ortonormales"
 	\end{cases}
 	\end{aligned}$$
 
-	El símbolo $\delta_{ij}$ se conoce como delta de kronecker.
+	El símbolo $\delta_{ij}$ se conoce como delta de kronecker. 🤓👆
 """
 
 # ╔═╡ 4ef1c66a-0e1d-460c-a17d-09021e7fcf93
 md"""
-Se deja como tarea al lector encontrar las matrices de transformación correspondientes.
+Se deja como tarea al lector encontrar las matrices de transformación correspondientes. 🧐
 """
 
 # ╔═╡ 12c91384-efa8-4ce0-8e39-db2167e6cc92
-md"""!!! danger "Tarea:"
+md"""!!! danger "🏠 Tarea:"
 	Demuestre que:
 
 	$\begin{pmatrix}
@@ -2065,7 +2067,7 @@ version = "1.4.1+1"
 # ╟─996d87af-8443-4241-9c46-abe1916b3bd9
 # ╟─7b0c8858-acfd-45da-9af0-36af30caf670
 # ╟─a9514402-9909-4552-8bb0-0e3fc552b94e
-# ╠═b95ed9b6-e9dc-45fa-a7cb-bd1d2506999d
+# ╟─b95ed9b6-e9dc-45fa-a7cb-bd1d2506999d
 # ╟─d76436e7-76f7-4b6f-ba98-fbc07292eb5b
 # ╟─c0207bc9-0c9f-4b46-a337-4e0a51ec1368
 # ╟─7f74dc08-8239-41d3-89bc-c5cf94157a29
