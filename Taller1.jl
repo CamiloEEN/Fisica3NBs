@@ -4,13 +4,25 @@
 using Markdown
 using InteractiveUtils
 
+# This Pluto notebook uses @bind for interactivity. When running this notebook outside of Pluto, the following 'mock version' of @bind gives bound variables a default value (instead of an error).
+macro bind(def, element)
+    #! format: off
+    quote
+        local iv = try Base.loaded_modules[Base.PkgId(Base.UUID("6e696c72-6542-2067-7265-42206c756150"), "AbstractPlutoDingetjes")].Bonds.initial_value catch; b -> missing; end
+        local el = $(esc(element))
+        global $(esc(def)) = Core.applicable(Base.get, el) ? Base.get(el) : iv(el)
+        el
+    end
+    #! format: on
+end
+
 # ╔═╡ 9ff16d5c-4dab-4422-8c70-cef54c9fb33d
 begin
 	using PlutoUI
 	PlutoUI.TableOfContents(title="📚 Tabla de contenido", indent=true, depth=4, aside=true, include_definitions=true)
 end
 
-# ╔═╡ 7d917be0-3cb7-47fa-ac97-01c3c6cc360e
+# ╔═╡ 1d45cf57-5701-4f36-9f39-bdce2cbb4660
 using CairoMakie
 
 # ╔═╡ acbd4a50-e1c8-11ef-0363-772257d7f831
@@ -46,31 +58,100 @@ md"""!!! success "📏 Transformaciones entre puntos:"
 	$z=z \qquad \qquad \qquad z=z$
 """
 
+# ╔═╡ 2bbc7b44-50c0-4bb4-977d-3ff9e7ec678c
+md"""
+Puede comprobar su respuesta usando el siguiente gráfico:
+"""
+
+# ╔═╡ 48e8e95f-f056-4efc-8a17-14dbc3a3feb3
+# Create sliders for ρ, φ, z
+@bind cilindCoord PlutoUI.combine() do Child
+	md""" ρ = $(Child( PlutoUI.Slider(0:5; default=10, show_value=true))),  ϕ = $(Child( PlutoUI.Slider(0:0.1:2π ; default=3.5, show_value=true))), z= $(Child( PlutoUI.Slider(-5:5; default=4, show_value=true)))"""
+
+end
+
 # ╔═╡ 995df298-042e-43a8-9bc7-e1c5dca123e1
 begin
+# Transform cylindrical coordinates to Cartesian coordinates
+x_plotCilind = cilindCoord[1] * cos(cilindCoord[2])
+y_plotCilind = cilindCoord[1] * sin(cilindCoord[2])
+z_plotCilind = cilindCoord[3]
+
+# Create a figure
 fig = Figure(size = (800, 600))
-ax = Axis3(fig[1,1], title = "3D Point with Axes", 
+ax = Axis3(fig[1, 1], title = "Punto en coordenadas cartesianas", 
            xlabel = "X", ylabel = "Y", zlabel = "Z", aspect = :data)
 
-# Define a point
-point = [1, 2, 3]
-scatter!(ax, [point[1]], [point[2]], [point[3]], color = :red, markersize = 10, label = "Point")
+# Define a point and add to the plot with a label for the legend
+scatter_obj = scatter!(ax, [x_plotCilind], [y_plotCilind], [z_plotCilind], 
+                       color = :black, markersize = 20, label = "Punto: (x=$(ceil(x_plotCilind, digits = 2)), y=$(ceil(y_plotCilind, digits = 2)), z=$(ceil(z_plotCilind, digits = 2)))")
 
 # Draw coordinate axes correctly
-arrows!(ax, [0, 0, 0], [0, 0, 0], [0, 0, 0], [5, 0, 0], [0, 5, 0], [0, 0, 5], 
-        linewidth = 4, color = [:red, :green, :blue], arrowsize = 0.1, lengthscale = 1.0)
+arrows_obj = arrows!(ax, [0, 0, 0], [0, 0, 0], [0, 0, 0], [5, 0, 0], 
+                     [0, 5, 0], [0, 0, 5], linewidth = 4, 
+                     color = [:red, :green, :blue], arrowsize = 0.1, 
+                     lengthscale = 1.0)
 
-# Draw full axis lines
+# Draw full axis lines with labels for the legend
 lines!(ax, [0, 5], [0, 0], [0, 0], color = :red, linewidth = 2)
 lines!(ax, [0, 0], [0, 5], [0, 0], color = :green, linewidth = 2)
 lines!(ax, [0, 0], [0, 0], [0, 5], color = :blue, linewidth = 2)
 
+# Add text labels for the axes
 text!(ax, "X", position = (5.5, 0, 0), color = :red)
 text!(ax, "Y", position = (0, 5.5, 0), color = :green)
 text!(ax, "Z", position = (0, 0, 5.5), color = :blue)
 
+# Add the radial distance line (from the point to the Z-axis)
+lines!(ax, [0, x_plotCilind], [0, y_plotCilind], [z_plotCilind, z_plotCilind], color = :purple, linestyle = :dash, linewidth = 2)
+
+# Label the distance as ρ
+ρ_label_position = (x_plotCilind/2, y_plotCilind/2, z_plotCilind)
+text!(ax, "ρ", position = ρ_label_position, color = :purple)
+
+# Projection to the XY plane (dotted light green line)
+lines!(ax, [x_plotCilind, x_plotCilind], [y_plotCilind, y_plotCilind], [0, z_plotCilind], color = :orange, linestyle = :dot, linewidth = 2)
+
+# Create the curve to represent the φ angle (draw a small circle on the XY plane)
+theta = LinRange(0, cilindCoord[2], 100)
+x_curve = cilindCoord[1] * cos.(theta)
+y_curve = cilindCoord[1] * sin.(theta)
+z_curve = zeros(length(x_curve))
+
+# Plot the curve on the XY plane
+lines!(ax, x_curve, y_curve, z_curve, color = :orange, linewidth = 2)
+
+# Add label for the φ angle at the center of the curve
+φ_label_position = (0.8*cilindCoord[1] * cos(cilindCoord[2]/2), 0.8*cilindCoord[1] * sin(cilindCoord[2]/2), 0)
+text!(ax, "φ", position = φ_label_position, color = :orange)
+
+# Create the legend and position it in the top-right corner
+legend = Legend(fig[1, 2], ax, title = "Legend", 
+                halign = :right, valign = :top)
+
+# Show the figure
 fig
 end
+
+# ╔═╡ a3171a16-a4b1-4ff4-94ab-7818abba3b77
+md"""
+2. Ahora transforme los siguientes puntos de coordenadas cilindricas a cartesianas y compruebe sus resultados usando la aplicación:
+
+ $(1,\frac{\pi}{2},-2)$,  $(0,\frac{\pi}{4},3)$,  $(3,\frac{3\pi}{2},2)$,
+
+ $(-1,\frac{3\pi}{2},-2)$, $(0,\frac{\pi}{2},10)$, $(0,\pi,10)$, $(0,0,0)$
+"""
+
+# ╔═╡ c20134cf-0909-4902-9832-6055a138e3fb
+md"""!!! danger "👀 ¡Ojo!"
+	Si ha hecho bien los ejercicios, habrá notado un problema al utilizar la fórmula $\tan(\phi)=\frac{y}{x}$ para encontrar el ángulo $\phi$. Si bien la fórmula $\tan(\phi)=\frac{y}{x}$ es siempre correcta, al utilizar la función $\arctan(x)$ para obtener el ángulo como 
+
+	$\phi=\arctan\left( \frac{y}{x} \right)$
+
+	no siempre da el resultado correcto. Esto sucede porque el ángulo que realmente se obtiene con la fórmula de arriba hace parte de diferentes triangulos rectángulos dependiendo del cuadrante en el que se encuentren las coordenadas cartesianas $x$ y $y$.
+
+	Para rematar, la función $\arctan(x)$ tiene como rango $(-\frac{\pi}{2},\frac{\pi}{2})$ mientras que $\phi$ toma valores entre $0$ y $2\pi$.
+"""
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -1632,12 +1713,16 @@ version = "3.6.0+0"
 
 # ╔═╡ Cell order:
 # ╠═9ff16d5c-4dab-4422-8c70-cef54c9fb33d
-# ╠═7d917be0-3cb7-47fa-ac97-01c3c6cc360e
+# ╠═1d45cf57-5701-4f36-9f39-bdce2cbb4660
 # ╟─acbd4a50-e1c8-11ef-0363-772257d7f831
-# ╠═d5b2e316-e41e-425c-82bb-633437a9d189
+# ╟─d5b2e316-e41e-425c-82bb-633437a9d189
 # ╟─e43c55ff-3b81-49c2-b291-ac3bc538bd8f
 # ╟─4f52992b-e32b-431b-93d0-2e6cbb19f593
 # ╟─62f66333-b03e-4fb7-8fc9-76364b068312
-# ╠═995df298-042e-43a8-9bc7-e1c5dca123e1
+# ╟─2bbc7b44-50c0-4bb4-977d-3ff9e7ec678c
+# ╟─48e8e95f-f056-4efc-8a17-14dbc3a3feb3
+# ╟─995df298-042e-43a8-9bc7-e1c5dca123e1
+# ╟─a3171a16-a4b1-4ff4-94ab-7818abba3b77
+# ╠═c20134cf-0909-4902-9832-6055a138e3fb
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
