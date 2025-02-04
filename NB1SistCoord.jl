@@ -224,7 +224,7 @@ md"""En este sistema las coordenadas pueden tomar los siguientes valores:
 
         $0 \leq \rho < \infty$
 
-        $0 \leq \phi < 2\pi$
+        $0 \leq \phi \leq 2\pi$
 
         $-\infty < z < \infty$"""
 
@@ -588,9 +588,9 @@ md"""En este sistema las coordenadas pueden tomar los siguientes valores:
 
 $0 \leq r < \infty$
 
-$0 \leq \theta <\pi$
+$0 \leq \theta \leq\pi$
 
-$0 \leq \phi < 2\pi$"""
+$0 \leq \phi \leq 2\pi$"""
 
 # ╔═╡ a1b9280e-8421-402e-afd8-1caecae70aeb
 md"""!!! info "📚 Nota 3: otros dominios de las coordenadas" 
@@ -598,7 +598,7 @@ md"""!!! info "📚 Nota 3: otros dominios de las coordenadas"
 
 	$-\infty < r < \infty$
 	$0 \leq \theta <\frac{\pi}{2}$
-	$0 \leq \phi < 2\pi$
+	$0 \leq \phi \leq 2\pi$
 
 	Si se representan los puntos de esta manera no se podria representar un punto en el plano xy de forma únivoca. 
 """
@@ -2068,7 +2068,7 @@ version = "1.4.1+1"
 # ╟─7b0c8858-acfd-45da-9af0-36af30caf670
 # ╟─a9514402-9909-4552-8bb0-0e3fc552b94e
 # ╟─b95ed9b6-e9dc-45fa-a7cb-bd1d2506999d
-# ╠═d76436e7-76f7-4b6f-ba98-fbc07292eb5b
+# ╟─d76436e7-76f7-4b6f-ba98-fbc07292eb5b
 # ╟─c0207bc9-0c9f-4b46-a337-4e0a51ec1368
 # ╟─7f74dc08-8239-41d3-89bc-c5cf94157a29
 # ╟─31c55c8a-11fe-4d63-808e-79615a349d30

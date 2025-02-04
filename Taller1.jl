@@ -58,6 +58,15 @@ md"""!!! success "📏 Transformaciones entre puntos:"
 	$z=z \qquad \qquad \qquad z=z$
 """
 
+# ╔═╡ bbf2b91d-96ba-4948-802e-b68c629e9fe3
+md"""!!! info "📚 No se les olvide que:" 
+	$0 \leq \rho < \infty$
+
+    $0 \leq \phi \leq 2\pi$
+
+    $-\infty < z < \infty$
+"""
+
 # ╔═╡ 2bbc7b44-50c0-4bb4-977d-3ff9e7ec678c
 md"""
 Puede comprobar su respuesta usando el siguiente gráfico:
@@ -133,6 +142,11 @@ legend = Legend(fig[1, 2], ax, title = "Legend",
 fig
 end
 
+# ╔═╡ 35fa1549-7214-432f-b5de-347857a4efba
+md"""
+## Convertir coordenadas cilíndricas a cartesianas
+"""
+
 # ╔═╡ a3171a16-a4b1-4ff4-94ab-7818abba3b77
 md"""
 2. Ahora transforme los siguientes puntos de coordenadas cilindricas a cartesianas y compruebe sus resultados usando la aplicación:
@@ -151,6 +165,135 @@ md"""!!! danger "👀 ¡Ojo!"
 	no siempre da el resultado correcto. Esto sucede porque el ángulo que realmente se obtiene con la fórmula de arriba hace parte de diferentes triangulos rectángulos dependiendo del cuadrante en el que se encuentren las coordenadas cartesianas $x$ y $y$.
 
 	Para rematar, la función $\arctan(x)$ tiene como rango $(-\frac{\pi}{2},\frac{\pi}{2})$ mientras que $\phi$ toma valores entre $0$ y $2\pi$.
+"""
+
+# ╔═╡ c630221b-ca4e-4e9c-be37-0b9eb3cbe6fd
+md"""
+## Convertir coordenadas cartesianas a esféricas
+"""
+
+# ╔═╡ 0567d923-d470-4820-bf64-56d41c698eae
+md"""
+3. Convertir los siguientes puntos de coordenadas cartesianas a esféricas:
+
+ $(0,0,0)$, $(0,0,4)$, $(0,0,-3)$,
+
+ $(1,2,3)$, $(-4,2,3)$, $(-1,-2,-2)$, $(1,-2,-2)$
+
+"""
+
+# ╔═╡ 1dc4c013-885b-4c0a-915a-d842092c9e51
+md"""
+Puede usar las siguientes ecuaciones
+"""
+
+# ╔═╡ fd5cdca3-8f15-4ef7-b6c3-ceb576334761
+md"""!!! success "📏 Transformaciones entre puntos:"
+
+	$$\begin{align} 
+	x&=r \sin(\theta)\cos(\phi) \qquad r^2= x^2+y^2+z^2 \\
+	y&=r \sin(\theta)\sin(\phi) \qquad \tan(\phi)=\frac{y}{x} \\
+	z&=r\cos(\theta)  \qquad \qquad \quad \theta = \arccos\left( \frac{z}{r} \right)
+	\end{align}$$
+"""
+
+# ╔═╡ e508a62b-a1fc-4c45-8f88-e6575f3b7a35
+md"""!!! info "📚 No se les olvide que:" 
+	$0 \leq r < \infty$
+
+	$0 \leq \theta \leq \pi$
+
+	$0 \leq \phi \leq 2\pi$
+"""
+
+# ╔═╡ 751c55da-0a8e-4f49-93c3-283a073cf4b2
+md"""
+Puede comprobar su respuesta usando el siguiente gráfico:
+"""
+
+# ╔═╡ 82b552f1-a709-458b-b6bf-828b96b644fd
+# Create sliders for ρ, φ, z
+@bind esferCoord PlutoUI.combine() do Child
+	md""" r = $(Child( PlutoUI.Slider(0:0.5:7; default=7, show_value=true))),  θ = $(Child( PlutoUI.Slider(0:0.1:π ; default=1, show_value=true))), ϕ= $(Child( PlutoUI.Slider(0:0.1:2π; default=1.5, show_value=true)))"""
+
+end
+
+# ╔═╡ b2a35e0d-febe-450f-959b-e88494553858
+begin
+# Transform spherical coordinates to Cartesian coordinates
+x_plotEsfer = esferCoord[1] * sin(esferCoord[2])*cos(esferCoord[3])
+y_plotEsfer = esferCoord[1] * sin(esferCoord[2])*sin(esferCoord[3])
+z_plotEsfer = esferCoord[1]* cos(esferCoord[2])
+
+# Create a figure
+fig2 = Figure(size = (800, 600))
+ax2 = Axis3(fig2[1, 1], title = "Punto en coordenadas cartesianas", 
+           xlabel = "X", ylabel = "Y", zlabel = "Z", aspect = :data)
+
+# Define a point and add to the plot with a label for the legend
+scatter_obj2 = scatter!(ax2, [x_plotEsfer], [y_plotEsfer], [z_plotEsfer], 
+                       color = :black, markersize = 20, label = "Punto: (x=$(ceil(x_plotEsfer, digits = 2)), y=$(ceil(y_plotEsfer, digits = 2)), z=$(ceil(z_plotEsfer, digits = 2)))")
+
+# Draw coordinate axes correctly
+arrows_obj2 = arrows!(ax2, [0, 0, 0], [0, 0, 0], [0, 0, 0], [5, 0, 0], 
+                     [0, 5, 0], [0, 0, 5], linewidth = 4, 
+                     color = [:red, :green, :blue], arrowsize = 0.1, 
+                     lengthscale = 1.0)
+
+# Draw full axis lines with labels for the legend
+lines!(ax2, [0, 5], [0, 0], [0, 0], color = :red, linewidth = 2)
+lines!(ax2, [0, 0], [0, 5], [0, 0], color = :green, linewidth = 2)
+lines!(ax2, [0, 0], [0, 0], [0, 5], color = :blue, linewidth = 2)
+
+# Add text labels for the axes
+text!(ax2, "X", position = (5.5, 0, 0), color = :red)
+text!(ax2, "Y", position = (0, 5.5, 0), color = :green)
+text!(ax2, "Z", position = (0, 0, 5.5), color = :blue)
+
+# Add the radial distance line (from the point to the Z-axis)
+lines!(ax2, [0, x_plotEsfer], [0, y_plotEsfer], [0, z_plotEsfer], color = :purple, linestyle = :dash, linewidth = 2)
+
+# Label the distance as ρ
+r_label_position = (x_plotEsfer/2, y_plotEsfer/2, z_plotEsfer)
+text!(ax2, "r", position = r_label_position, color = :purple)
+
+# Projection to the XY plane (dotted light green line)
+lines!(ax2, [x_plotEsfer, x_plotEsfer], [y_plotEsfer, y_plotEsfer], [0, z_plotEsfer], color = :orange, linestyle = :dot, linewidth = 2)
+
+# Create the curve to represent the φ angle (draw a small circle on the XY plane)
+phi_esfer = LinRange(0, esferCoord[3], 100)
+x_curveEsfer = esferCoord[1] *sin.(esferCoord[2])* cos.(phi_esfer)
+y_curveEsfer = esferCoord[1] *sin.(esferCoord[2])* sin.(phi_esfer)
+z_curveEsfer = zeros(length(x_curveEsfer))
+
+# Plot the curve on the XY plane
+lines!(ax2, x_curveEsfer, y_curveEsfer, z_curveEsfer, color = :orange, linewidth = 2)
+
+# Add label for the φ angle at the center of the curve
+φ_label_position_esfer = (0.8*esferCoord[1] * sin(esferCoord[2]) * cos(esferCoord[3]/2), 0.8*esferCoord[1] * sin(esferCoord[2]) * sin(esferCoord[3]/2), 0)
+text!(ax2, "φ", position = φ_label_position_esfer, color = :orange)
+
+# Create the legend and position it in the top-right corner
+legend2 = Legend(fig2[1, 2], ax2, title = "Legend", 
+                halign = :right, valign = :top)
+
+# Show the figure
+fig2
+end
+
+
+# ╔═╡ d22ff20e-fa21-4bbb-b2bf-78a057102af4
+md"""
+## Convertir coordenadas esféricas a cartesianas
+"""
+
+# ╔═╡ e2317d0f-b83c-4f6e-aacf-e2e892bf9fa7
+md"""
+4. Ahora transforme los siguientes puntos de coordenadas esféricas a cartesianas y compruebe sus resultados usando la aplicación:
+
+ $(1, \frac{\pi}{2}, \frac{3\pi}{2})$,  $(2,\frac{\pi}{4},\pi)$,  $(3,\frac{3\pi}{2},0)$,
+
+ $(3,\frac{\pi}{2},\frac{\pi}{2})$, $(0,0,0)$, $(0,x,x)$
 """
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
@@ -1719,10 +1862,22 @@ version = "3.6.0+0"
 # ╟─e43c55ff-3b81-49c2-b291-ac3bc538bd8f
 # ╟─4f52992b-e32b-431b-93d0-2e6cbb19f593
 # ╟─62f66333-b03e-4fb7-8fc9-76364b068312
+# ╟─bbf2b91d-96ba-4948-802e-b68c629e9fe3
 # ╟─2bbc7b44-50c0-4bb4-977d-3ff9e7ec678c
 # ╟─48e8e95f-f056-4efc-8a17-14dbc3a3feb3
 # ╟─995df298-042e-43a8-9bc7-e1c5dca123e1
+# ╟─35fa1549-7214-432f-b5de-347857a4efba
 # ╟─a3171a16-a4b1-4ff4-94ab-7818abba3b77
-# ╠═c20134cf-0909-4902-9832-6055a138e3fb
+# ╟─c20134cf-0909-4902-9832-6055a138e3fb
+# ╟─c630221b-ca4e-4e9c-be37-0b9eb3cbe6fd
+# ╟─0567d923-d470-4820-bf64-56d41c698eae
+# ╟─1dc4c013-885b-4c0a-915a-d842092c9e51
+# ╟─fd5cdca3-8f15-4ef7-b6c3-ceb576334761
+# ╟─e508a62b-a1fc-4c45-8f88-e6575f3b7a35
+# ╟─751c55da-0a8e-4f49-93c3-283a073cf4b2
+# ╟─82b552f1-a709-458b-b6bf-828b96b644fd
+# ╟─b2a35e0d-febe-450f-959b-e88494553858
+# ╟─d22ff20e-fa21-4bbb-b2bf-78a057102af4
+# ╟─e2317d0f-b83c-4f6e-aacf-e2e892bf9fa7
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
