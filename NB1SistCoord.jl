@@ -163,7 +163,7 @@ plot!([x_plotCilind, 0], [y_plotCilind, 0], [z_plotCilind, z_plotCilind], color=
 annotate!(x_plotCilind/2, y_plotCilind/2, z_plotCilind+1.5, text("ρ", :black, 12))
 
 # Projection to the XY plane (dotted light green line)
-plot!([x_plotCilind, x_plotCilind], [y_plotCilind, y_plotCilind], [z_plotCilind, 0], color=:black, linewidth=2, label = nothing)
+plot!([x_plotCilind, x_plotCilind], [y_plotCilind, y_plotCilind], [z_plotCilind, 0], color=:lightgreen, linewidth=2, label = nothing, linestyle=:dash)
 
 # Add label for the projection
 annotate!(x_plotCilind, y_plotCilind, 0, text("", :black, 12))
@@ -178,7 +178,7 @@ curve_z_plotCilind = zeros(100)
 plot!(curve_x_plotCilind, curve_y_plotCilind, curve_z_plotCilind, color=:lightgreen, linewidth=2, label = nothing, linestyle=:dash)
 
 # Add a label for the φ angle
-annotate!(x_plotCilind/2, y_plotCilind/2, -1, text("φ", :lightgreen, 12))
+annotate!(1.2*cilindCoord[1] * cos(cilindCoord[2]/2), 1.2*cilindCoord[1] * sin(cilindCoord[2]/2), 1, text("φ", :lightgreen, 12))
 
 ##########################################################################
 # Set the scaling factor for the unit vectors (controls their size)
@@ -210,13 +210,13 @@ annotate!(x_plotCilind + vector_scale * e_phi_x,
           y_plotCilind + vector_scale * e_phi_y, 
           z_plotCilind + 2, text("\$\\hat{a}_\\phi\$", :orange, 12))
 
-# Vertical unit vector (e_z) — simply along the Z-axis
+# Vertical unit vector (a_z) — simply along the Z-axis
 plot!([x_plotCilind, x_plotCilind], 
       [y_plotCilind, y_plotCilind], 
-      [z_plotCilind, z_plotCilind + vector_scale], color=:cyan, linewidth=2, label = "\$\\hat{e}_z\$")
+      [z_plotCilind, z_plotCilind + vector_scale], color=:blue, linewidth=2, label = "\$\\hat{a}_z\$")
 
 # Add label for vertical unit vector
-annotate!(x_plotCilind, y_plotCilind, z_plotCilind + vector_scale+1.5, text("\$\\hat{e}_z\$", :cyan, 12))
+annotate!(x_plotCilind, y_plotCilind, z_plotCilind + vector_scale+1.5, text("\$\\hat{a}_z\$", :blue, 12))
 end
 
 # ╔═╡ a9ce3137-2f60-4efb-a0e2-15c1085d8fb1
@@ -509,8 +509,8 @@ curve_y_plotSph = sphCoord[1] * sin(sphCoord[2]) * sin.(t_plotSph)
 curve_z_plotSph = zeros(100)
 
 # Create the curve to represent the φ angle at φ/2
-phi_center_x = sphCoord[1] * sin(sphCoord[2]) * cos(sphCoord[3] / 2)
-phi_center_y = sphCoord[1] * sin(sphCoord[2]) * sin(sphCoord[3] / 2)
+phi_center_x = 1.2*sphCoord[1] * sin(sphCoord[2]) * cos(sphCoord[3] / 2)
+phi_center_y = 1.2*sphCoord[1] * sin(sphCoord[2]) * sin(sphCoord[3] / 2)
 phi_center_z = 1
 
 # Add a label for the φ angle at the center of the curve (at φ/2)
@@ -529,9 +529,9 @@ curve_z_plotSph_theta = sphCoord[1] * cos.(t_plotSph_theta)  # Along the Z axis 
 plot!(curve_x_plotSph_theta, curve_y_plotSph_theta, curve_z_plotSph_theta, color=:orange, linewidth=2, label = nothing, linestyle=:dash)
 
 # Add a label for the θ angle at the center of the curve (at θ/2)
-theta_center_x = sphCoord[1] * sin(sphCoord[2] / 2) * cos(sphCoord[3])
-theta_center_y = sphCoord[1] * sin(sphCoord[2] / 2) * sin(sphCoord[3])
-theta_center_z = sphCoord[1] * cos(sphCoord[2] / 2)
+theta_center_x = 1.2*sphCoord[1] * sin(sphCoord[2] / 2) * cos(sphCoord[3])
+theta_center_y = 1.2*sphCoord[1] * sin(sphCoord[2] / 2) * sin(sphCoord[3])
+theta_center_z = 1.2*sphCoord[1] * cos(sphCoord[2] / 2)
 
 annotate!(theta_center_x, theta_center_y, theta_center_z, text("θ", :orange, 12))
 
