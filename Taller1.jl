@@ -88,7 +88,7 @@ z_plotCilind = cilindCoord[3]
 
 # Create a figure
 fig = Figure(size = (800, 600))
-ax = Axis3(fig[1, 1], title = "Punto en coordenadas cartesianas", 
+ax = Axis3(fig[1, 1], title = "Punto en coordenadas cilíndricas", 
            xlabel = "X", ylabel = "Y", zlabel = "Z", aspect = :data)
 
 # Define a point and add to the plot with a label for the legend
@@ -227,7 +227,7 @@ z_plotEsfer = esferCoord[1]* cos(esferCoord[2])
 
 # Create a figure
 fig2 = Figure(size = (800, 600))
-ax2 = Axis3(fig2[1, 1], title = "Punto en coordenadas cartesianas", 
+ax2 = Axis3(fig2[1, 1], title = "Punto en coordenadas esféricas", 
            xlabel = "X", ylabel = "Y", zlabel = "Z", aspect = :data)
 
 # Define a point and add to the plot with a label for the legend
