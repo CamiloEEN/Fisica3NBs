@@ -107,16 +107,16 @@ lines!(ax, [0, 0], [0, 5], [0, 0], color = :green, linewidth = 2)
 lines!(ax, [0, 0], [0, 0], [0, 5], color = :blue, linewidth = 2)
 
 # Add text labels for the axes
-text!(ax, "X", position = (5.5, 0, 0), color = :red)
-text!(ax, "Y", position = (0, 5.5, 0), color = :green)
-text!(ax, "Z", position = (0, 0, 5.5), color = :blue)
+text!(ax, "X", position = (5.5, 0, 0), color = :red, fontsize = 20)
+text!(ax, "Y", position = (0, 5.5, 0), color = :green, fontsize = 20)
+text!(ax, "Z", position = (0, 0, 5.5), color = :blue, fontsize = 20)
 
 # Add the radial distance line (from the point to the Z-axis)
 lines!(ax, [0, x_plotCilind], [0, y_plotCilind], [z_plotCilind, z_plotCilind], color = :purple, linestyle = :dash, linewidth = 2)
 
 # Label the distance as ρ
 ρ_label_position = (x_plotCilind/2, y_plotCilind/2, z_plotCilind)
-text!(ax, "ρ", position = ρ_label_position, color = :purple)
+text!(ax, "ρ", position = ρ_label_position, color = :purple, fontsize = 20)
 
 # Projection to the XY plane (dotted light green line)
 lines!(ax, [x_plotCilind, x_plotCilind], [y_plotCilind, y_plotCilind], [0, z_plotCilind], color = :orange, linestyle = :dot, linewidth = 2)
@@ -131,8 +131,8 @@ z_curve = zeros(length(x_curve))
 lines!(ax, x_curve, y_curve, z_curve, color = :orange, linewidth = 2)
 
 # Add label for the φ angle at the center of the curve
-φ_label_position = (0.8*cilindCoord[1] * cos(cilindCoord[2]/2), 0.8*cilindCoord[1] * sin(cilindCoord[2]/2), 0)
-text!(ax, "φ", position = φ_label_position, color = :orange)
+φ_label_position = (1.2*cilindCoord[1] * cos(cilindCoord[2]/2), 1.2*cilindCoord[1] * sin(cilindCoord[2]/2), 0)
+text!(ax, "φ", position = φ_label_position, color = :orange, fontsize = 20)
 
 # Create the legend and position it in the top-right corner
 legend = Legend(fig[1, 2], ax, title = "Legend", 
@@ -246,18 +246,18 @@ lines!(ax2, [0, 0], [0, 5], [0, 0], color = :green, linewidth = 2)
 lines!(ax2, [0, 0], [0, 0], [0, 5], color = :blue, linewidth = 2)
 
 # Add text labels for the axes
-text!(ax2, "X", position = (5.5, 0, 0), color = :red)
-text!(ax2, "Y", position = (0, 5.5, 0), color = :green)
-text!(ax2, "Z", position = (0, 0, 5.5), color = :blue)
+text!(ax2, "X", position = (5.5, 0, 0), color = :red, fontsize = 20)
+text!(ax2, "Y", position = (0, 5.5, 0), color = :green, fontsize = 20)
+text!(ax2, "Z", position = (0, 0, 5.5), color = :blue, fontsize = 20)
 
 # Add the radial distance line (from the point to the Z-axis)
-lines!(ax2, [0, x_plotEsfer], [0, y_plotEsfer], [0, z_plotEsfer], color = :purple, linestyle = :dash, linewidth = 2)
+lines!(ax2, [0, x_plotEsfer], [0, y_plotEsfer], [0, z_plotEsfer], color = :black, linestyle = :dash, linewidth = 2)
 
-# Label the distance as ρ
-r_label_position = (x_plotEsfer/2, y_plotEsfer/2, z_plotEsfer)
-text!(ax2, "r", position = r_label_position, color = :purple)
+# Label the distance as r
+r_label_position = (x_plotEsfer/2, y_plotEsfer/2, z_plotEsfer/2 +0.5)
+text!(ax2, "r", position = r_label_position, color = :black, fontsize = 20)
 
-# Projection to the XY plane (dotted light green line)
+# Projection to the XY plane (dotted orange line)
 lines!(ax2, [x_plotEsfer, x_plotEsfer], [y_plotEsfer, y_plotEsfer], [0, z_plotEsfer], color = :orange, linestyle = :dot, linewidth = 2)
 
 # Create the curve to represent the φ angle (draw a small circle on the XY plane)
@@ -270,8 +270,21 @@ z_curveEsfer = zeros(length(x_curveEsfer))
 lines!(ax2, x_curveEsfer, y_curveEsfer, z_curveEsfer, color = :orange, linewidth = 2)
 
 # Add label for the φ angle at the center of the curve
-φ_label_position_esfer = (0.8*esferCoord[1] * sin(esferCoord[2]) * cos(esferCoord[3]/2), 0.8*esferCoord[1] * sin(esferCoord[2]) * sin(esferCoord[3]/2), 0)
-text!(ax2, "φ", position = φ_label_position_esfer, color = :orange)
+φ_label_position_esfer = (1.2*esferCoord[1] * sin(esferCoord[2]) * cos(esferCoord[3]/2), 1.2*esferCoord[1] * sin(esferCoord[2]) * sin(esferCoord[3]/2), 0)
+text!(ax2, "φ", position = φ_label_position_esfer, color = :orange, fontsize = 20)
+
+# Create the curve to represent the θ angle 
+theta_esfer = LinRange(0, esferCoord[2], 100)
+x_curveEsferTheta = esferCoord[1] *sin.(theta_esfer)* cos.(esferCoord[3])
+y_curveEsferTheta = esferCoord[1] *sin.(theta_esfer)* sin.(esferCoord[3])
+z_curveEsferTheta = esferCoord[1] *cos.(theta_esfer)
+
+# Plot the θ curve on the figure
+lines!(ax2,x_curveEsferTheta, y_curveEsferTheta, z_curveEsferTheta, color = :purple)
+
+# Add label for the θ angle at the center of the curve
+θ_label_position_esfer = (1.1*esferCoord[1] * sin(esferCoord[2]/2) * cos(esferCoord[3]), 1.1*esferCoord[1] * sin(esferCoord[2]/2) * sin(esferCoord[3]), 1.1*esferCoord[1] * cos(esferCoord[2]/2) )
+text!(ax2, "θ", position = θ_label_position_esfer, color = :purple, fontsize = 20)
 
 # Create the legend and position it in the top-right corner
 legend2 = Legend(fig2[1, 2], ax2, title = "Legend", 
