@@ -309,6 +309,148 @@ md"""
  $(3,\frac{\pi}{2},\frac{\pi}{2})$, $(0,0,0)$, $(0,x,x)$
 """
 
+# ╔═╡ 74924ae4-d45f-4357-bd0d-050138adfdff
+md"""
+## Convertir vectores en cartesianas a cílindricas
+"""
+
+# ╔═╡ 28aebd53-0461-43e8-95d2-52e579c9c294
+md"""
+5. Convierta los siguientes vectores de coordenadas cartesianas a cílindricas:
+
+$\vec{A}=5\hat{a}_x-4\hat{a}_y+20\hat{a}_z$
+$\vec{B}=2\hat{a}_x+2\hat{a}_y+3000\hat{a}_z$
+$\vec{C}=y\hat{a}_x+(x+z)\hat{a}_y$
+
+Respuestas: 
+$\vec{A}= (5\cos(\phi)-4\sin(\phi))\hat{a}_\rho-(5\sin(\phi)+4\cos(\phi))\hat{a}_\phi+20\hat{a}_z$
+$\vec{B}= (\cos(\phi)+\sin(\phi))\hat{a}_\rho-(\cos(\phi)-\sin(\phi))\hat{a}_\phi+3000\hat{a}_z$
+$\vec{C}=[2\rho \sin(\phi)\cos(\phi)+z\sin(\phi)]\hat{a}_\rho + [-\rho \sin^2(\phi)+\rho \cos^2(\phi)+z\cos(\phi)]\hat{a}_\phi$
+"""
+
+# ╔═╡ efddf52f-f029-49f3-900c-b468042a8c8d
+md"""!!! success "📏 Transformaciones entre vectores:"
+	De cartesianas a cílindricas:
+
+	$\hat{a}_x =\cos(\phi) \hat{a}_\rho-\sin(\phi)\hat{a}_\phi$
+	$\hat{a}_y =\sin(\phi) \hat{a}_\rho+\cos(\phi)\hat{a}_\phi$
+	$\hat{a}_z=\hat{a}_z$
+
+	De vectores en coordenadas cilíndricas a cartesianas:
+
+	$\hat{a}_\rho =\cos(\phi) \hat{a}_x+\sin(\phi)\hat{a}_y+0\hat{a}_z$
+	$\hat{a}_\phi =-\sin(\phi) \hat{a}_x+\cos(\phi)\hat{a}_y+0\hat{a}_z$
+	$\hat{a}_z= \hat{a}_z$"
+"""
+
+# ╔═╡ 5eeba4af-f039-47f1-9f98-3c6b61d2b95b
+md"""
+## Convertir vectores en cartesianas a esféricas
+"""
+
+# ╔═╡ 108f6f66-4417-4389-94db-228a7640549f
+md"""
+6. Convierta el siguiente vector de coordenadas cartesianas a esféricas:
+
+$\vec{Q}=\frac{\sqrt{x^2+y^2}}{\sqrt{x^2+y^2+z^2}}\hat{a}_x-\frac{yz}{\sqrt{x^2+y^2+z^2}}\hat{a}_z$
+
+Respuesta: 
+
+$$\begin{align}
+\vec{Q}&=\sin(\theta)[\sin(\theta)\cos(\phi)-r\cos^2(\theta)\sin(\phi)]\hat{a}_r \\
+&+\sin(\theta)\cos(\theta)[\cos(\phi)+r\sin(\theta)\sin(\phi)]\hat{a}_\theta \\
+&-\sin(\theta)\sin(\phi)\hat{a}_\phi
+\end{align}$$
+
+"""
+
+# ╔═╡ b08b545a-beb0-4856-9ecc-1b91bb26778a
+md"""!!! success "📏 Transformaciones entre vectores: forma menos eficiente"
+
+	Se pueden utilizar las siguientes expresiones para pasar un vector de coordenadas esféricas a cartesianas:
+
+	$\hat{a}_r=\sin(\theta)\cos(\phi)\hat{a}_x + \sin(\theta)\sin(\phi)\hat{a}_y + \cos(\theta)\hat{a}_z$
+	$\hat{a}_\theta=\cos(\theta)\cos(\phi)\hat{a}_x + \cos(\theta)\sin(\phi)\hat{a}_y - \sin(\theta)\hat{a}_z$
+	$\hat{a}_\phi=-\sin(\phi)\hat{a}_x + \cos(\phi)\hat{a}_y$
+
+	y de cartesianas a esféricas:
+
+	$\hat{a}_x =\sin(\theta)\cos(\phi) \hat{a}_r+\cos(\theta)\cos(\phi)\hat{a}_\theta-\sin(\phi)\hat{a}_\phi$
+	$\hat{a}_y =\sin(\theta)\sin(\phi) \hat{a}_r+\cos(\theta)\sin(\phi)\hat{a}_\theta+\cos(\phi)\hat{a}_\phi$
+	$\hat{a}_z=\cos(\theta) \hat{a}_r-\sin(\theta)\hat{a}_\theta$
+
+	sin embargo hay formas más eficientes de transformar vectores como veremos enseguida.
+"""
+
+# ╔═╡ 963fc62d-83fc-4b09-b5d3-7bf131542d6e
+md"""
+## Matrices de transformación
+"""
+
+# ╔═╡ 07cc405e-000d-4e24-a50c-026a2a8361e4
+md"""
+7. Calcule los productos punto y encuentre la matriz de transformación
+
+$\begin{pmatrix}
+	A_r \\
+	A_\theta \\
+	A_\phi
+	\end{pmatrix}
+	=
+	\begin{pmatrix}
+	\hat{a}_r \cdot \hat{a}_x & \hat{a}_r \cdot \hat{a}_y & \hat{a}_r \cdot \hat{a}_z \\
+	\hat{a}_\theta \cdot \hat{a}_x & \hat{a}_\theta \cdot \hat{a}_y & \hat{a}_\theta \cdot \hat{a}_z \\
+	\hat{a}_\phi \cdot \hat{a}_x & \hat{a}_\phi \cdot \hat{a}_y & \hat{a}_\phi \cdot \hat{a}_z
+	\end{pmatrix}
+	\begin{pmatrix}
+	A_x \\
+	A_y \\
+	A_z
+	\end{pmatrix}$
+
+Una vez encontrada, usela para realizar el ejercicio anterior y compruebe el resultado.
+"""
+
+# ╔═╡ efef0dc2-2d69-4b12-9eb5-0ceb6f628111
+md"""!!! info "📚 Ejemplo: producto punto entre vectores ortonormales" 
+	Para calcular los productos puntos del ejercicio anterior, a manera de ejemplo se muestran $3$ formas de calcular el primer producto punto $\hat{a}_r \cdot \hat{a}_x$:
+
+	$\begin{align}
+	\hat{a}_r \cdot \hat{a}_x&=\left( \sin(\theta)\cos(\phi)\hat{a}_x + \sin(\theta)\sin(\phi)\hat{a}_y + \cos(\theta)\hat{a}_z \right)\cdot \hat{a}_x \\
+	&= \sin(\theta)\cos(\phi)\hat{a}_x \cdot \hat{a}_x + \sin(\theta)\sin(\phi)\hat{a}_y \cdot \hat{a}_x + \cos(\theta)\hat{a}_z \cdot \hat{a}_x \\
+	&=\sin(\theta)\cos(\phi) (1) + \sin(\theta)\sin(\phi) (0) + \cos(\theta) (0) \\
+	&=\sin(\theta)\cos(\phi)
+	\end{align}$
+
+	primero se hizo uso de $\hat{a}_r=\sin(\theta)\cos(\phi)\hat{a}_x + \sin(\theta)\sin(\phi)\hat{a}_y + \cos(\theta)\hat{a}_z$. Segundo se usaron las relaciones de ortonormalidad de los vectores unitarios de las coordenadas cartesianas, como $\hat{a}_x$ es un vector unitario $\hat{a}_x \cdot \hat{a}_x =1$ y como $\hat{a}_x$ es ortogonal a $\hat{a}_y$ y $\hat{a}_z$, su producto punto con esos dos vectores es igual a cero.
+
+	La segunda forma es la siguiente:
+
+	$\begin{align}
+	\hat{a}_r \cdot \hat{a}_x&=\hat{a}_r \cdot \left( \sin(\theta)\cos(\phi) \hat{a}_r+\cos(\theta)\cos(\phi)\hat{a}_\theta-\sin(\phi)\hat{a}_\phi  \right) \\
+	&=  \sin(\theta)\cos(\phi)\hat{a}_r \cdot \hat{a}_r + \cos(\theta)\cos(\phi)\hat{a}_r \cdot\hat{a}_\theta - \sin(\phi)\hat{a}_r \cdot\hat{a}_\phi\\
+	&= \sin(\theta)\cos(\phi)(1) + \cos(\theta)\cos(\phi)(0) - \sin(\phi)(0) \\
+	&=\sin(\theta)\cos(\phi)
+	\end{align}$
+
+	Como se puede observar el procedimiento es exactamente análogo al anterior, se reemplazó $\hat{a}_x$ por su representación en coordenadas esféricas y se usaron las relaciones de ortonormalidad de los vectores $\hat{a}_r$, $\hat{a}_\theta$ y $\hat{a}_\phi$.
+
+	La última forma es exactamente lo mismo que la primero solo que escribiendo los vectores como vectores columna:
+
+	$\hat{a}_r \cdot \hat{a}_x = \begin{pmatrix}
+	\sin(\theta)\cos(\phi) \\
+	\sin(\theta)\sin(\phi) \\
+	\cos(\theta)
+	\end{pmatrix}
+	\cdot
+	\begin{pmatrix}
+	1 \\
+	0 \\
+	0
+	\end{pmatrix}=\sin(\theta)\cos(\phi)$
+
+"""
+
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
@@ -1892,5 +2034,14 @@ version = "3.6.0+0"
 # ╟─b2a35e0d-febe-450f-959b-e88494553858
 # ╟─d22ff20e-fa21-4bbb-b2bf-78a057102af4
 # ╟─e2317d0f-b83c-4f6e-aacf-e2e892bf9fa7
+# ╟─74924ae4-d45f-4357-bd0d-050138adfdff
+# ╟─28aebd53-0461-43e8-95d2-52e579c9c294
+# ╟─efddf52f-f029-49f3-900c-b468042a8c8d
+# ╟─5eeba4af-f039-47f1-9f98-3c6b61d2b95b
+# ╟─108f6f66-4417-4389-94db-228a7640549f
+# ╟─b08b545a-beb0-4856-9ecc-1b91bb26778a
+# ╟─963fc62d-83fc-4b09-b5d3-7bf131542d6e
+# ╟─07cc405e-000d-4e24-a50c-026a2a8361e4
+# ╟─efef0dc2-2d69-4b12-9eb5-0ceb6f628111
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
