@@ -14,6 +14,8 @@ end
 begin
 	using CairoMakie
 	using GeometryBasics
+	using LinearAlgebra
+	using Statistics 
 end
 
 # ╔═╡ 4491e100-e4d6-11ef-2070-0de3361779e8
@@ -207,17 +209,193 @@ md"""
 ## Diferenciales de longitud en 3D
 """
 
+# ╔═╡ ffb3cd02-7e51-4414-88e7-4d11331f2b90
+begin
+	
+	# Create figure and 3D axis
+	fig4 = Figure()
+	ax4 = Axis3(fig4[1,1], title = "Diferenciales en coordenadas cartesianas",
+	           xlabel = "X", ylabel = "Y", zlabel = "Z", azimuth = 0.15*π)
+	
+	# Define the box (cuboid)
+	box4 = Rect3f(Vec3f(2, 2, 3), Vec3f(1, 1, 1))  # Box at (1,1,1) with size (2,2,2)
+	
+	# Draw the box
+	mesh!(ax4, box4, color = (:blue, 0.3))  # 50% transparent blue
+	
+	# **Set limits to fully include the box**
+	xlims!(ax4, -1, 4)
+	ylims!(ax4, -1, 4)
+	zlims!(ax4, -1, 4)
+
+	# Draw full axis lines with labels for the legend
+	lines!(ax4, [0, 2.5], [0, 0], [0, 0], color = :red, linewidth = 2)
+	lines!(ax4, [0, 0], [0, 2.5], [0, 0], color = :green, linewidth = 2)
+	lines!(ax4, [0, 0], [0, 0], [0, 2.5], color = :blue, linewidth = 2)
+
+	# Add text labels for the axes
+	text!(ax4, "X", position = (4, 0, 0), color = :red, fontsize = 20)
+	text!(ax4, "Y", position = (0, 3, 0), color = :green, fontsize = 20)
+	text!(ax4, "Z", position = (0, 0, 3), color = :blue, fontsize = 20)
+	
+	# Draw coordinate axes correctly
+	arrows!(ax4, [0, 0, 0], [0, 0, 0], [0, 0, 0], [2.5, 0, 0], 
+                     [0, 2.5, 0], [0, 0, 2.5], linewidth = 4, 
+                     color = [:red, :green, :blue], arrowsize = 0.1, 
+                     lengthscale = 1.0)
+
+	#Drawing the back cornes box in dashed black
+	lines!(ax4, [2,3], [2,2], [3,3], color=:black, linewidth=2, linestyle=:dash)
+	lines!(ax4, [2,2], [2,3], [3,3], color=:black, linewidth=2, linestyle=:dash)
+	lines!(ax4, [2,2], [2,2], [3,4], color=:black, linewidth=2, linestyle=:dash)
+	#Drawing the front cornes box in black
+	lines!(ax4, [2,3], [2,2], [4,4], color=:black, linewidth=2)
+	lines!(ax4, [3,3], [2,3], [3,3], color=:black, linewidth=2)
+	lines!(ax4, [3,3], [2,2], [3,4], color=:black, linewidth=2)
+	lines!(ax4, [2,3], [3,3], [4,4], color=:black, linewidth=2)
+	lines!(ax4, [3,3], [2,3], [4,4], color=:black, linewidth=2)
+	lines!(ax4, [3,3], [3,3], [3,4], color=:black, linewidth=2)
+	#draw references lines to identify the position of the box
+	lines!(ax4, [2,2], [2,2], [0,3], color=:black, linewidth=2)
+	lines!(ax4, [0,2], [2,2], [0,0], color=:black, linewidth=2)
+	lines!(ax4, [2,2], [0,2], [0,0], color=:black, linewidth=2)
+	#draw the cornes higlighted for dx, dy and dz labels
+	lines!(ax4, [2,3], [3,3], [3,3], color=:red, linewidth=2)
+	lines!(ax4, [2,2], [2,3], [4,4], color=:green, linewidth=2)
+	lines!(ax4, [2,2], [3,3], [3,4], color=:blue, linewidth=2)
+	
+
+	#Add dx, dy and dz labels
+	text!(ax4, "dx", position = (1.8, 2.7, 2), color = :red, fontsize = 20)
+	text!(ax4, "dy", position = (1.7, 2.2, 4), color = :green, fontsize = 20)
+	text!(ax4, "dz", position = (1.7, 3, 3), color = :blue, fontsize = 20)
+	
+	
+	# Show the figure
+	fig4
+	
+end
+
+# ╔═╡ 28e8b962-2fd9-4990-86ea-760af014b8e5
+md"""
+A continuación se pueden apreciar los diferenciales de área:
+"""
+
+# ╔═╡ 717c9fa1-d90c-4970-808e-dbdd9d387323
+begin
+	
+	# Create figure and 3D axis
+	fig5 = Figure()
+	ax5 = Axis3(fig5[1,1], title = "Diferenciales en coordenadas cartesianas",
+	           xlabel = "X", ylabel = "Y", zlabel = "Z", azimuth = 0.15*π)
+	
+	# Define the box (cuboid)
+	box5 = Rect3f(Vec3f(2, 2, 3), Vec3f(1, 1, 1))  # Box at (1,1,1) with size (2,2,2)
+	
+	# Draw the box
+	mesh!(ax5, box5, color = (:blue, 0.3))  # 30% transparent blue
+
+	# **Set limits to fully include the box**
+	xlims!(ax5, -1, 4)
+	ylims!(ax5, -1, 4)
+	zlims!(ax5, -1, 4)
+
+	# Draw full axis lines with labels for the legend
+	lines!(ax5, [0, 2.5], [0, 0], [0, 0], color = :red, linewidth = 2)
+	lines!(ax5, [0, 0], [0, 2.5], [0, 0], color = :green, linewidth = 2)
+	lines!(ax5, [0, 0], [0, 0], [0, 2.5], color = :blue, linewidth = 2)
+
+	# Add text labels for the axes
+	text!(ax5, "X", position = (4, 0, 0), color = :red, fontsize = 20)
+	text!(ax5, "Y", position = (0, 3, 0), color = :green, fontsize = 20)
+	text!(ax5, "Z", position = (0, 0, 3), color = :blue, fontsize = 20)
+	
+	# Draw coordinate axes correctly
+	arrows!(ax5, [0, 0, 0], [0, 0, 0], [0, 0, 0], [2.5, 0, 0], 
+                     [0, 2.5, 0], [0, 0, 2.5], linewidth = 4, 
+                     color = [:red, :green, :blue], arrowsize = 0.1, 
+                     lengthscale = 1.0)
+
+	#Drawing the back cornes box in dashed black
+	lines!(ax5, [2,3], [2,2], [3,3], color=:black, linewidth=2, linestyle=:dash)
+	lines!(ax5, [2,2], [2,3], [3,3], color=:black, linewidth=2, linestyle=:dash)
+	lines!(ax5, [2,2], [2,2], [3,4], color=:black, linewidth=2, linestyle=:dash)
+	#Drawing the front cornes box in black
+	lines!(ax5, [2,3], [2,2], [4,4], color=:black, linewidth=2)
+	lines!(ax5, [3,3], [2,3], [3,3], color=:black, linewidth=2)
+	lines!(ax5, [3,3], [2,2], [3,4], color=:black, linewidth=2)
+	lines!(ax5, [2,3], [3,3], [4,4], color=:black, linewidth=2)
+	lines!(ax5, [3,3], [2,3], [4,4], color=:black, linewidth=2)
+	lines!(ax5, [3,3], [3,3], [3,4], color=:black, linewidth=2)
+	#draw references lines to identify the position of the box
+	lines!(ax5, [2,2], [2,2], [0,3], color=:black, linewidth=2)
+	lines!(ax5, [0,2], [2,2], [0,0], color=:black, linewidth=2)
+	lines!(ax5, [2,2], [0,2], [0,0], color=:black, linewidth=2)
+	#draw the cornes higlighted for dx, dy and dz labels
+	lines!(ax5, [2,3], [3,3], [3,3], color=:red, linewidth=2)
+	lines!(ax5, [2,2], [2,3], [4,4], color=:green, linewidth=2)
+	lines!(ax5, [2,2], [3,3], [3,4], color=:blue, linewidth=2)
+	
+
+	#Add dx, dy and dz labels
+	text!(ax5, "dx", position = (1.8, 2.7, 2), color = :red, fontsize = 20)
+	text!(ax5, "dy", position = (1.7, 2.2, 4), color = :green, fontsize = 20)
+	text!(ax5, "dz", position = (1.7, 3, 3), color = :blue, fontsize = 20)
+	
+	################################################################################
+	#draw diferential surface x
+	vertices_x = decompose(Point3f, box5)
+	faces_x = GeometryBasics.faces(box5)
+
+	# Extract the face (for example, the front face)
+	highlight_face_x = faces_x[2]  # Select front face
+	highlight_vertices_x = [vertices_x[i] for i in highlight_face_x]  # Get face's corner points
+
+	highlight_faces_x = [1 2 3; 3 4 1]
+	# Draw the highlighted face in solid red
+	mesh!(ax5, highlight_vertices_x, highlight_faces_x, color = :black)
+
+	# Compute the normal vector to the face (using the first triangle of the face)
+	v1x = highlight_vertices_x[2] - highlight_vertices_x[1]
+	v2x = highlight_vertices_x[3] - highlight_vertices_x[1]
+	normalx = cross(v1x, v2x)  # Cross product of the vectors v1 and v2 gives the normal
+
+	# Normalize the normal vector
+	normalx = normalize(normalx)
+
+	# Compute the centroid of the face (average of the vertices)
+	centroidx = mean(highlight_vertices_x)
+
+	#fixed center position for visualization
+	centroidx = centroidx - Point3f(0,0.2,0.2)
+
+	# Draw the normal vector (starting from the centroid, scaling for visibility)
+	arrows!(ax5, [centroidx], [normalx * 0.5], color = :red, arrowsize = 0.05, lengthscale = 0.5)
+
+	#Add label
+	text!(ax5, "a_x", position = centroidx+Point3f(1,0.5,0), color = :red, fontsize = 16)
+
+	#################################################################################
+	
+	# Show the figure
+	fig5
+	
+end
+
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
 CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
 GeometryBasics = "5c1252a2-5f33-56bf-86c9-59e7332b4326"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
+Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 
 [compat]
 CairoMakie = "~0.13.1"
 GeometryBasics = "~0.5.1"
 PlutoUI = "~0.7.60"
+Statistics = "~1.11.1"
 """
 
 # ╔═╡ 00000000-0000-0000-0000-000000000002
@@ -226,7 +404,7 @@ PLUTO_MANIFEST_TOML_CONTENTS = """
 
 julia_version = "1.11.3"
 manifest_format = "2.0"
-project_hash = "45fdb95dc00e58654b07dee993906b14a37c1cef"
+project_hash = "f85b8053f5c3f1b22069108d4e471858c8d93d1a"
 
 [[deps.AbstractFFTs]]
 deps = ["LinearAlgebra"]
@@ -1778,5 +1956,8 @@ version = "3.6.0+0"
 # ╟─1e0799d5-2708-44bf-a554-b24007b8e248
 # ╟─0506b7e6-445b-40b1-b3a9-9b0693b07411
 # ╟─6effe90b-9268-48b8-9ca0-e86f038eadee
+# ╟─ffb3cd02-7e51-4414-88e7-4d11331f2b90
+# ╟─28e8b962-2fd9-4990-86ea-760af014b8e5
+# ╠═717c9fa1-d90c-4970-808e-dbdd9d387323
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
