@@ -212,7 +212,7 @@ Puede comprobar su respuesta usando el siguiente gráfico:
 """
 
 # ╔═╡ 82b552f1-a709-458b-b6bf-828b96b644fd
-# Create sliders for ρ, φ, z
+# Create sliders for r, θ, φ
 @bind esferCoord PlutoUI.combine() do Child
 	md""" r = $(Child( PlutoUI.Slider(0:0.5:7; default=7, show_value=true))),  θ = $(Child( PlutoUI.Slider(0:0.1:π ; default=1, show_value=true))), ϕ= $(Child( PlutoUI.Slider(0:0.1:2π; default=1.5, show_value=true)))"""
 
