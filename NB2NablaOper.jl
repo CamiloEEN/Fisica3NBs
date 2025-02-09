@@ -4,6 +4,18 @@
 using Markdown
 using InteractiveUtils
 
+# This Pluto notebook uses @bind for interactivity. When running this notebook outside of Pluto, the following 'mock version' of @bind gives bound variables a default value (instead of an error).
+macro bind(def, element)
+    #! format: off
+    quote
+        local iv = try Base.loaded_modules[Base.PkgId(Base.UUID("6e696c72-6542-2067-7265-42206c756150"), "AbstractPlutoDingetjes")].Bonds.initial_value catch; b -> missing; end
+        local el = $(esc(element))
+        global $(esc(def)) = Core.applicable(Base.get, el) ? Base.get(el) : iv(el)
+        el
+    end
+    #! format: on
+end
+
 # ╔═╡ 04607040-10f5-4d42-8464-511fd1cc5153
 begin
 	using PlutoUI
@@ -209,6 +221,11 @@ md"""
 ## Diferenciales de longitud en 3D
 """
 
+# ╔═╡ ff3de673-f6d2-4905-9aab-1eb7b8a80301
+md"""
+### Diferenciales en coordenadas cartesianas
+"""
+
 # ╔═╡ ffb3cd02-7e51-4414-88e7-4d11331f2b90
 begin
 	
@@ -286,7 +303,7 @@ begin
 	
 	# Create figure and 3D axis
 	fig5 = Figure()
-	ax5 = Axis3(fig5[1,1], title = "Diferenciales en coordenadas cartesianas",
+	ax5 = Axis3(fig5[1,1], title = L" \textbf{Diferencial de superficie $d\vec{S}=dydz \hat{a}_x$}",
 	           xlabel = "X", ylabel = "Y", zlabel = "Z", azimuth = 0.15*π)
 	
 	# Define the box (cuboid)
@@ -379,6 +396,468 @@ begin
 	
 	# Show the figure
 	fig5
+	
+end
+
+# ╔═╡ 7fd7f9e3-8812-43a1-8a7e-4f779c56c0ad
+begin
+	
+	# Create figure and 3D axis
+	fig6 = Figure()
+	ax6 = Axis3(fig6[1,1], title =  L" \textbf{Diferencial de superficie $d\vec{S}=dxdz \hat{a}_y$}",
+	           xlabel = "X", ylabel = "Y", zlabel = "Z", azimuth = 0.15*π)
+	
+	# Define the box (cuboid)
+	box6 = Rect3f(Vec3f(2, 2, 3), Vec3f(1, 1, 1))  # Box at (1,1,1) with size (2,2,2)
+	
+	# Draw the box
+	mesh!(ax6, box6, color = (:blue, 0.3))  # 30% transparent blue
+
+	# **Set limits to fully include the box**
+	xlims!(ax6, -1, 4)
+	ylims!(ax6, -1, 4)
+	zlims!(ax6, -1, 4)
+
+	# Draw full axis lines with labels for the legend
+	lines!(ax6, [0, 2.5], [0, 0], [0, 0], color = :red, linewidth = 2)
+	lines!(ax6, [0, 0], [0, 2.5], [0, 0], color = :green, linewidth = 2)
+	lines!(ax6, [0, 0], [0, 0], [0, 2.5], color = :blue, linewidth = 2)
+
+	# Add text labels for the axes
+	text!(ax6, "X", position = (4, 0, 0), color = :red, fontsize = 20)
+	text!(ax6, "Y", position = (0, 3, 0), color = :green, fontsize = 20)
+	text!(ax6, "Z", position = (0, 0, 3), color = :blue, fontsize = 20)
+	
+	# Draw coordinate axes correctly
+	arrows!(ax6, [0, 0, 0], [0, 0, 0], [0, 0, 0], [2.5, 0, 0], 
+                     [0, 2.5, 0], [0, 0, 2.5], linewidth = 4, 
+                     color = [:red, :green, :blue], arrowsize = 0.1, 
+                     lengthscale = 1.0)
+
+	#Drawing the back cornes box in dashed black
+	lines!(ax6, [2,3], [2,2], [3,3], color=:black, linewidth=2, linestyle=:dash)
+	lines!(ax6, [2,2], [2,3], [3,3], color=:black, linewidth=2, linestyle=:dash)
+	lines!(ax6, [2,2], [2,2], [3,4], color=:black, linewidth=2, linestyle=:dash)
+	#Drawing the front cornes box in black
+	lines!(ax6, [2,3], [2,2], [4,4], color=:black, linewidth=2)
+	lines!(ax6, [3,3], [2,3], [3,3], color=:black, linewidth=2)
+	lines!(ax6, [3,3], [2,2], [3,4], color=:black, linewidth=2)
+	lines!(ax6, [2,3], [3,3], [4,4], color=:black, linewidth=2)
+	lines!(ax6, [3,3], [2,3], [4,4], color=:black, linewidth=2)
+	lines!(ax6, [3,3], [3,3], [3,4], color=:black, linewidth=2)
+	#draw references lines to identify the position of the box
+	lines!(ax6, [2,2], [2,2], [0,3], color=:black, linewidth=2)
+	lines!(ax6, [0,2], [2,2], [0,0], color=:black, linewidth=2)
+	lines!(ax6, [2,2], [0,2], [0,0], color=:black, linewidth=2)
+	#draw the cornes higlighted for dx, dy and dz labels
+	lines!(ax6, [2,3], [3,3], [3,3], color=:red, linewidth=2)
+	lines!(ax6, [2,2], [2,3], [4,4], color=:green, linewidth=2)
+	lines!(ax6, [2,2], [3,3], [3,4], color=:blue, linewidth=2)
+	
+
+	#Add dx, dy and dz labels
+	text!(ax6, "dx", position = (1.8, 2.7, 2), color = :red, fontsize = 20)
+	text!(ax6, "dy", position = (1.7, 2.2, 4), color = :green, fontsize = 20)
+	text!(ax6, "dz", position = (1.7, 3, 3), color = :blue, fontsize = 20)
+	
+	################################################################################
+	#draw diferential surface x
+	vertices_y = decompose(Point3f, box6)
+	faces_y = GeometryBasics.faces(box6)
+
+	# Extract the face (for example, the front face)
+	highlight_face_y = faces_y[4]  # Select front face
+	highlight_vertices_y = [vertices_y[i] for i in highlight_face_y]  # Get face's corner points
+
+	highlight_faces_y = [1 2 3; 3 4 1]
+	# Draw the highlighted face in solid red
+	mesh!(ax6, highlight_vertices_y, highlight_faces_y, color = :black)
+
+	# Compute the normal vector to the face (using the first triangle of the face)
+	v1y = highlight_vertices_y[2] - highlight_vertices_y[1]
+	v2y = highlight_vertices_y[3] - highlight_vertices_y[1]
+	normaly = cross(v1y, v2y)  # Cross product of the vectors v1 and v2 gives the normal
+
+	# Normalize the normal vector
+	normaly = normalize(normaly)
+
+	# Compute the centroid of the face (average of the vertices)
+	centroidy = mean(highlight_vertices_y)
+
+	#fixed center position for visualization
+	centroidy = centroidy - Point3f(0.5,0.0,0.3)
+
+	# Draw the normal vector (starting from the centroid, scaling for visibility)
+	arrows!(ax6, [centroidy], [normaly * 0.5], color = :green, arrowsize = 0.05, lengthscale = 0.4)
+
+	#Add label
+	text!(ax6, L"\hat{a}_y", position = centroidy+Point3f(1,1,0), color = :green, fontsize = 20)
+
+	#################################################################################
+	
+	# Show the figure
+	fig6
+	
+end
+
+# ╔═╡ 4c54cd2b-9c92-4ffb-a96d-d74f11bc52ea
+begin
+	
+	# Create figure and 3D axis
+	fig7 = Figure()
+	ax7 = Axis3(fig7[1,1], title =  L" \textbf{Diferencial de superficie $d\vec{S}=dxdy \hat{a}_z$}",
+	           xlabel = "X", ylabel = "Y", zlabel = "Z", azimuth = 0.15*π)
+	
+	# Define the box (cuboid)
+	box7 = Rect3f(Vec3f(2, 2, 3), Vec3f(1, 1, 1))  # Box at (1,1,1) with size (2,2,2)
+	
+	# Draw the box
+	mesh!(ax7, box7, color = (:blue, 0.3))  # 30% transparent blue
+
+	# **Set limits to fully include the box**
+	xlims!(ax7, -1, 5)
+	ylims!(ax7, -1, 5)
+	zlims!(ax7, -1, 5)
+
+	# Draw full axis lines with labels for the legend
+	lines!(ax7, [0, 2.5], [0, 0], [0, 0], color = :red, linewidth = 2)
+	lines!(ax7, [0, 0], [0, 2.5], [0, 0], color = :green, linewidth = 2)
+	lines!(ax7, [0, 0], [0, 0], [0, 2.5], color = :blue, linewidth = 2)
+
+	# Add text labels for the axes
+	text!(ax7, "X", position = (4, 0, 0), color = :red, fontsize = 20)
+	text!(ax7, "Y", position = (0, 3, 0), color = :green, fontsize = 20)
+	text!(ax7, "Z", position = (0, 0, 3), color = :blue, fontsize = 20)
+	
+	# Draw coordinate axes correctly
+	arrows!(ax7, [0, 0, 0], [0, 0, 0], [0, 0, 0], [2.5, 0, 0], 
+                     [0, 2.5, 0], [0, 0, 2.5], linewidth = 4, 
+                     color = [:red, :green, :blue], arrowsize = 0.1, 
+                     lengthscale = 1.0)
+
+	#Drawing the back cornes box in dashed black
+	lines!(ax7, [2,3], [2,2], [3,3], color=:black, linewidth=2, linestyle=:dash)
+	lines!(ax7, [2,2], [2,3], [3,3], color=:black, linewidth=2, linestyle=:dash)
+	lines!(ax7, [2,2], [2,2], [3,4], color=:black, linewidth=2, linestyle=:dash)
+	#Drawing the front cornes box in black
+	lines!(ax7, [2,3], [2,2], [4,4], color=:black, linewidth=2)
+	lines!(ax7, [3,3], [2,3], [3,3], color=:black, linewidth=2)
+	lines!(ax7, [3,3], [2,2], [3,4], color=:black, linewidth=2)
+	lines!(ax7, [2,3], [3,3], [4,4], color=:black, linewidth=2)
+	lines!(ax7, [3,3], [2,3], [4,4], color=:black, linewidth=2)
+	lines!(ax7, [3,3], [3,3], [3,4], color=:black, linewidth=2)
+	#draw references lines to identify the position of the box
+	lines!(ax7, [2,2], [2,2], [0,3], color=:black, linewidth=2)
+	lines!(ax7, [0,2], [2,2], [0,0], color=:black, linewidth=2)
+	lines!(ax7, [2,2], [0,2], [0,0], color=:black, linewidth=2)
+	#draw the cornes higlighted for dx, dy and dz labels
+	lines!(ax7, [2,3], [3,3], [3,3], color=:red, linewidth=2)
+	lines!(ax7, [2,2], [2,3], [4,4], color=:green, linewidth=2)
+	lines!(ax7, [2,2], [3,3], [3,4], color=:blue, linewidth=2)
+	
+
+	#Add dx, dy and dz labels
+	text!(ax7, "dx", position = (1.8, 2.7, 2), color = :red, fontsize = 20)
+	text!(ax7, "dy", position = (1.7, 2.2, 4), color = :green, fontsize = 20)
+	text!(ax7, "dz", position = (1.7, 3, 3), color = :blue, fontsize = 20)
+	
+	################################################################################
+	#draw diferential surface x
+	vertices_z = decompose(Point3f, box7)
+	faces_z = GeometryBasics.faces(box7)
+
+	# Extract the face (for example, the front face)
+	highlight_face_z = faces_z[6]  # Select front face
+	highlight_vertices_z = [vertices_z[i] for i in highlight_face_z]  # Get face's corner points
+
+	highlight_faces_z = [1 2 3; 3 4 1]
+	# Draw the highlighted face in solid red
+	mesh!(ax7, highlight_vertices_z, highlight_faces_z, color = :black)
+
+	# Compute the normal vector to the face (using the first triangle of the face)
+	v1z = highlight_vertices_z[2] - highlight_vertices_z[1]
+	v2z = highlight_vertices_z[3] - highlight_vertices_z[1]
+	normalz = cross(v1z, v2z)  # Cross product of the vectors v1 and v2 gives the normal
+
+	# Normalize the normal vector
+	normalz = normalize(normalz)
+
+	# Compute the centroid of the face (average of the vertices)
+	centroidz = mean(highlight_vertices_z)
+
+	#fixed center position for visualization
+	centroidz = centroidz + Point3f(-0.2,-0.2,0.5)
+
+	# Draw the normal vector (starting from the centroid, scaling for visibility)
+	arrows!(ax7, [centroidz], [normalz * 0.5], color = :blue, arrowsize = 0.05, lengthscale = 0.4)
+
+	#Add label
+	text!(ax7, L"\hat{a}_z", position = centroidz+Point3f(0,-0.7,0.2), color = :blue, fontsize = 20)
+
+	#################################################################################
+	
+	# Show the figure
+	fig7
+	
+end
+
+# ╔═╡ b234396a-c1ff-48e4-8a03-30f5a89a21c0
+md"""
+El correspondiente diferencial de volumen es simplemente $dV=dxdydz$.
+"""
+
+# ╔═╡ 32c53067-982e-4cf1-b437-925f3cdaeaf6
+md"""
+### Diferenciales en coordenadas cilíndricas:
+"""
+
+# ╔═╡ ac32bdd0-18b5-4a2f-9423-efffef7aa355
+# Create sliders for ρ, φ, z
+@bind cilindCoord PlutoUI.combine() do Child
+	md""" ρ = $(Child( PlutoUI.Slider(0:4; default=2, show_value=true))),  ϕ = $(Child( PlutoUI.Slider(0:0.1:π/2 ; default=π/5, show_value=true))), z= $(Child( PlutoUI.Slider(0:4; default=1, show_value=true)))"""
+
+end
+
+# ╔═╡ a820de5c-01ac-4c10-90c4-c580bf021c18
+begin
+	# Define the differential volume element
+	dρ = 0.5
+	dϕ = π/7
+	dz_cylind = 2.0
+	
+	ρ0 = cilindCoord[1]     # Initial radius and thickness
+	ϕ0 = cilindCoord[2]    # Initial angle and small angular slice
+	z0_cylind = cilindCoord[3]    # Initial height and small vertical thickness
+	print("Aquí están las medidas del volumen diferencial")
+end
+
+# ╔═╡ ca1d58ae-3844-4830-a58d-1707fefe8b3d
+begin
+
+##################FUNCTION TO CREATE VERTICES AND FACES#######################
+function differential_volume_cylind(r0, dr, θ0, dθ, z0, dz)
+    # Define the eight corner vertices of the differential volume
+    vertices = [
+        (r0 * cos(θ0), r0 * sin(θ0), z0);          
+        ((r0 + dr) * cos(θ0), (r0 + dr) * sin(θ0), z0);  
+        ((r0 + dr) * cos(θ0 + dθ), (r0 + dr) * sin(θ0 + dθ), z0);  
+        (r0 * cos(θ0 + dθ), r0 * sin(θ0 + dθ), z0);  
+        
+        (r0 * cos(θ0), r0 * sin(θ0), z0 + dz);  
+        ((r0 + dr) * cos(θ0), (r0 + dr) * sin(θ0), z0 + dz);  
+        ((r0 + dr) * cos(θ0 + dθ), (r0 + dr) * sin(θ0 + dθ), z0 + dz);  
+        (r0 * cos(θ0 + dθ), r0 * sin(θ0 + dθ), z0 + dz)  
+    ]
+
+    # Convert to 3D points
+    vertices = [Point3f(p...) for p in vertices]
+
+    # Define faces using a matrix instead of tuples
+    faces = [
+        1 2 3; 3 4 1;  # Bottom face
+        5 6 7; 7 8 5;  # Top face
+        1 2 6; 6 5 1;  # Side face 1
+        2 3 7; 7 6 2;  # Side face 2
+        3 4 8; 8 7 3;  # Side face 3
+        4 1 5; 5 8 4   # Side face 4
+    ]
+
+    return vertices, faces
+end
+##################END OF FUNCTION TO CREATE VERTICES AND FACES#######################
+	
+# Set up a figure and 3D axis
+fig8 = Figure()
+ax8 = Axis3(fig8[1, 1], title = "Differential Volume in Cylindrical Coordinates",
+xlabel = "X", ylabel = "Y", zlabel = "Z", azimuth = 0.15*π)
+
+	# **Set limits to fully include the box**
+	xlims!(ax8, -1, 5)
+	ylims!(ax8, -1, 5)
+	zlims!(ax8, -1, 5)
+
+	# Draw full axis lines with labels for the legend
+	lines!(ax8, [0, 2.5], [0, 0], [0, 0], color = :red, linewidth = 2)
+	lines!(ax8, [0, 0], [0, 2.5], [0, 0], color = :green, linewidth = 2)
+	lines!(ax8, [0, 0], [0, 0], [0, 2.5], color = :blue, linewidth = 2)
+
+	# Add text labels for the axes
+	text!(ax8, "X", position = (4, 0, 0), color = :red, fontsize = 20)
+	text!(ax8, "Y", position = (0, 3, 0), color = :green, fontsize = 20)
+	text!(ax8, "Z", position = (0, 0, 3), color = :blue, fontsize = 20)
+	
+	# Draw coordinate axes correctly
+	arrows!(ax8, [0, 0, 0], [0, 0, 0], [0, 0, 0], [2.5, 0, 0], 
+                     [0, 2.5, 0], [0, 0, 2.5], linewidth = 4, 
+                     color = [:red, :green, :blue], arrowsize = 0.1, 
+                     lengthscale = 1.0)
+	
+vertices_cylind, faces_cylind = differential_volume_cylind(ρ0, dρ, ϕ0, dϕ, z0_cylind, dz_cylind)
+
+# Plot the differential volume
+mesh!(ax8, vertices_cylind, faces_cylind, color = (:blue, 0.3))
+
+########################ADD LINES FOR VISUALIZATION###########################
+
+####################For differential volume visualization#####################
+# draw point
+scatter!((ρ0+dρ)*cos(ϕ0), (ρ0+dρ)*sin(ϕ0), z0_cylind+ dz_cylind, color = :black )
+
+#draw internal dashed lines
+lines!(ax8, [ρ0*cos(ϕ0+dϕ),ρ0*cos(ϕ0+dϕ)],[ρ0*sin(ϕ0+dϕ),ρ0*sin(ϕ0+dϕ)],[z0_cylind,z0_cylind+dz_cylind],color = :black, linewidth = 2, linestyle= :dash )
+lines!(ax8, [ρ0*cos(ϕ0+dϕ),(ρ0+dρ)*cos(ϕ0+dϕ)],[ρ0*sin(ϕ0+dϕ),(ρ0+dρ)*sin(ϕ0+dϕ)],[z0_cylind,z0_cylind],color = :black, linewidth = 2, linestyle= :dash )
+
+ϕ_range_cylind_dashed = LinRange(ϕ0, ϕ0+ dϕ, 50)
+circle_bottom_cylind_x_dashed = (ρ0)*cos.(ϕ_range_cylind_dashed)
+circle_bottom_cylind_y_dashed = (ρ0)*sin.(ϕ_range_cylind_dashed)
+
+lines!(ax8, circle_bottom_cylind_x_dashed, circle_bottom_cylind_y_dashed, fill(z0_cylind,length(ϕ_range_cylind_dashed)), color = :black, linewidth = 2, linestyle= :dash)
+
+#draw radial distance dashed lines
+lines!(ax8, [0,(ρ0+dρ)*cos(ϕ0)],[0,(ρ0+dρ)*sin(ϕ0)],[z0_cylind+ dz_cylind,z0_cylind+ dz_cylind],color = :black, linewidth = 2, linestyle= :dash )
+lines!(ax8, [0,(ρ0+dρ)*cos(ϕ0+dϕ)],[0,(ρ0+dρ)*sin(ϕ0+dϕ)],[z0_cylind+ dz_cylind,z0_cylind+ dz_cylind],color = :black, linewidth = 2, linestyle= :dash )
+
+# draw bottom front curve ρdϕ
+lines!(ax8, (ρ0+dρ)*circle_bottom_cylind_x_dashed/ρ0, (ρ0+dρ)*circle_bottom_cylind_y_dashed/ρ0, fill(z0_cylind,length(ϕ_range_cylind_dashed)), color = :black, linewidth = 2)
+
+text!(ax8, L"ρdϕ", position = ((ρ0+dρ)*cos(ϕ0+dϕ/3), (ρ0+dρ)*sin(ϕ0+dϕ/3), z0_cylind-0.7), color = :black, fontsize = 20 )
+
+# draw vertical line dz
+lines!(ax8, [(ρ0+dρ)*cos(ϕ0+dϕ),(ρ0+dρ)*cos(ϕ0+dϕ)],[(ρ0+dρ)*sin(ϕ0+dϕ),(ρ0+dρ)*sin(ϕ0+dϕ)],[z0_cylind,z0_cylind+dz_cylind],color = :black, linewidth = 2)
+
+text!(ax8, L"dz", position =((ρ0+dρ)*cos(ϕ0+dϕ+0.05), (ρ0+dρ)*sin(ϕ0+dϕ+0.05),z0_cylind+dz_cylind/3 ), color = :black, fontsize = 20 )
+
+# draw radial line dρ
+lines!(ax8, [ρ0*cos(ϕ0+dϕ),(ρ0+dρ)*cos(ϕ0+dϕ)],[ρ0*sin(ϕ0+dϕ),(ρ0+dρ)*sin(ϕ0+dϕ)],[z0_cylind+dz_cylind,z0_cylind+dz_cylind],color = :black, linewidth = 2)
+
+text!(ax8, L"d\rho", position =((ρ0+dρ/3)*cos(ϕ0+dϕ), (ρ0+dρ/3)*sin(ϕ0+dϕ),z0_cylind+dz_cylind +0.2), color = :black, fontsize = 20 )
+
+#################For projection and perspective visualization##################
+#draw lines and curves indicating projections to the xy plane
+lines!(ax8, [(ρ0+dρ)*cos(ϕ0),(ρ0+dρ)*cos(ϕ0)], [(ρ0+dρ)*sin(ϕ0),(ρ0+dρ)*sin(ϕ0)]
+, [0,z0_cylind+ dz_cylind ], color = :black, linewidth = 2) # point to xy plane
+
+lines!(ax8, [0,(ρ0+dρ)*cos(ϕ0)], [0,(ρ0+dρ)*sin(ϕ0)]
+, [0,0 ], color = :black, linewidth = 2) #origin to point projection on xy plane
+
+# define and draw the bottom curve projection
+ϕ_range_cylind = LinRange(0, π/2, 50)
+circle_bottom_cylind_x = (ρ0+dρ)*cos.(ϕ_range_cylind)
+circle_bottom_cylind_y = (ρ0+dρ)*sin.(ϕ_range_cylind)
+
+lines!(ax8, circle_bottom_cylind_x, circle_bottom_cylind_y, zeros(length(ϕ_range_cylind)), color = :black)
+
+#draw the top curve
+lines!(ax8, circle_bottom_cylind_x, circle_bottom_cylind_y, fill(z0_cylind+ dz_cylind,length(ϕ_range_cylind)), color = :black)
+
+#vertical lines
+lines!(ax8, [(ρ0+dρ),(ρ0+dρ)], [0,0]
+, [0,z0_cylind+ dz_cylind ], color = :black, linewidth = 2)
+
+lines!(ax8, [0,0], [(ρ0+dρ),(ρ0+dρ)]
+, [0,z0_cylind+ dz_cylind ], color = :black, linewidth = 2)
+
+#parralel to xy plane lines
+lines!(ax8, [0,(ρ0+dρ)], [0,0]
+, [z0_cylind+ dz_cylind,z0_cylind+ dz_cylind ], color = :black, linewidth = 2)
+lines!(ax8, [0,0], [0,(ρ0+dρ)]
+, [z0_cylind+ dz_cylind,z0_cylind+ dz_cylind ], color = :black, linewidth = 2)
+################################################################################
+	
+# Show the figure
+fig8
+
+end
+
+# ╔═╡ 5bb62fda-8afe-4919-bd5c-d3a1201c6691
+md"""
+### Diferenciales en coordenadas esféricas:
+"""
+
+# ╔═╡ 2242c83d-0bf2-4b2f-a286-06a3180fb630
+# Create sliders for r, θ, φ
+@bind esferCoord PlutoUI.combine() do Child
+	md""" r = $(Child( PlutoUI.Slider(0:0.5:4; default=2, show_value=true))),  θ = $(Child( PlutoUI.Slider(0:0.1:π/2 ; default=π/4, show_value=true))), ϕ= $(Child( PlutoUI.Slider(0:0.1:π/2; default=0, show_value=true)))"""
+
+end
+
+# ╔═╡ 9eb1f2a6-15e9-4baf-ac5c-43dfc4107f66
+begin
+	# Define the differential volume element
+	dr = 0.5
+	dθ = π/12
+	dφ = π/6
+	r0 = esferCoord[1]      # Initial radius and thickness
+	θ0 = esferCoord[2]     # Initial angle and small angular slice
+	φ0 = esferCoord[3]    # Initial azimuthal angle and small slice
+end
+
+# ╔═╡ 3818be09-3bbe-4152-984c-6bd2ad4f1461
+begin
+	
+	function differential_volume_spherical(r0, dr, θ0, dθ, φ0, dφ)
+	    # Define the eight corner vertices of the differential volume
+	    vertices = [
+	        (r0 * sin(θ0) * cos(φ0), r0 * sin(θ0) * sin(φ0), r0 * cos(θ0));  # Bottom face: v1
+	        ((r0 + dr) * sin(θ0) * cos(φ0), (r0 + dr) * sin(θ0) * sin(φ0), (r0 + dr) * cos(θ0));  # Bottom face: v2
+	        ((r0 + dr) * sin(θ0 + dθ) * cos(φ0), (r0 + dr) * sin(θ0 + dθ) * sin(φ0), (r0 + dr) * cos(θ0 + dθ));  # Bottom face: v3
+	        (r0 * sin(θ0 + dθ) * cos(φ0), r0 * sin(θ0 + dθ) * sin(φ0), r0 * cos(θ0 + dθ));  # Bottom face: v4
+	        
+	        (r0 * sin(θ0) * cos(φ0 + dφ), r0 * sin(θ0) * sin(φ0 + dφ), r0 * cos(θ0));  # Top face: v5
+	        ((r0 + dr) * sin(θ0) * cos(φ0 + dφ), (r0 + dr) * sin(θ0) * sin(φ0 + dφ), (r0 + dr) * cos(θ0));  # Top face: v6
+	        ((r0 + dr) * sin(θ0 + dθ) * cos(φ0 + dφ), (r0 + dr) * sin(θ0 + dθ) * sin(φ0 + dφ), (r0 + dr) * cos(θ0 + dθ));  # Top face: v7
+	        (r0 * sin(θ0 + dθ) * cos(φ0 + dφ), r0 * sin(θ0 + dθ) * sin(φ0 + dφ), r0 * cos(θ0 + dθ))  # Top face: v8
+	    ]
+	    
+	    # Convert to 3D points (Point3f)
+	    vertices = [Point3f(p...) for p in vertices]
+	    
+	    # Define faces using a matrix
+	    faces = [
+	        1 2 3; 3 4 1;  # Bottom face
+	        5 6 7; 7 8 5;  # Top face
+	        1 2 6; 6 5 1;  # Side face 1
+	        2 3 7; 7 6 2;  # Side face 2
+	        3 4 8; 8 7 3;  # Side face 3
+	        4 1 5; 5 8 4   # Side face 4
+	    ]
+	    
+	    return vertices, faces
+	end
+	
+	# Set up a figure and 3D axis
+	fig = Figure()
+	ax = Axis3(fig[1, 1],  title = "Differential Volume in Spherical Coordinates",
+xlabel = "X", ylabel = "Y", zlabel = "Z", azimuth = 0.15*π)
+	
+	vertices, faces = differential_volume_spherical(r0, dr, θ0, dθ, φ0, dφ)
+	
+	# Plot the differential volume
+	mesh!(ax, vertices, faces, color=(:blue, 0.3))
+	
+	# **Set limits to fully include the box**
+	xlims!(ax, -1, 5)
+	ylims!(ax, -1, 5)
+	zlims!(ax, -1, 5)
+
+	# Draw full axis lines with labels for the legend
+	lines!(ax, [0, 2.5], [0, 0], [0, 0], color = :red, linewidth = 2)
+	lines!(ax, [0, 0], [0, 2.5], [0, 0], color = :green, linewidth = 2)
+	lines!(ax, [0, 0], [0, 0], [0, 2.5], color = :blue, linewidth = 2)
+
+	# Add text labels for the axes
+	text!(ax, "X", position = (4, 0, 0), color = :red, fontsize = 20)
+	text!(ax, "Y", position = (0, 3, 0), color = :green, fontsize = 20)
+	text!(ax, "Z", position = (0, 0, 3), color = :blue, fontsize = 20)
+	
+	# Draw coordinate axes correctly
+	arrows!(ax, [0, 0, 0], [0, 0, 0], [0, 0, 0], [2.5, 0, 0], 
+                     [0, 2.5, 0], [0, 0, 2.5], linewidth = 4, 
+                     color = [:red, :green, :blue], arrowsize = 0.1, 
+                     lengthscale = 1.0)
+	
+	# Show the figure
+	fig
 	
 end
 
@@ -1956,8 +2435,20 @@ version = "3.6.0+0"
 # ╟─1e0799d5-2708-44bf-a554-b24007b8e248
 # ╟─0506b7e6-445b-40b1-b3a9-9b0693b07411
 # ╟─6effe90b-9268-48b8-9ca0-e86f038eadee
+# ╟─ff3de673-f6d2-4905-9aab-1eb7b8a80301
 # ╟─ffb3cd02-7e51-4414-88e7-4d11331f2b90
 # ╟─28e8b962-2fd9-4990-86ea-760af014b8e5
 # ╟─717c9fa1-d90c-4970-808e-dbdd9d387323
+# ╟─7fd7f9e3-8812-43a1-8a7e-4f779c56c0ad
+# ╟─4c54cd2b-9c92-4ffb-a96d-d74f11bc52ea
+# ╟─b234396a-c1ff-48e4-8a03-30f5a89a21c0
+# ╟─32c53067-982e-4cf1-b437-925f3cdaeaf6
+# ╟─ac32bdd0-18b5-4a2f-9423-efffef7aa355
+# ╟─a820de5c-01ac-4c10-90c4-c580bf021c18
+# ╟─ca1d58ae-3844-4830-a58d-1707fefe8b3d
+# ╟─5bb62fda-8afe-4919-bd5c-d3a1201c6691
+# ╟─2242c83d-0bf2-4b2f-a286-06a3180fb630
+# ╠═9eb1f2a6-15e9-4baf-ac5c-43dfc4107f66
+# ╠═3818be09-3bbe-4152-984c-6bd2ad4f1461
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
