@@ -667,7 +667,7 @@ end
 	
 # Set up a figure and 3D axis
 fig8 = Figure()
-ax8 = Axis3(fig8[1, 1], title = "Differential Volume in Cylindrical Coordinates",
+ax8 = Axis3(fig8[1, 1], title = "Diferenciales en Coordenadas Cilíndricas",
 xlabel = "X", ylabel = "Y", zlabel = "Z", azimuth = 0.15*π)
 
 	# **Set limits to fully include the box**
@@ -768,6 +768,29 @@ fig8
 
 end
 
+# ╔═╡ 7f5fa0bc-4343-4a39-91f1-ebdaa6e3f61c
+md"""
+De manera similar se tienen los 3 diferenciales de superficie:
+
+$\begin{align}
+d\vec{S}&= (\rho d\phi) (dz) \hat{a}_\rho \\
+d\vec{S}&= (d\rho )(dz) \hat{a}_\phi \\
+d\vec{S}&= ( d\rho) (\rho d\phi) \hat{a}_z
+\end{align}$
+"""
+
+# ╔═╡ fd175a60-5e0d-4ec9-86dc-9da65f4511e7
+md"""
+Note que ignorando la parte vectorial, los diferenciales de superficie son productos entre diferenciales de longitud como en las coordenadas cartesianas, además, Los vectores unitarios son ortogonales a la superficie en questión como en el caso de coordenadas cartesianas.
+"""
+
+# ╔═╡ 28e68492-0984-40a4-b934-c672f4cdadef
+md"""
+Finalmente el diferencial de volumen se obtiene como:
+
+$dV= (d\rho)(\rho d\phi)(dz) = \rho d\rho d\phi dz$
+"""
+
 # ╔═╡ 5bb62fda-8afe-4919-bd5c-d3a1201c6691
 md"""
 ### Diferenciales en coordenadas esféricas:
@@ -826,7 +849,7 @@ begin
 	
 	# Set up a figure and 3D axis
 	fig = Figure()
-	ax = Axis3(fig[1, 1],  title = "Differential Volume in Spherical Coordinates",
+	ax = Axis3(fig[1, 1],  title = "Diferenciales en Coordenadas Esféricas",
 xlabel = "X", ylabel = "Y", zlabel = "Z", azimuth = 0.15*π)
 	
 	vertices, faces = differential_volume_spherical(r0, dr, θ0, dθ, φ0, dφ)
@@ -919,6 +942,34 @@ xlabel = "X", ylabel = "Y", zlabel = "Z", azimuth = 0.15*π)
 	fig
 	
 end
+
+# ╔═╡ a052a87b-937c-4db3-b62c-71e289750fde
+md"""
+__RECORDAR GRAFICAR LOS LABELS INDICANDO LOS DIFERENCIALES DE LONGITUD__
+"""
+
+# ╔═╡ d467aed8-237c-4b98-920f-523749cbfe1d
+md"""
+Los 3 diferenciales de superficie son:
+
+$\begin{align}
+d\vec{S}&= (r \sin(\theta) d\phi) (r d\theta) \hat{a}_r \\
+d\vec{S}&= (dr )(r \sin(\theta) d\phi) \hat{a}_\theta \\
+d\vec{S}&= (dr ) (r d\theta) \hat{a}_\phi
+\end{align}$
+"""
+
+# ╔═╡ 9c56ff63-f3f7-4d14-86f3-7f26eafff6d4
+md"""
+y el diferencial de volumen es:
+
+$dV= (dr )(r d\theta)(r \sin(\theta) d\phi) = r^2 \sin(\theta) dr d\theta d\phi$
+"""
+
+# ╔═╡ 467d9eee-a5fc-4866-ad31-3b6945b0decf
+md"""
+## Gradiente de un campo escalar $\vec{\nabla}$
+"""
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -2503,11 +2554,18 @@ version = "3.6.0+0"
 # ╟─b234396a-c1ff-48e4-8a03-30f5a89a21c0
 # ╟─32c53067-982e-4cf1-b437-925f3cdaeaf6
 # ╟─ac32bdd0-18b5-4a2f-9423-efffef7aa355
-# ╠═a820de5c-01ac-4c10-90c4-c580bf021c18
+# ╟─a820de5c-01ac-4c10-90c4-c580bf021c18
 # ╟─ca1d58ae-3844-4830-a58d-1707fefe8b3d
+# ╟─7f5fa0bc-4343-4a39-91f1-ebdaa6e3f61c
+# ╟─fd175a60-5e0d-4ec9-86dc-9da65f4511e7
+# ╟─28e68492-0984-40a4-b934-c672f4cdadef
 # ╟─5bb62fda-8afe-4919-bd5c-d3a1201c6691
 # ╟─2242c83d-0bf2-4b2f-a286-06a3180fb630
 # ╟─9eb1f2a6-15e9-4baf-ac5c-43dfc4107f66
 # ╟─3818be09-3bbe-4152-984c-6bd2ad4f1461
+# ╟─a052a87b-937c-4db3-b62c-71e289750fde
+# ╟─d467aed8-237c-4b98-920f-523749cbfe1d
+# ╟─9c56ff63-f3f7-4d14-86f3-7f26eafff6d4
+# ╟─467d9eee-a5fc-4866-ad31-3b6945b0decf
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
