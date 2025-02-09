@@ -373,7 +373,7 @@ begin
 	arrows!(ax5, [centroidx], [normalx * 0.5], color = :red, arrowsize = 0.05, lengthscale = 0.5)
 
 	#Add label
-	text!(ax5, "a_x", position = centroidx+Point3f(1,0.5,0), color = :red, fontsize = 16)
+	text!(ax5, L"\hat{a}_x", position = centroidx+Point3f(1,-0.27,0), color = :red, fontsize = 20)
 
 	#################################################################################
 	
@@ -1958,6 +1958,6 @@ version = "3.6.0+0"
 # ╟─6effe90b-9268-48b8-9ca0-e86f038eadee
 # ╟─ffb3cd02-7e51-4414-88e7-4d11331f2b90
 # ╟─28e8b962-2fd9-4990-86ea-760af014b8e5
-# ╠═717c9fa1-d90c-4970-808e-dbdd9d387323
+# ╟─717c9fa1-d90c-4970-808e-dbdd9d387323
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
