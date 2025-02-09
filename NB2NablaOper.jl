@@ -628,7 +628,6 @@ begin
 	ρ0 = cilindCoord[1]     # Initial radius and thickness
 	ϕ0 = cilindCoord[2]    # Initial angle and small angular slice
 	z0_cylind = cilindCoord[3]    # Initial height and small vertical thickness
-	print("Aquí están las medidas del volumen diferencial")
 end
 
 # ╔═╡ ca1d58ae-3844-4830-a58d-1707fefe8b3d
@@ -777,16 +776,16 @@ md"""
 # ╔═╡ 2242c83d-0bf2-4b2f-a286-06a3180fb630
 # Create sliders for r, θ, φ
 @bind esferCoord PlutoUI.combine() do Child
-	md""" r = $(Child( PlutoUI.Slider(0:0.5:4; default=2, show_value=true))),  θ = $(Child( PlutoUI.Slider(0:0.1:π/2 ; default=π/4, show_value=true))), ϕ= $(Child( PlutoUI.Slider(0:0.1:π/2; default=0, show_value=true)))"""
+	md""" r = $(Child( PlutoUI.Slider(0:0.5:4; default=2, show_value=true))),  θ = $(Child( PlutoUI.Slider(0:0.1:π/2 ; default=π/4, show_value=true))), ϕ= $(Child( PlutoUI.Slider(-π/2:0.1:π/2; default=0, show_value=true)))"""
 
 end
 
 # ╔═╡ 9eb1f2a6-15e9-4baf-ac5c-43dfc4107f66
 begin
 	# Define the differential volume element
-	dr = 0.5
+	dr = 1.5
 	dθ = π/12
-	dφ = π/6
+	dφ = π/7
 	r0 = esferCoord[1]      # Initial radius and thickness
 	θ0 = esferCoord[2]     # Initial angle and small angular slice
 	φ0 = esferCoord[3]    # Initial azimuthal angle and small slice
@@ -855,6 +854,66 @@ xlabel = "X", ylabel = "Y", zlabel = "Z", azimuth = 0.15*π)
                      [0, 2.5, 0], [0, 0, 2.5], linewidth = 4, 
                      color = [:red, :green, :blue], arrowsize = 0.1, 
                      lengthscale = 1.0)
+
+	#############Adding lines for visualization#######################
+	lines!(ax, [0, (r0+dr)*sin(θ0+dθ)*cos(φ0)],[0, (r0+dr)*sin(θ0+dθ)*sin(φ0)],[0,(r0+dr)*cos(θ0+dθ)], color = :black, linewidth = 2)
+
+	lines!(ax, [0, (r0+dr)*sin(θ0)*cos(φ0)],[0, (r0+dr)*sin(θ0)*sin(φ0)],[0,(r0+dr)*cos(θ0)], color = :black, linewidth = 2)
+
+	#lines!(ax, [0, (r0+dr)*sin(θ0+dθ)*cos(φ0+dφ)],[0, (r0+dr)*sin(θ0+dθ)*sin(φ0+dφ)],[0,(r0+dr)*cos(θ0+dθ)], color = :black, linewidth = 2)
+
+	#lines!(ax, [0, (r0+dr)*sin(θ0)*cos(φ0+dφ)],[0, (r0+dr)*sin(θ0)*sin(φ0+dφ)],[0,(r0+dr)*cos(θ0)], color = :black, linewidth = 2)
+
+	# draw dashed lines indicating diferent values of θ
+	#left curve
+	θ_range = LinRange(0, π/2, 50)
+	θ_circle_left_x = (r0+dr)*sin.(θ_range)*cos(φ0)
+	θ_circle_left_y = (r0+dr)*sin.(θ_range)*sin(φ0)
+	θ_circle_z = (r0+dr)*cos.(θ_range)
+
+	lines!(ax,θ_circle_left_x, θ_circle_left_y, θ_circle_z, color = :black, linewidth = 2, linestyle = :dash )
+	
+	#right curve
+	θ_circle_right_x = (r0+dr)*sin.(θ_range)*cos(φ0+dφ)
+	θ_circle_right_y = (r0+dr)*sin.(θ_range)*sin(φ0+dφ)
+	
+	lines!(ax,θ_circle_right_x, θ_circle_right_y, θ_circle_z, color = :black, linewidth = 2, linestyle = :dash )
+
+	# draw dashed lines indicating diferent values of φ
+	#Bottom dashed circle
+	φ_range = LinRange(0, π/2, 50)
+	φ_circle_bottom_x = (r0+dr)*sin(θ0+dθ)*cos.(φ_range)
+	φ_circle_bottom_y = (r0+dr)*sin(θ0+dθ)*sin.(φ_range)
+	φ_circle_bottom_z = fill( (r0+dr)*cos(θ0+dθ), length(φ_range))
+
+	lines!(ax, φ_circle_bottom_x, φ_circle_bottom_y, φ_circle_bottom_z, color = :black, linewidth = 2, linestyle = :dash)
+
+	#Top dashed circle
+	φ_circle_top_x = (r0+dr)*sin(θ0)*cos.(φ_range)
+	φ_circle_top_y = (r0+dr)*sin(θ0)*sin.(φ_range)
+	φ_circle_top_z = fill( (r0+dr)*cos(θ0), length(φ_range))
+
+	lines!(ax, φ_circle_top_x, φ_circle_top_y, φ_circle_top_z, color = :black, linewidth = 2, linestyle = :dash)
+
+	#Drawing lines indicating the limits of the portion of the sphere
+	#xz plane leftmost θ curve
+	θ_circle_leftmost_x = (r0+dr)*sin.(θ_range)
+	θ_circle_leftmost_y = fill( 0, length(φ_range))
+
+	lines!(ax,θ_circle_leftmost_x, θ_circle_leftmost_y, θ_circle_z, color = :black, linewidth = 2 )
+
+	#yz plane rightmost θ curve
+	θ_circle_rightmost_x = fill( 0, length(φ_range))
+	θ_circle_rightmost_y = (r0+dr)*sin.(θ_range)
+
+	lines!(ax,θ_circle_rightmost_x, θ_circle_rightmost_y, θ_circle_z, color = :black, linewidth = 2 )
+
+	#bottom φ curve
+	φ_circle_bottommost_x = (r0+dr)*cos.(φ_range)
+	φ_circle_bottommost_y = (r0+dr)*sin.(φ_range)
+	φ_circle_bottommost_z = fill( 0, length(φ_range))
+
+	lines!(ax, φ_circle_bottommost_x, φ_circle_bottommost_y, φ_circle_bottommost_z, color = :black, linewidth = 2)
 	
 	# Show the figure
 	fig
@@ -2444,11 +2503,11 @@ version = "3.6.0+0"
 # ╟─b234396a-c1ff-48e4-8a03-30f5a89a21c0
 # ╟─32c53067-982e-4cf1-b437-925f3cdaeaf6
 # ╟─ac32bdd0-18b5-4a2f-9423-efffef7aa355
-# ╟─a820de5c-01ac-4c10-90c4-c580bf021c18
+# ╠═a820de5c-01ac-4c10-90c4-c580bf021c18
 # ╟─ca1d58ae-3844-4830-a58d-1707fefe8b3d
 # ╟─5bb62fda-8afe-4919-bd5c-d3a1201c6691
 # ╟─2242c83d-0bf2-4b2f-a286-06a3180fb630
-# ╠═9eb1f2a6-15e9-4baf-ac5c-43dfc4107f66
-# ╠═3818be09-3bbe-4152-984c-6bd2ad4f1461
+# ╟─9eb1f2a6-15e9-4baf-ac5c-43dfc4107f66
+# ╟─3818be09-3bbe-4152-984c-6bd2ad4f1461
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
