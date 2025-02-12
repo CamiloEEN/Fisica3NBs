@@ -937,7 +937,12 @@ xlabel = "X", ylabel = "Y", zlabel = "Z", azimuth = 0.15*π)
 	φ_circle_bottommost_z = fill( 0, length(φ_range))
 
 	lines!(ax, φ_circle_bottommost_x, φ_circle_bottommost_y, φ_circle_bottommost_z, color = :black, linewidth = 2)
+
+	#Labels indicating the curves
+	text!(ax, L"r\sin(\theta) d \phi", position = ((r0+dr)*sin(θ0+dθ)*cos(φ0+0.02), (r0+dr)*sin(θ0+dθ)*sin(φ0+0.02),(r0+dr)*cos(θ0+dθ+0.22)), color = :black, fontsize = 20 )
 	
+	text!(ax, L"rd\theta", position = ((r0+dr)*sin(θ0+dθ/3)*cos(φ0+dφ), (r0+dr)*sin(θ0+dθ/3)*sin(φ0+dφ),(r0+dr)*cos(θ0+dθ/2)), color = :black, fontsize = 20 )
+
 	# Show the figure
 	fig
 	
@@ -2562,7 +2567,7 @@ version = "3.6.0+0"
 # ╟─5bb62fda-8afe-4919-bd5c-d3a1201c6691
 # ╟─2242c83d-0bf2-4b2f-a286-06a3180fb630
 # ╟─9eb1f2a6-15e9-4baf-ac5c-43dfc4107f66
-# ╟─3818be09-3bbe-4152-984c-6bd2ad4f1461
+# ╠═3818be09-3bbe-4152-984c-6bd2ad4f1461
 # ╟─a052a87b-937c-4db3-b62c-71e289750fde
 # ╟─d467aed8-237c-4b98-920f-523749cbfe1d
 # ╟─9c56ff63-f3f7-4d14-86f3-7f26eafff6d4
