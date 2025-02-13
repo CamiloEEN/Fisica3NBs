@@ -293,6 +293,14 @@ begin
 	
 end
 
+# ╔═╡ 9d08a61e-bf7e-4e71-b0f0-b0a422fbe6e8
+md"""
+De manera general un diferencial de longitud en coordenadas cartesianas queda expresado como:
+
+$d\vec{l}=dx\hat{a}_x+ dy\hat{a}_y+ dz\hat{a}_z$
+
+"""
+
 # ╔═╡ 28e8b962-2fd9-4990-86ea-760af014b8e5
 md"""
 A continuación se pueden apreciar los diferenciales de área:
@@ -768,9 +776,17 @@ fig8
 
 end
 
+# ╔═╡ d250da1e-6b2c-48fc-be8b-573678683efe
+md"""
+De manera general un diferencial de longitud en coordenadas cílindricas queda expresado como:
+
+$d\vec{l}=d\rho \hat{a}_\rho+ \rho d\phi \hat{a}_\phi+ dz\hat{a}_z$
+
+"""
+
 # ╔═╡ 7f5fa0bc-4343-4a39-91f1-ebdaa6e3f61c
 md"""
-De manera similar se tienen los 3 diferenciales de superficie:
+De manera similar a las coordenadas cartesianas se tienen los 3 diferenciales de superficie:
 
 $\begin{align}
 d\vec{S}&= (\rho d\phi) (dz) \hat{a}_\rho \\
@@ -953,6 +969,14 @@ md"""
 __RECORDAR GRAFICAR LOS LABELS INDICANDO LOS DIFERENCIALES DE LONGITUD__
 """
 
+# ╔═╡ 7877bc9d-c3fd-4570-a54c-6f632efbe90e
+md"""
+De manera general un diferencial de longitud en coordenadas cílindricas queda expresado como:
+
+$d\vec{l}=dr \hat{a}_r+ r d\theta \hat{a}_\theta+ r\sin(\theta)d\phi \hat{a}_\phi$
+
+"""
+
 # ╔═╡ d467aed8-237c-4b98-920f-523749cbfe1d
 md"""
 Los 3 diferenciales de superficie son:
@@ -971,9 +995,275 @@ y el diferencial de volumen es:
 $dV= (dr )(r d\theta)(r \sin(\theta) d\phi) = r^2 \sin(\theta) dr d\theta d\phi$
 """
 
+# ╔═╡ ac56c583-a1f1-4f00-83de-6b867b0d5d63
+md"""!!! info "📚 Sobre los diferenciales de superficie:" 
+
+	Note que todo diferencial de superficie $d\vec{S}$ se puede expresar como $d\vec{S}= dS \hat{a}_n$, donde $\hat{a}_n$ es un vector unitario normal a la superficie $dS$.
+
+"""
+
 # ╔═╡ 467d9eee-a5fc-4866-ad31-3b6945b0decf
 md"""
-## Gradiente de un campo escalar $\vec{\nabla}$
+## Operador Nabla $\nabla$
+"""
+
+# ╔═╡ ffe21721-9fde-460f-8e33-c2a48a05f6fb
+md"""
+El operador $\nabla$ (Nabla) es un operador diferencial del vector:
+
+$\vec{\nabla} = \frac{\partial}{\partial x} \hat{a}_x + \frac{\partial}{\partial y} \hat{a}_y + \frac{\partial}{\partial z} \hat{a}_z$
+"""
+
+# ╔═╡ f36752f3-727e-4e65-9fa8-59861020e197
+md"""
+Este operador también es llamado operador gradiente. No es un vector por si solo, solo tiene sentido si actúa u opera sobre un campo escalar (también llamada función escalar), por ejemplo:
+
+sea $\vec{\nabla} ψ$ un campo escalar, su gradiente está dado por 
+
+$\vec{\nabla} ψ= \frac{\partial ψ}{\partial x} \hat{a}_x + \frac{\partial ψ}{\partial y} \hat{a}_y + \frac{\partial ψ}{\partial z} \hat{a}_z$
+
+o
+
+$\vec{\nabla} ψ= 
+\begin{pmatrix} 
+\frac{\partial ψ}{\partial x} \\
+\frac{\partial ψ}{\partial y} \\
+ \frac{\partial ψ}{\partial z}
+\end{pmatrix}$
+"""
+
+# ╔═╡ 28256a37-5f08-4c18-8255-daeaff8b6d54
+md"""!!! info "📚 Notación:" 
+	El operador $\vec{\nabla}$ es el gradiente, mientras $\nabla$ es Nabla. En el libro de Sadiku escriben únicamente $\nabla$, sin embargo, la notación preferida por su profesor incluye la flecha de vector encima de nabla. Escribir $\vec{\nabla}$ en varias formulas permite deducir el tipo de resultado de las siguientes operaciones:
+
+	1. Gradiente de un campo escalar $ψ$ se escribe $\vec{\nabla} ψ$. El resultado es un campo vectorial.
+	2. La divergencia de un campo vectorial $\vec{A}$ se escribe $\vec{\nabla} \cdot \vec{A}$. El resultado es un campo escalar (como si fuese un producto punto).
+	3. El rotacional de un campo vectorial $\vec{A}$ se ecribe $\vec{\nabla} \times \vec{A}$. El resultado es otro campo vectorial (como si fuese un producto cruz).
+	4. El laplaciano de un campo escalar  $ψ$ se escribe $\nabla^2 ψ$. El resultado es un campo escalar.
+
+	Estas operaciones se verán más adelante.
+"""
+
+# ╔═╡ dcf572ac-b920-44b9-9e95-aba0939a3021
+md"""
+### Gradiente en coordenadas cilíndricas
+"""
+
+# ╔═╡ f68b8fd1-264a-4101-b43a-ab729fdec67b
+md"""
+Suponga que se desea obtener el gradiente en coordendas cílindricas $(\rho, \phi, z)$. Recordemos que:
+"""
+
+# ╔═╡ 3d5c4094-4aa2-48fe-b576-3c8ff983a52c
+md"""!!! success "📏 Transformaciones entre puntos:"
+
+	$x=\rho \cos(\phi) \qquad \qquad \qquad \rho^2=x^2+y^2$
+	$y=\rho \sin(\phi) \qquad \qquad \qquad \tan(\phi)=\frac{y}{x}$
+	$z=z \qquad \qquad \qquad z=z$
+"""
+
+# ╔═╡ 4db4f92f-f6ec-49e0-bccb-a1e96e427b53
+md"""
+Si $ψ(\rho, \phi, z)$ es un campo escalar en coordenadas cilíndricas, entonces:
+
+$\frac{\partial ψ}{\partial x} = \frac{\partial \rho}{\partial x}\frac{\partial ψ}{\partial \rho} + \frac{\partial \phi}{\partial x}\frac{\partial ψ}{\partial \phi} + \frac{\partial z}{\partial x}\frac{\partial ψ}{\partial z}$
+
+Note que se ha utilizado la regla de la cadena y cabe recordar que las coordenadas $x$ y $z$ son completamente independientes entre si por lo tanto:
+
+$\frac{\partial z}{\partial x} = 0$
+
+y tenemos solamente
+
+$\frac{\partial ψ}{\partial x} = \frac{\partial \rho}{\partial x}\frac{\partial ψ}{\partial \rho} + \frac{\partial \phi}{\partial x}\frac{\partial ψ}{\partial \phi}$
+
+"""
+
+# ╔═╡ 4a0c96bd-ba00-48c6-b36f-931b9381a3eb
+md"""
+No se puede decir lo mismo de $\rho$ con $x$ o  $\phi$ con $x$, pues ambas están relacionadas con la coordenada $x$ como $\rho^2=x^2+y^2$ y $\tan(\phi)=\frac{y}{x}$ respectivamente. De hecho con la primera obtenemos que:
+
+$\begin{align}
+\frac{\partial \rho}{\partial x} &= \frac{1}{\cancel{2}}\frac{1}{\sqrt{x^2+y^2}}\cancel{2}x = \frac{\cancel{\rho} \cos(\phi)}{\cancel{\rho}} = \cos(\phi) \\
+\frac{\partial \rho}{\partial x} &= \cos(\phi)
+\end{align}$
+"""
+
+# ╔═╡ f96396fe-72b2-4d5f-b966-822da85d921c
+md"""
+La derivada parcial de $\phi$ con respecto a $x$ se obtiene más facilmente derivando implícitamente $\tan(\phi)=\frac{y}{x}$:
+
+$\sec^2(\phi) \frac{\partial \phi}{\partial x} = -\frac{y}{x^2} \implies \frac{\partial \phi}{\partial x} = -\frac{y \cos^2(\phi)}{x^2}$
+"""
+
+# ╔═╡ c637f6aa-4065-4238-b43b-640c973340b4
+md"""
+Reemplazando $x$ y $y$ por su expresión en términos de $\rho$ y $\phi$:
+
+$\frac{\partial \phi}{\partial x} = -\frac{\rho \sin(\phi) \cos^2(\phi)}{(\rho \cos(\phi))^2}= - \frac{\sin(\phi)}{\rho}$
+"""
+
+# ╔═╡ d63c2f88-b0cd-4bf2-a446-7609483397dc
+md"""
+Por lo tanto:
+
+$\frac{\partial ψ}{\partial x} = \cos(\phi)\frac{\partial ψ}{\partial \rho} - \frac{\sin(\phi)}{\rho}\frac{\partial ψ}{\partial \phi}$
+"""
+
+# ╔═╡ 377d636c-5c37-41d3-9a51-05e2f87926ac
+md"""
+Un procedimiento análogo permite obtener:
+
+$\begin{align}
+\frac{\partial ψ}{\partial y} &= \frac{\partial \rho}{\partial y}\frac{\partial ψ}{\partial \rho} + \frac{\partial \phi}{\partial y}\frac{\partial ψ}{\partial \phi} \\
+\frac{\partial ψ}{\partial y} &= \sin(\phi)\frac{\partial ψ}{\partial \rho} + \frac{\cos(\phi)}{\rho}\frac{\partial ψ}{\partial \phi}
+\end{align}$
+"""
+
+# ╔═╡ 85087c4a-f656-4a20-af9f-6132067a8393
+md"""
+De manera general se tiene que:
+
+$\begin{align}
+\frac{\partial }{\partial x} &= \cos(\phi)\frac{\partial }{\partial \rho} - \frac{\sin(\phi)}{\rho}\frac{\partial }{\partial \phi} \\
+\frac{\partial }{\partial y} &= \sin(\phi)\frac{\partial }{\partial \rho} + \frac{\cos(\phi)}{\rho}\frac{\partial }{\partial \phi}
+\end{align}$
+"""
+
+# ╔═╡ d320a6fa-0720-4cd3-8b0a-47b79f30bc84
+md"""
+Por lo que si se desea obtener el gradiente de $ψ$ en coordenadas cilíndricas:
+
+$\begin{align}
+\vec{\nabla} ψ &= \frac{\partial ψ}{\partial x} \hat{a}_x + \frac{\partial ψ}{\partial y} \hat{a}_y + \frac{\partial ψ}{\partial z} \hat{a}_z \\
+\vec{\nabla} ψ &= \left( \cos(\phi)\frac{\partial ψ}{\partial \rho} - \frac{\sin(\phi)}{\rho}\frac{\partial ψ}{\partial \phi} \right) \hat{a}_x 
++ \left(  \sin(\phi)\frac{\partial ψ}{\partial \rho} + \frac{\cos(\phi)}{\rho}\frac{\partial ψ}{\partial \phi} \right) \hat{a}_y + \frac{\partial ψ}{\partial z} \hat{a}_z
+\end{align}$
+"""
+
+# ╔═╡ 27605a7e-5da8-4962-a31a-0b7d98ca35f5
+md"""
+El último paso consiste en transformar el vector de coordenadas cartesianas a cilíndricas, esto se puede realizar recordando que:
+
+$\hat{a}_x =\cos(\phi) \hat{a}_\rho-\sin(\phi)\hat{a}_\phi$
+$\hat{a}_y =\sin(\phi) \hat{a}_\rho+\cos(\phi)\hat{a}_\phi$
+"""
+
+# ╔═╡ 0a72baba-20e3-458c-b44e-515f324aa685
+md"""
+Por lo tanto
+
+$\begin{align}
+\vec{\nabla} ψ &= \left( \cos(\phi)\frac{\partial ψ}{\partial \rho} - \frac{\sin(\phi)}{\rho}\frac{\partial ψ}{\partial \phi} \right) \hat{a}_x 
++ \left(  \sin(\phi)\frac{\partial ψ}{\partial \rho} + \frac{\cos(\phi)}{\rho}\frac{\partial ψ}{\partial \phi} \right) \hat{a}_y + \frac{\partial ψ}{\partial z} \hat{a}_z \\
+\vec{\nabla} ψ &= \left( \cos(\phi)\frac{\partial ψ}{\partial \rho} - \frac{\sin(\phi)}{\rho}\frac{\partial ψ}{\partial \phi} \right) 
+\left[ \cos(\phi) \hat{a}_\rho-\sin(\phi)\hat{a}_\phi \right] \\
+&+ \left(  \sin(\phi)\frac{\partial ψ}{\partial \rho} + \frac{\cos(\phi)}{\rho}\frac{\partial ψ}{\partial \phi} \right) 
+\left[ \sin(\phi) \hat{a}_\rho+\cos(\phi)\hat{a}_\phi \right] \\
+&+ \frac{\partial ψ}{\partial z} \hat{a}_z \\
+\end{align}$
+
+"""
+
+# ╔═╡ 0c0210b7-72a1-45cd-88c3-1fb6fdaa8712
+md"""
+Simplificando se obtiene:
+
+$\vec{\nabla} ψ = \frac{\partial ψ}{\partial \rho} \hat{a}_\rho 
++ \frac{1}{\rho} \frac{\partial ψ}{\partial \phi} \hat{a}_\phi + \frac{\partial ψ}{\partial z} \hat{a}_z$
+
+"""
+
+# ╔═╡ 2e884d00-0bbc-4b40-a797-0b67a3e43d07
+md"""
+### Gradiente en coordenadas esféricas
+"""
+
+# ╔═╡ 302cc3d5-8016-4187-af10-0b00132723e3
+md"""!!! danger "🏠 Tarea:"
+	Demuestre que el gradiente de un campo escalar $ψ$ en coordenadas esféricas es:
+
+	$\vec{\nabla} ψ = \frac{\partial ψ}{\partial r} \hat{a}_r
+	+ \frac{1}{r} \frac{\partial ψ}{\partial \theta} \hat{a}_\theta + \frac{1}{r \sin(\theta)}\frac{\partial ψ}{\partial \phi} \hat{a}_\phi$
+
+"""
+
+# ╔═╡ 3f16e477-c508-487b-8c03-65960be69001
+md"""
+### Divergencia y rotacional
+"""
+
+# ╔═╡ cc145c58-e4ad-4b03-9dda-0bbae0a4c1a8
+md"""
+En el curso de cálculo los estudiantes tendrán la oportunidad de ver más en detalle estas operaciones. Se deja un resumen de ellas para futuras consultas.
+"""
+
+# ╔═╡ c20cc05b-8151-459d-8331-70cce256422a
+md"""!!! success "📏 Gradiente, divergencia y rotacional en coordenadas cartesianas:"
+
+	$\nabla f =  \frac{\partial f}{\partial x}\hat{a}_x + \frac{\partial f}{\partial y}\hat{a}_y + \frac{\partial f}{\partial z}\hat{a}_z$
+
+	$\nabla \cdot \mathbf{F} = \frac{\partial F_x}{\partial x} + \frac{\partial F_y}{\partial y} + \frac{\partial F_z}{\partial z}$
+
+	$\nabla \times \mathbf{F} =
+	\begin{vmatrix}
+	\hat{a}_x & \hat{a}_y & \hat{a}_z \\
+	\frac{\partial}{\partial x} & \frac{\partial}{\partial y} & \frac{\partial}{\partial z} \\
+	F_x & F_y & F_z
+	\end{vmatrix}$
+
+	$\nabla^2 f = \frac{\partial^2 f}{\partial x^2} + \frac{\partial^2 f}{\partial y^2} + \frac{\partial^2 f}{\partial z^2}$
+"""
+
+# ╔═╡ f966bcad-2d50-4b4b-917d-59e34c96c43f
+md"""!!! success "📏 Gradiente, divergencia y rotacional en coordenadas cilíndricas:"
+
+	$\nabla f =
+	\frac{\partial f}{\partial \rho} \hat{a}_\rho +
+	\frac{1}{\rho} \frac{\partial f}{\partial \phi} \hat{a}_\phi +
+	\frac{\partial f}{\partial z} \hat{a}_z$
+
+	$\nabla \cdot \mathbf{F} =
+	\frac{1}{\rho} \frac{\partial}{\partial \rho} (\rho F_\rho) +
+	\frac{1}{\rho} \frac{\partial F_\phi}{\partial \phi} +
+	\frac{\partial F_z}{\partial z}$
+
+	$\nabla \times \mathbf{F} =
+	\begin{vmatrix}
+	\hat{a}_\rho & \hat{a}_\phi & \hat{a}_z \\
+	\frac{\partial}{\partial \rho} & \frac{1}{\rho} \frac{\partial}{\partial \phi} & \frac{\partial}{\partial z} \\
+	F_\rho & F_\phi & F_z
+	\end{vmatrix}$
+
+	$\nabla^2 f =
+	\frac{1}{\rho} \frac{\partial}{\partial \rho} \left( \rho \frac{\partial f}{\partial \rho} \right) +
+	\frac{1}{\rho^2} \frac{\partial^2 f}{\partial \phi^2} +
+	\frac{\partial^2 f}{\partial z^2}$
+"""
+
+# ╔═╡ 2e71bf99-213f-4cc7-837e-a01aa216278f
+md"""!!! success "📏 Gradiente, divergencia y rotacional en coordenadas esféricas:"
+
+	$\nabla f =
+	\frac{\partial f}{\partial r} \hat{a}_r +
+	\frac{1}{r} \frac{\partial f}{\partial \theta} \hat{a}_\theta +
+	\frac{1}{r \sin\theta} \frac{\partial f}{\partial \phi} \hat{a}_\phi$
+
+	$\nabla \cdot \mathbf{F} =
+	\frac{1}{r^2} \frac{\partial}{\partial r} (r^2 F_r) +
+	\frac{1}{r \sin\theta} \frac{\partial}{\partial \theta} (\sin\theta F_\theta) +
+	\frac{1}{r \sin\theta} \frac{\partial F_\phi}{\partial \phi}$
+
+	$\nabla \times \mathbf{F} =
+	\begin{vmatrix}
+	\hat{a}_r & \hat{a}_\theta & \hat{a}_\phi \\
+	\frac{\partial}{\partial r} & \frac{1}{r} \frac{\partial}{\partial \theta} & \frac{1}{r \sin\theta} \frac{\partial}{\partial \phi} \\
+	F_r & F_\theta & F_\phi
+	\end{vmatrix}$
+
+	$\nabla^2 f =
+	\frac{1}{r^2} \frac{\partial}{\partial r} \left( r^2 \frac{\partial f}{\partial r} \right) +
+	\frac{1}{r^2 \sin\theta} \frac{\partial}{\partial \theta} \left( \sin\theta \frac{\partial f}{\partial \theta} \right) +
+	\frac{1}{r^2 \sin^2\theta} \frac{\partial^2 f}{\partial \phi^2}$
 """
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
@@ -2552,6 +2842,7 @@ version = "3.6.0+0"
 # ╟─6effe90b-9268-48b8-9ca0-e86f038eadee
 # ╟─ff3de673-f6d2-4905-9aab-1eb7b8a80301
 # ╟─ffb3cd02-7e51-4414-88e7-4d11331f2b90
+# ╟─9d08a61e-bf7e-4e71-b0f0-b0a422fbe6e8
 # ╟─28e8b962-2fd9-4990-86ea-760af014b8e5
 # ╟─717c9fa1-d90c-4970-808e-dbdd9d387323
 # ╟─7fd7f9e3-8812-43a1-8a7e-4f779c56c0ad
@@ -2561,16 +2852,43 @@ version = "3.6.0+0"
 # ╟─ac32bdd0-18b5-4a2f-9423-efffef7aa355
 # ╟─a820de5c-01ac-4c10-90c4-c580bf021c18
 # ╟─ca1d58ae-3844-4830-a58d-1707fefe8b3d
+# ╟─d250da1e-6b2c-48fc-be8b-573678683efe
 # ╟─7f5fa0bc-4343-4a39-91f1-ebdaa6e3f61c
 # ╟─fd175a60-5e0d-4ec9-86dc-9da65f4511e7
 # ╟─28e68492-0984-40a4-b934-c672f4cdadef
 # ╟─5bb62fda-8afe-4919-bd5c-d3a1201c6691
 # ╟─2242c83d-0bf2-4b2f-a286-06a3180fb630
 # ╟─9eb1f2a6-15e9-4baf-ac5c-43dfc4107f66
-# ╠═3818be09-3bbe-4152-984c-6bd2ad4f1461
+# ╟─3818be09-3bbe-4152-984c-6bd2ad4f1461
 # ╟─a052a87b-937c-4db3-b62c-71e289750fde
+# ╟─7877bc9d-c3fd-4570-a54c-6f632efbe90e
 # ╟─d467aed8-237c-4b98-920f-523749cbfe1d
 # ╟─9c56ff63-f3f7-4d14-86f3-7f26eafff6d4
+# ╟─ac56c583-a1f1-4f00-83de-6b867b0d5d63
 # ╟─467d9eee-a5fc-4866-ad31-3b6945b0decf
+# ╟─ffe21721-9fde-460f-8e33-c2a48a05f6fb
+# ╟─f36752f3-727e-4e65-9fa8-59861020e197
+# ╟─28256a37-5f08-4c18-8255-daeaff8b6d54
+# ╟─dcf572ac-b920-44b9-9e95-aba0939a3021
+# ╟─f68b8fd1-264a-4101-b43a-ab729fdec67b
+# ╟─3d5c4094-4aa2-48fe-b576-3c8ff983a52c
+# ╟─4db4f92f-f6ec-49e0-bccb-a1e96e427b53
+# ╟─4a0c96bd-ba00-48c6-b36f-931b9381a3eb
+# ╟─f96396fe-72b2-4d5f-b966-822da85d921c
+# ╟─c637f6aa-4065-4238-b43b-640c973340b4
+# ╟─d63c2f88-b0cd-4bf2-a446-7609483397dc
+# ╟─377d636c-5c37-41d3-9a51-05e2f87926ac
+# ╟─85087c4a-f656-4a20-af9f-6132067a8393
+# ╟─d320a6fa-0720-4cd3-8b0a-47b79f30bc84
+# ╟─27605a7e-5da8-4962-a31a-0b7d98ca35f5
+# ╟─0a72baba-20e3-458c-b44e-515f324aa685
+# ╟─0c0210b7-72a1-45cd-88c3-1fb6fdaa8712
+# ╟─2e884d00-0bbc-4b40-a797-0b67a3e43d07
+# ╟─302cc3d5-8016-4187-af10-0b00132723e3
+# ╟─3f16e477-c508-487b-8c03-65960be69001
+# ╟─cc145c58-e4ad-4b03-9dda-0bbae0a4c1a8
+# ╟─c20cc05b-8151-459d-8331-70cce256422a
+# ╟─f966bcad-2d50-4b4b-917d-59e34c96c43f
+# ╟─2e71bf99-213f-4cc7-837e-a01aa216278f
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
