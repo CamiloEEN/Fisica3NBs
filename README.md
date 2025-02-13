@@ -21,6 +21,13 @@ Este es un proyecto **personal** y actualmente **está en progreso**. Se seguir�
 
 ---
 
+### ⚠️ Advertencia  
+Estas notas no pretenden sustituir un libro de texto. La notación utilizada sigue la del libro *Elementos de Electromagnetismo* de Sadiku, que es el libro guía del curso.  
+
+Para un lector con bases más sólidas en cálculo y que desee profundizar en electromagnetismo, recomiendo *Modern Electrodynamics* de Zangwill.  
+
+Estas notas están diseñadas como material de apoyo interactivo utilizando notebooks de **Pluto.jl**.
+
 ### Estructura del Repositorio
 
 - **Notebooks de Pluto**: En esta carpeta se encuentran los notebooks con las notas interactivas.
