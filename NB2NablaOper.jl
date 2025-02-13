@@ -114,7 +114,7 @@ Para esta sección es muy importante tener en cuenta que la longitud de arco $S$
 
 # ╔═╡ 7dbd4736-c117-40d4-9284-5f3402066a75
 md"""
-## Elementos de longitud
+## Diferenciales de longitud 2D
 """
 
 # ╔═╡ 1e0799d5-2708-44bf-a554-b24007b8e248
