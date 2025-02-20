@@ -29,7 +29,7 @@ Antes de empezar con la ley de Coulomb es bueno reforzar algunos conceptos de ca
 
 # ╔═╡ 260483bc-9075-464b-8170-609e4a90f961
 md"""!!! info "📑 Definición: Campos escalares"
-	Un campo escalar es una función que recibe dos o más variables y devuelve como resultado un número. Un ejemplo de ello puede ser la temperatura $T(x,y,z)$ que recibe un punto en el espacio y le asigna un valor que en este caso es la temperatura en ese punto.
+	Un campo escalar es una función que recibe __dos o más variables__ y devuelve como resultado __un número__. Un ejemplo de ello puede ser la temperatura $T(x,y,z)$ que recibe un punto en el espacio y le asigna un valor que en este caso es la temperatura en ese punto.
 
 	En este curso todos los campos escalares que usaremos solo dependenderán de dos o tres variables (en particular esta última), por lo que vamos a limitarnos con el siguiente tipo de funciones:
 
@@ -42,7 +42,7 @@ md"""!!! info "📑 Definición: Campos escalares"
 
 # ╔═╡ e4a4ed42-1dec-43df-891a-89b882713203
 md"""!!! info "📑 Definición: Campos vectoriales"
-	Un campo vectorial es simplemente vector donde cada una de sus componentes son funciones de varias variables. Este vector recibe dos o más variables y devuelve como resultado otro vector. Un ejemplo de ello puede es el campo eléctrico que se verá más adelante $\vec{E}(x,y,z)$ que recibe un punto en el espacio y le asigna un vector que indica la dirección del campo en dicho punto y la norma del vector su magnitud.
+	Un campo vectorial es simplemente vector donde cada una de sus componentes son funciones de varias variables. Este vector recibe __dos o más variables__ y devuelve como resultado otro __vector__. Un ejemplo de ello puede es el campo eléctrico que se verá más adelante $\vec{E}(x,y,z)$ que recibe un punto en el espacio y le asigna un vector que indica la dirección del campo en dicho punto y la norma del vector su magnitud.
 
 	En este curso todos los campos vectoriales que usaremos solo dependenderán de dos o tres variables (en particular esta última), por lo que vamos a limitarnos con el siguiente tipo de funciones:
 
@@ -113,9 +113,47 @@ begin
 	fig2
 end
 
+# ╔═╡ d8d2103a-ad94-4196-8a41-b91edfbe67fb
+md"""!!! info "📌 Nota"
+	En este curso los campos vectoriales más utilizados son el campo eléctrico $\vec{E}$ y el campo magnético $\vec{H}$.
+"""
+
 # ╔═╡ 9ed5b1e4-4b00-48a6-a7ad-58bd5943a70c
 md"""
 # Ley de Coulomb
+"""
+
+# ╔═╡ fa09883c-0321-4bb6-8ff4-bf3b2f595953
+md"""
+La ley de Coulomb es una ley experimental y debe su nombre al coronel francés Charles Augustin de Coulomb (1785).
+"""
+
+# ╔═╡ 46d2fea1-af4c-4319-bca4-564e0228f264
+md"""!!! info "📑 Ley de Coulomb"
+	La Ley de Coulomb establece que la fuerza F entre dos cargas puntuales $Q_1$ y $Q_2$ es:
+	1. De dirección igual a la línea que las une.
+	2. Directamente proporcional al producto $Q_1Q_2$ de las cargas.
+	3. Inversamente proporcional al cuadrado de la distancia $R$ entre ellas.
+
+	Expresado matemáticamente en magnitud:
+
+	$F = K \frac{Q_1Q_2}{R^2}$
+
+	donde $K=9\times10^9 \frac{Nm^2}{C^2}$ es la constante de proporcionalidad. Además note que: las cargas se miden en coulombios $(C)$, las distancias en metros $(m)$ y la fuerza en Newtons $(N)$.
+"""
+
+# ╔═╡ e6e4c403-4fac-4968-a54a-449d714469c7
+md"""
+Si las cargas puntuales $Q_1$ y $Q_2$ se localizan en puntos con vectores posición $\vec{r}_1$ y $\vec{r}_2$, entonces la fuerza $\vec{F}_{12}$ que ejerce $Q_1$ sobre $Q_2$ está dada por
+
+$\vec{F}_{12} = K \frac{Q_1Q_2}{R^2} \hat{a}_{12}$
+
+donde $\vec{R}_{12}=\vec{r}_2 - \vec{r}_1$,  $R^2=||\vec{R}_{12}||^2$ y $\hat{a}_{12} = \frac{\vec{R}_{12}}{||\vec{R}_{12}||}$.
+"""
+
+# ╔═╡ a03c00dd-0fcd-4582-9c3a-a4026f39319d
+md"""
+Si las dos cargas poseen el mismo signo la fuerza entre ellas se puede ver representada mejor en la siguiente imagen:
 """
 
 # ╔═╡ ab05f6f2-284a-48cc-af74-6639c4cb9366
@@ -170,6 +208,68 @@ text!(ax3, L"Q_2", position=(r2[1]+0.1,r2[2]), align=(:center, :center), fontsiz
 # Display figure
 fig3
 end
+
+# ╔═╡ 43fd7248-489e-4061-aa36-49e212f1b68e
+html"""
+<h2 style="color:black" >Observaciones 👀</h2>
+"""
+
+# ╔═╡ c75c8a21-a3c3-472c-b6cd-881c0636bd49
+md"""
+1. La fuerza ejercida por $Q_2$ sobre $Q_1$ es $\vec{F}_{21}=-\vec{F}_{12}$, por lo que $\vec{R}_{12}=-\vec{R}_{21}$.
+2. Las cargas iguales se repelen y las cargas distintas se atraen:
+
+$\leftarrow 🔴 \quad 🔴 \rightarrow \qquad \leftarrow 🔵 \quad 🔵 \rightarrow \qquad 🔴\rightarrow \leftarrow 🔵$
+
+3. La distancia $R$ entre los cuerpos $Q_2$ y $Q_1$ debe ser grande en comparación con las dimensiones de los cuerpos (deben ser lo más "puntuales" posibles).
+
+4.  $Q_2$ y $Q_1$ deben ser estáticas (hallarse en reposo).
+
+5. Los signos de $Q_2$ y $Q_1$ deben tenerse encuenta en la ecuación $\vec{F}_{12} = K \frac{Q_1Q_2}{R^2} \hat{a}_{12}$ pues estos determinan si la fuerza es atractiva o repulsiva.
+"""
+
+# ╔═╡ 9a666d60-c75a-4205-aeba-a8efa8eea94a
+html"""
+<h2 style="color:black" >Principio de superposición 🔍 </h2>
+"""
+
+# ╔═╡ 0ff238e5-e152-4b24-9ff4-c880836e467b
+md"""
+Si se tienen más de dos cargas puntuales, por ejemplo, $Q_1,Q_2,...,Q_i,...,Q_N$ con vectores posición $\vec{r}_1,\vec{r}_2,...,\vec{r}_i,...,\vec{r}_N$, la fuerza resultante sobre la carga $Q_i$ es:
+
+$\vec{F}_i= \vec{F}_{1i} + \vec{F}_{2i} + ... + \vec{F}_{Ni}$
+$\vec{F}_i=   kQ_1Q_i \frac{(\vec{r}_i-\vec{r}_1)}{||\vec{r}_i-\vec{r}_1||^3}
+			+ kQ_2Q_i \frac{(\vec{r}_i-\vec{r}_2)}{||\vec{r}_i-\vec{r}_2||^3}
+			+ ...
+			+ kQ_NQ_i \frac{(\vec{r}_i-\vec{r}_N)}{||\vec{r}_i-\vec{r}_N||^3}$
+
+o simplemente:
+
+$\vec{F}_i= \sum_{\substack{n=1 \\ n \neq i}}^{N} kQ_nQ_i \frac{(\vec{r}_i-\vec{r}_n)}{||\vec{r}_i-\vec{r}_n||^3}$
+"""
+
+# ╔═╡ 0a38bc03-f266-42f0-b77e-d9d32469f465
+md"""!!! danger "Error común 🚫"
+	__¿Por que $||\vec{r}_i-\vec{r}_1||^3$ y no $||\vec{r}_i-\vec{r}_1||^2$?__
+	Muchos se confunden en esta parte, note que:
+
+	$\frac{(\vec{r}_i-\vec{r}_1)}{||\vec{r}_i-\vec{r}_1||^3} = 
+	\frac{1}{||\vec{r}_i-\vec{r}_1||^2}\frac{(\vec{r}_i-\vec{r}_1)}{||\vec{r}_i-\vec{r}_1||}$
+
+	donde
+
+	$\frac{(\vec{r}_i-\vec{r}_1)}{||\vec{r}_i-\vec{r}_1||} = \hat{a}_{1i}$
+
+	es el vector unitario que indica la dirección de la fuerza.
+"""
+
+# ╔═╡ 1d1190b1-d040-4794-8e89-508104fb57b0
+html"""
+<h2 style="color:black" >Ejemplo 🎯</h2>
+"""
+
+# ╔═╡ 35ce60ff-000a-40b4-abe0-944372393a59
+
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -1741,7 +1841,19 @@ version = "3.6.0+0"
 # ╟─e4a4ed42-1dec-43df-891a-89b882713203
 # ╟─9641d4ea-3c6b-44e3-8a08-f7335d162853
 # ╟─431edfcc-7303-4b04-9e81-803088a526d3
+# ╟─d8d2103a-ad94-4196-8a41-b91edfbe67fb
 # ╟─9ed5b1e4-4b00-48a6-a7ad-58bd5943a70c
+# ╟─fa09883c-0321-4bb6-8ff4-bf3b2f595953
+# ╟─46d2fea1-af4c-4319-bca4-564e0228f264
+# ╟─e6e4c403-4fac-4968-a54a-449d714469c7
+# ╟─a03c00dd-0fcd-4582-9c3a-a4026f39319d
 # ╟─ab05f6f2-284a-48cc-af74-6639c4cb9366
+# ╟─43fd7248-489e-4061-aa36-49e212f1b68e
+# ╟─c75c8a21-a3c3-472c-b6cd-881c0636bd49
+# ╟─9a666d60-c75a-4205-aeba-a8efa8eea94a
+# ╟─0ff238e5-e152-4b24-9ff4-c880836e467b
+# ╟─0a38bc03-f266-42f0-b77e-d9d32469f465
+# ╟─1d1190b1-d040-4794-8e89-508104fb57b0
+# ╠═35ce60ff-000a-40b4-abe0-944372393a59
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
