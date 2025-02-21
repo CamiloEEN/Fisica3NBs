@@ -17,6 +17,34 @@ begin
 	using CairoMakie
 end
 
+# ╔═╡ 93874cfd-0052-480f-b4e9-173e635b5688
+begin
+	#using LinearAlgebra ya se está usando en el notebook, ver primeras celdas
+	using Unitful
+	
+	# PARTE 1: ASIGNAR NOMBRES A LAS VARIABLES
+	#
+	K = 9 * (10^9) * u"N*m^2/C^2"
+	# Definiendo las cargas eléctricas
+	Q₁= 1u"mC"
+	Q₂= -2u"mC"
+	Q₃=10u"nC"
+	
+	# Definiendo los respectivos vectores
+	r₁ = [3, 2, -1]*1u"m"
+	r₂ = [-1, -1, 4]*1u"m"
+	r₃ = [0, 3, 1]*1u"m"
+	
+	# PARTE 2: IDENTIFICAR LA FUERZA A CALCULAR
+	# F₃ = F₁₃ + F₂₃
+	
+	F₃ = K*Q₁*Q₃*(r₃-r₁)/(norm(r₃-r₁)^3) + K*Q₂*Q₃*(r₃-r₂)/(norm(r₃-r₂)^3)
+	
+	print("F3x = ",upreferred(F₃[1]),"\n")
+	print("F3y = ",upreferred(F₃[2]),"\n")
+	print("F3z = ",upreferred(F₃[3]),"\n")
+end
+
 # ╔═╡ 9701b260-ee06-11ef-0158-791bf05c310c
 md"""
 # Campos escalares y vectoriales
@@ -238,14 +266,14 @@ md"""
 Si se tienen más de dos cargas puntuales, por ejemplo, $Q_1,Q_2,...,Q_i,...,Q_N$ con vectores posición $\vec{r}_1,\vec{r}_2,...,\vec{r}_i,...,\vec{r}_N$, la fuerza resultante sobre la carga $Q_i$ es:
 
 $\vec{F}_i= \vec{F}_{1i} + \vec{F}_{2i} + ... + \vec{F}_{Ni}$
-$\vec{F}_i=   kQ_1Q_i \frac{(\vec{r}_i-\vec{r}_1)}{||\vec{r}_i-\vec{r}_1||^3}
-			+ kQ_2Q_i \frac{(\vec{r}_i-\vec{r}_2)}{||\vec{r}_i-\vec{r}_2||^3}
+$\vec{F}_i=   KQ_1Q_i \frac{(\vec{r}_i-\vec{r}_1)}{||\vec{r}_i-\vec{r}_1||^3}
+			+ KQ_2Q_i \frac{(\vec{r}_i-\vec{r}_2)}{||\vec{r}_i-\vec{r}_2||^3}
 			+ ...
-			+ kQ_NQ_i \frac{(\vec{r}_i-\vec{r}_N)}{||\vec{r}_i-\vec{r}_N||^3}$
+			+ KQ_NQ_i \frac{(\vec{r}_i-\vec{r}_N)}{||\vec{r}_i-\vec{r}_N||^3}$
 
 o simplemente:
 
-$\vec{F}_i= \sum_{\substack{n=1 \\ n \neq i}}^{N} kQ_nQ_i \frac{(\vec{r}_i-\vec{r}_n)}{||\vec{r}_i-\vec{r}_n||^3}$
+$\vec{F}_i= \sum_{\substack{n=1 \\ n \neq i}}^{N} KQ_nQ_i \frac{(\vec{r}_i-\vec{r}_n)}{||\vec{r}_i-\vec{r}_n||^3}$
 """
 
 # ╔═╡ 0a38bc03-f266-42f0-b77e-d9d32469f465
@@ -269,7 +297,188 @@ html"""
 """
 
 # ╔═╡ 35ce60ff-000a-40b4-abe0-944372393a59
+md"""
+Cargas puntuales de $1mC$ y $-2mC$ se localizan en $(3, 2, -1)$ y $(-1, -1, 4)$ respectivamente. Calcule la fuerza eléctrica sobre una carga de $10nC$ localizada en $(0, 3, 1)$.
+"""
 
+# ╔═╡ efc87d86-396d-4efa-9b34-3d7c71b73921
+md"""
+### _Paso 1: Asignar nombres a las variables_
+"""
+
+# ╔═╡ dd78d4bd-b104-4c07-a268-8889e3d616ad
+md"""
+$Q_1 = 1 mC, \quad Q_2 = -2 mC, \quad Q_3 = 10 nC$
+
+$\vec{r}_1 = \begin{pmatrix} 3m \\ 2m \\ -1m  \end{pmatrix} , \quad 
+\vec{r}_2 = \begin{pmatrix} -1m \\ -1m \\ 4m  \end{pmatrix} , \quad 
+\vec{r}_3 = \begin{pmatrix} 0m \\ 3m \\ 1m  \end{pmatrix}$
+"""
+
+# ╔═╡ 4e73de52-b6c3-4d98-96b0-05d764a084fe
+md"""
+### _Paso 2: Identificar la fuerza a calcular_
+"""
+
+# ╔═╡ c10d3a9e-fa3b-42b7-abbe-9a6782d093b1
+md"""
+Como se desea encontrar la fuerza sobre la carga $Q_3$, de acuerdo con el principio de superposición tenemos:
+
+$\vec{F}_3= \vec{F}_{13} + \vec{F}_{23}$
+
+$\vec{F}_3=   kQ_1Q_3 \frac{(\vec{r}_3-\vec{r}_1)}{||\vec{r}_3-\vec{r}_1||^3}
+			+ kQ_2Q_3 \frac{(\vec{r}_3-\vec{r}_2)}{||\vec{r}_3-\vec{r}_2||^3}$
+"""
+
+# ╔═╡ 0b8a0c92-0fe8-4e80-9bdc-862841f9fa66
+md"""
+### _Paso 3: Calcular diferencia de vectores y normas_
+"""
+
+# ╔═╡ 16b42635-5d81-401b-8636-6d0b2bcb9050
+md"""
+$\vec{r}_3-\vec{r}_1 = \begin{pmatrix} 0m \\ 3m \\ 1m  \end{pmatrix}
+                     - \begin{pmatrix} 3m \\ 2m \\ -1m  \end{pmatrix}
+                     = \begin{pmatrix} -3m \\ 1m \\ 2m  \end{pmatrix}$
+
+$||\vec{r}_3-\vec{r}_1||= \sqrt{ (-3m)^2 + (1m)^2 + (2m)^2 } = \sqrt{ 14 }m$
+"""
+
+# ╔═╡ eadcec7d-fc8e-4a96-be09-a3178ab279b0
+md"""
+$\vec{r}_3-\vec{r}_2 = \begin{pmatrix} 0m \\ 3m \\ 1m  \end{pmatrix}
+                     - \begin{pmatrix} -1m \\ -1m \\ 4m  \end{pmatrix}
+                     = \begin{pmatrix} 1m \\ 4m \\ -3m  \end{pmatrix}$
+
+$||\vec{r}_3-\vec{r}_2||= \sqrt{ (1m)^2 + (4m)^2 + (-3m)^2 } = \sqrt{ 26 }m$
+"""
+
+# ╔═╡ c4a0cbad-42fb-4bcd-83e6-86a29ceb31c8
+md"""
+### _Paso 4: Reemplazar valores en la fuerza a calcular_
+"""
+
+# ╔═╡ 7889e219-8577-4f30-b5c7-343cadf7b0e9
+md"""
+$\vec{F}_3=   KQ_1Q_3 \frac{(\vec{r}_3-\vec{r}_1)}{||\vec{r}_3-\vec{r}_1||^3}
+			+ KQ_2Q_3 \frac{(\vec{r}_3-\vec{r}_2)}{||\vec{r}_3-\vec{r}_2||^3}$
+
+$\vec{F}_3= KQ_3 \left[  
+            \frac{Q_1}{(\sqrt{ 14 }m)^3} \begin{pmatrix} -3m \\ 1m \\ 2m  \end{pmatrix}
+          + \frac{Q_2}{(\sqrt{ 26 }m)^3} \begin{pmatrix} 1m \\ 4m \\ -3m  \end{pmatrix}
+             \right]$
+
+$\vec{F}_3= 9\times 10^{9} \frac{Nm^2}{C^2} 10 \times 10^{-9} C  \left[  
+            \frac{1 \times 10^{-3}C}{(\sqrt{ 14 }m)^3} \begin{pmatrix} -3 \\ 1 \\ 2  \end{pmatrix}m
+          - \frac{2 \times 10^{-3}C}{(\sqrt{ 26 }m)^3} \begin{pmatrix} 1 \\ 4 \\ -3  \end{pmatrix}m
+             \right]$
+"""
+
+# ╔═╡ e1af0fd4-43af-4237-9662-5d632ce10887
+md"""
+Podemos factorizar las unidades y $10^{-3}$ de los términos entre llaves
+"""
+
+# ╔═╡ 0d2b07e0-5591-439f-b5e5-54530133b26a
+md"""
+$\vec{F}_3= 9\times \cancel{10^{9}} \frac{Nm^2}{C^2} 10 \times \cancel{10^{-9}} C \times \frac{10^{-3}Cm}{m^3}  
+            \left[  
+            \frac{1 }{(\sqrt{ 14 })^3} \begin{pmatrix} -3 \\ 1 \\ 2  \end{pmatrix}
+          - \frac{2 }{(\sqrt{ 26 })^3} \begin{pmatrix} 1 \\ 4 \\ -3  \end{pmatrix}
+            \right]$
+
+$\vec{F}_3= 9\times \frac{N\cancel{m^2}}{\cancel{C^2}} 10 \times \cancel{C} \times \frac{10^{-3}\cancel{C}\cancel{m}}{\cancel{m^3}}  
+            \left[  
+            \frac{1 }{(\sqrt{ 14 })^3} \begin{pmatrix} -3 \\ 1 \\ 2  \end{pmatrix}
+          - \frac{2 }{(\sqrt{ 26 })^3} \begin{pmatrix} 1 \\ 4 \\ -3  \end{pmatrix}
+            \right]$
+
+$\vec{F}_3= 90 \times 10^{-3}N  
+            \left[  
+            \frac{1 }{(\sqrt{ 14 })^3} \begin{pmatrix} -3 \\ 1 \\ 2  \end{pmatrix}
+          - \frac{2 }{(\sqrt{ 26 })^3} \begin{pmatrix} 1 \\ 4 \\ -3  \end{pmatrix}
+            \right]$
+
+
+"""
+
+# ╔═╡ adb48e51-ca48-416b-a632-6315fe043887
+begin
+	A = 1/(sqrt(14)^3)
+	B = 2/(sqrt(26)^3)
+
+	md"""
+    Sea  $$A = \frac{1}{(\sqrt{14})^3}$$  = $A  
+    y sea  $$B = \frac{2}{(\sqrt{26})^3}$$  = $B
+    """
+end
+
+# ╔═╡ e59e1cf7-47e2-4460-ae71-8631095005da
+md"""
+$\vec{F}_3= 90 \times 10^{-3}N  
+            \left[  
+            A \begin{pmatrix} -3 \\ 1 \\ 2  \end{pmatrix}
+          - B \begin{pmatrix} 1 \\ 4 \\ -3  \end{pmatrix}
+            \right]$
+"""
+
+# ╔═╡ 14e4deb5-31b9-48c4-8fe9-d536400e3f6e
+begin
+	Fx = 90 * (-3*A-B)
+	Fy = 90 * ( A  - B * 4)
+	Fz = 90 * ( A * 2 - B * (-3))
+
+	md"""
+	Un calculo sencillo da como resultado $$\vec{F}_3=$$ ($Fx, $Fy, $Fz) mN. Note que el resultado está dado en miliNewtons.
+	"""
+end
+
+# ╔═╡ 7c1f9ee3-91ae-438d-9d30-315d3719bc40
+md"""
+O escrito en otra notación y arredondeando
+
+$\vec{F}_3= (-6.512\hat{a}_x -3.713\hat{a}_y + 7.509\hat{a}_z) mN$
+"""
+
+# ╔═╡ 5be22180-1027-4b94-be48-2640db73e6d8
+md"""
+El estudiante tambien puede verificar la respuesta con el siguiente código en Julia:
+"""
+
+# ╔═╡ 65dcd372-f428-4123-8466-4e8070a6e224
+md"""
+```julia
+using LinearAlgebra
+using Unitful
+
+# PARTE 1: ASIGNAR NOMBRES A LAS VARIABLES
+#
+K = 9 * (10^9) * u"N*m^2/C^2"
+# Definiendo las cargas eléctricas
+Q₁= 1u"mC"
+Q₂= -2u"mC"
+Q₃=10u"nC"
+
+# Definiendo los respectivos vectores
+r₁ = [3, 2, -1]*1u"m"
+r₂ = [-1, -1, 4]*1u"m"
+r₃ = [0, 3, 1]*1u"m"
+
+# PARTE 2: IDENTIFICAR LA FUERZA A CALCULAR
+# F₃ = F₁₃ + F₂₃
+
+F₃ = K*Q₁*Q₃*(r₃-r₁)/(norm(r₃-r₁)^3) + K*Q₂*Q₃*(r₃-r₂)/(norm(r₃-r₂)^3)
+
+print("F3x = ",upreferred(F₃[1]),"\n")
+print("F3y = ",upreferred(F₃[2]),"\n")
+print("F3z = ",upreferred(F₃[3]),"\n")
+```
+"""
+
+# ╔═╡ 40294410-c06b-4f05-9b04-e338aebcd80f
+md"""
+De salida se obtiene el mismo resultado en Newtons:
+"""
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -278,11 +487,13 @@ CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
 LaTeXStrings = "b964fa9f-0449-5b57-a5c2-d3ea65f4040f"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
+Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
 
 [compat]
 CairoMakie = "~0.13.1"
 LaTeXStrings = "~1.4.0"
 PlutoUI = "~0.7.60"
+Unitful = "~1.22.0"
 """
 
 # ╔═╡ 00000000-0000-0000-0000-000000000002
@@ -291,7 +502,7 @@ PLUTO_MANIFEST_TOML_CONTENTS = """
 
 julia_version = "1.11.3"
 manifest_format = "2.0"
-project_hash = "9b8026ab1f88d3193e3e06aad897bffb892b9950"
+project_hash = "4dba96c9feba9ae2d1430d6fc17593b3b2db9633"
 
 [[deps.AbstractFFTs]]
 deps = ["LinearAlgebra"]
@@ -1854,6 +2065,25 @@ version = "3.6.0+0"
 # ╟─0ff238e5-e152-4b24-9ff4-c880836e467b
 # ╟─0a38bc03-f266-42f0-b77e-d9d32469f465
 # ╟─1d1190b1-d040-4794-8e89-508104fb57b0
-# ╠═35ce60ff-000a-40b4-abe0-944372393a59
+# ╟─35ce60ff-000a-40b4-abe0-944372393a59
+# ╟─efc87d86-396d-4efa-9b34-3d7c71b73921
+# ╟─dd78d4bd-b104-4c07-a268-8889e3d616ad
+# ╟─4e73de52-b6c3-4d98-96b0-05d764a084fe
+# ╟─c10d3a9e-fa3b-42b7-abbe-9a6782d093b1
+# ╟─0b8a0c92-0fe8-4e80-9bdc-862841f9fa66
+# ╟─16b42635-5d81-401b-8636-6d0b2bcb9050
+# ╟─eadcec7d-fc8e-4a96-be09-a3178ab279b0
+# ╟─c4a0cbad-42fb-4bcd-83e6-86a29ceb31c8
+# ╟─7889e219-8577-4f30-b5c7-343cadf7b0e9
+# ╟─e1af0fd4-43af-4237-9662-5d632ce10887
+# ╟─0d2b07e0-5591-439f-b5e5-54530133b26a
+# ╟─adb48e51-ca48-416b-a632-6315fe043887
+# ╟─e59e1cf7-47e2-4460-ae71-8631095005da
+# ╟─14e4deb5-31b9-48c4-8fe9-d536400e3f6e
+# ╟─7c1f9ee3-91ae-438d-9d30-315d3719bc40
+# ╟─5be22180-1027-4b94-be48-2640db73e6d8
+# ╟─65dcd372-f428-4123-8466-4e8070a6e224
+# ╟─40294410-c06b-4f05-9b04-e338aebcd80f
+# ╟─93874cfd-0052-480f-b4e9-173e635b5688
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
