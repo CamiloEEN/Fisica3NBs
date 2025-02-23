@@ -25,7 +25,7 @@ end
 # ╔═╡ aee068dd-41c6-4d32-b95c-787f325967f6
 begin
 	using CairoMakie
-	using GeometryBasics
+	import GeometryBasics
 	using LinearAlgebra
 	using Statistics 
 end
@@ -783,6 +783,75 @@ De manera general un diferencial de longitud en coordenadas cílindricas queda e
 $d\vec{l}=d\rho \hat{a}_\rho+ \rho d\phi \hat{a}_\phi+ dz\hat{a}_z$
 
 """
+
+# ╔═╡ 7721ed95-7ffa-4050-85dc-9fdc304e81d4
+begin #THIS WORKS WITH SURFACE! FUNCTION TO CREATE FACES BUT IS SLOWER THAN MESH!
+		# Define faces
+		@enum diffaces bottom top front back left right
+	
+		# Create function that returns face points in matrix form
+		# The matrix is required for surface! to know which are the nearest neigbor
+		function facePointsCylind(diffaces, r0, dr, θ0, dθ, z0, dz)
+			n_points::Int = 3
+			
+			if diffaces == bottom
+				r_ranges = LinRange(r0, r0+dr, n_points)
+				θ_ranges = LinRange(θ0, θ0+dθ, n_points)
+				
+				x = [r * cos(θ) for r in r_ranges, θ in θ_ranges]
+				y = [r * sin(θ) for r in r_ranges, θ in θ_ranges]
+				z = [z0 for r in r_ranges, θ in θ_ranges]
+	
+				return x, y, z
+			elseif diffaces == top
+				r_ranges = LinRange(r0, r0+dr, n_points)
+				θ_ranges = LinRange(θ0, θ0+dθ, n_points)
+				
+				x = [r * cos(θ) for r in r_ranges, θ in θ_ranges]
+				y = [r * sin(θ) for r in r_ranges, θ in θ_ranges]
+				z = [z0+dz_cylind for r in r_ranges, θ in θ_ranges]
+	
+				return x, y, z
+			elseif diffaces == front
+				θ_ranges = LinRange(θ0, θ0+dθ, n_points)
+				z_ranges = LinRange(z0, z0+dz_cylind, n_points)
+	
+				x = [(r0+dr) * cos(θ) for z in z_ranges, θ in θ_ranges]
+				y = [(r0+dr) * sin(θ) for z in z_ranges, θ in θ_ranges]
+				z = [z for z in z_ranges, θ in θ_ranges]
+	
+				return x, y, z
+			elseif diffaces == back
+				θ_ranges = LinRange(θ0, θ0+dθ, n_points)
+				z_ranges = LinRange(z0, z0+dz_cylind, n_points)
+	
+				x = [r0 * cos(θ) for z in z_ranges, θ in θ_ranges]
+				y = [r0 * sin(θ) for z in z_ranges, θ in θ_ranges]
+				z = [z for z in z_ranges, θ in θ_ranges]
+
+				return x, y, z
+			elseif diffaces == left
+				r_ranges = LinRange(r0, r0+dr, n_points)
+				z_ranges = LinRange(z0, z0+dz_cylind, n_points)
+	
+				x = [r * cos(θ0+dθ) for r in r_ranges, z in z_ranges]
+				y = [r * sin(θ0+dθ) for r in r_ranges, z in z_ranges]
+				z = [z for r in r_ranges, z in z_ranges]
+	
+				return x, y, z
+			elseif diffaces == right
+				r_ranges = LinRange(r0, r0+dr, n_points)
+				z_ranges = LinRange(z0, z0+dz_cylind, n_points)
+	
+				x = [r * cos(θ0) for r in r_ranges, z in z_ranges]
+				y = [r * sin(θ0) for r in r_ranges, z in z_ranges]
+				z = [z for r in r_ranges, z in z_ranges]
+	
+				return x, y, z
+			end
+			
+		end
+end
 
 # ╔═╡ 7f5fa0bc-4343-4a39-91f1-ebdaa6e3f61c
 md"""
@@ -2853,6 +2922,7 @@ version = "3.6.0+0"
 # ╟─a820de5c-01ac-4c10-90c4-c580bf021c18
 # ╟─ca1d58ae-3844-4830-a58d-1707fefe8b3d
 # ╟─d250da1e-6b2c-48fc-be8b-573678683efe
+# ╟─7721ed95-7ffa-4050-85dc-9fdc304e81d4
 # ╟─7f5fa0bc-4343-4a39-91f1-ebdaa6e3f61c
 # ╟─fd175a60-5e0d-4ec9-86dc-9da65f4511e7
 # ╟─28e68492-0984-40a4-b934-c672f4cdadef
