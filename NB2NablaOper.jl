@@ -1089,8 +1089,8 @@ begin
 	hidespines!(ax10)
 
 	# **Set limits to fully include the box**
-	xlims!(ax10, -1, 5)
-	ylims!(ax10, -1, 5)
+	xlims!(ax10, -1, 4)
+	ylims!(ax10, -1, 4)
 	zlims!(ax10, -1, 5)
 
 	# Draw full axis lines with labels for the legend
@@ -1289,6 +1289,434 @@ begin
 	fig10
 	
 end
+
+# ╔═╡ 76752dea-6dc9-4a68-bf04-70e246b1c091
+begin
+
+	# Create figure
+	fig11 = Figure()
+	ax11 = Axis3(fig11[1,1], title = L" \textbf{Diferencial de superficie $d\vec{S}= d ρ dz \hat{a}_\itphi$}", xlabel = "X", ylabel = "Y", zlabel = "Z", azimuth = 0.15*π )
+	hidedecorations!(ax11)
+	hidespines!(ax11)
+
+	# **Set limits to fully include the box**
+	xlims!(ax11, -1, 4)
+	ylims!(ax11, -1, 4)
+	zlims!(ax11, -1, 5)
+
+	# Draw full axis lines with labels for the legend
+	lines!(ax11, [0, 3.5], [0, 0], [0, 0], color = :black, linewidth = 2)
+	lines!(ax11, [0, 0], [0, 3.5], [0, 0], color = :black, linewidth = 2)
+	lines!(ax11, [0, 0], [0, 0], [0, 3.5], color = :black, linewidth = 2)
+
+	# Add text labels for the axes
+	text!(ax11, "X", position = (4, -0.5, 0), color = :black, fontsize = 20)
+	text!(ax11, "Y", position = (0, 4, 0), color = :black, fontsize = 20)
+	text!(ax11, "Z", position = (0, 0, 4), color = :black, fontsize = 20)
+	
+	# Draw coordinate axes correctly
+	arrows!(ax11, [0, 0, 0], [0, 0, 0], [0, 0, 0], [3.5, 0, 0], 
+                     [0, 3.5, 0], [0, 0, 3.5], linewidth = 4, 
+                     color = [:black, :black, :black], arrowsize = 0.1, 
+                     lengthscale = 1.0)
+	
+	# Draw surface unit vector
+	arrows!(ax11, 
+		[Point3f(1.0*(ρ0_fixed+dρ_fixed/2)*cos(ϕ0_fixed+dϕ_fixed+0.1), 1.0*(ρ0_fixed+dρ_fixed/2)*sin(ϕ0_fixed+dϕ_fixed+0.1), z0_cylind_fixed + dz_cylind_fixed/2 )], 
+		[Point3f(-sin(ϕ0_fixed+dϕ_fixed/2), cos(ϕ0_fixed+dϕ_fixed/2), 0)], color = :red, arrowsize = 0.05 , lengthscale = 0.25, align = :origin
+	)
+	#:head, :lineend, :tailend, :headstart or :center
+
+	#Unit vector
+	text!(ax11, L"\hat{a}_\itphi", position = (1.08*(ρ0_fixed+dρ_fixed)*cos(ϕ0_fixed+dϕ_fixed), 1.08*(ρ0_fixed+dρ_fixed)*sin(ϕ0_fixed+dϕ_fixed), z0_cylind_fixed + dz_cylind_fixed ), color = :red, fontsize = 20)
+
+########################PLOT DIFFERENTIAL VOLUME##########################
+	
+	surface!(ax11, bottomFaceCylind[1], bottomFaceCylind[2], bottomFaceCylind[3], colormap = [:blue], alpha = 0.3 )
+	surface!(ax11, topFaceCylind[1], topFaceCylind[2], topFaceCylind[3], colormap = [:blue], alpha = 0.3 )
+	surface!(ax11, frontFaceCylind[1], frontFaceCylind[2], frontFaceCylind[3], colormap = [:blue], alpha = 0.3 )
+	surface!(ax11, backFaceCylind[1], backFaceCylind[2], backFaceCylind[3], colormap = [:blue], alpha = 0.3 )
+	surface!(ax11, leftFaceCylind[1], leftFaceCylind[2], leftFaceCylind[3], colormap = [:black], alpha = 1 )
+	surface!(ax11, rightFaceCylind[1], rightFaceCylind[2], rightFaceCylind[3], colormap = [:blue], alpha = 0.5 )
+
+###################################################################################
+	
+#############################ADDING LINES AND CURVES###############################
+	# Add vertical lines for guidance
+	lines!(ax11, 
+		[ρ0_fixed*cos(ϕ0_fixed),ρ0_fixed*cos(ϕ0_fixed)], # x positions
+		[ρ0_fixed*sin(ϕ0_fixed),ρ0_fixed*sin(ϕ0_fixed)], # y positions
+		[0, z0_cylind_fixed + dz_cylind_fixed], # z positions
+		linewidth = 2, color = :black
+	)
+	lines!(ax11, 
+		[(ρ0_fixed+dρ_fixed)*cos(ϕ0_fixed),(ρ0_fixed+dρ_fixed)*cos(ϕ0_fixed)], # x positions
+		[(ρ0_fixed+dρ_fixed)*sin(ϕ0_fixed),(ρ0_fixed+dρ_fixed)*sin(ϕ0_fixed)], # y positions
+		[0, z0_cylind_fixed + dz_cylind_fixed], # z positions
+		linewidth = 2, color = :black
+	)
+	lines!(ax11, 
+		[(ρ0_fixed+dρ_fixed)*cos(ϕ0_fixed+dϕ_fixed),(ρ0_fixed+dρ_fixed)*cos(ϕ0_fixed+dϕ_fixed)], # x positions
+		[(ρ0_fixed+dρ_fixed)*sin(ϕ0_fixed+dϕ_fixed),(ρ0_fixed+dρ_fixed)*sin(ϕ0_fixed+dϕ_fixed)], # y positions
+		[0, z0_cylind_fixed + dz_cylind_fixed], # z positions
+		linewidth = 2, color = :black
+	)
+	# diff element dz
+	lines!(ax11, 
+		[(ρ0_fixed+dρ_fixed)*cos(ϕ0_fixed+dϕ_fixed),(ρ0_fixed+dρ_fixed)*cos(ϕ0_fixed+dϕ_fixed)], # x positions
+		[(ρ0_fixed+dρ_fixed)*sin(ϕ0_fixed+dϕ_fixed),(ρ0_fixed+dρ_fixed)*sin(ϕ0_fixed+dϕ_fixed)], # y positions
+		[z0_cylind_fixed, z0_cylind_fixed + dz_cylind_fixed], # z positions
+		linewidth = 2, color = :blue
+	)
+	lines!(ax11, 
+		[ρ0_fixed*cos(ϕ0_fixed+dϕ_fixed),ρ0_fixed*cos(ϕ0_fixed+dϕ_fixed)], # x positions
+		[ρ0_fixed*sin(ϕ0_fixed+dϕ_fixed),ρ0_fixed*sin(ϕ0_fixed+dϕ_fixed)], # y positions
+		[0, z0_cylind_fixed + dz_cylind_fixed], # z positions
+		linewidth = 2, color = :black, linestyle = :dash
+	)
+
+	# Add horizontal lines for guidance in xy plane
+	lines!(ax11, 
+		[0, (ρ0_fixed+dρ_fixed)*cos(ϕ0_fixed)],
+		[0, (ρ0_fixed+dρ_fixed)*sin(ϕ0_fixed)],
+		[0,0],
+		linewidth = 2, color = :black
+	)
+	lines!(ax11, 
+		[0, (ρ0_fixed+dρ_fixed)*cos(ϕ0_fixed+dϕ_fixed)],
+		[0, (ρ0_fixed+dρ_fixed)*sin(ϕ0_fixed+dϕ_fixed)],
+		[0,0],
+		linewidth = 2, color = :black
+	)
+
+	# Add horizontal lines for guidance in differential element bottom plane
+	lines!(ax11, 
+		[0, (ρ0_fixed+dρ_fixed)*cos(ϕ0_fixed)],
+		[0, (ρ0_fixed+dρ_fixed)*sin(ϕ0_fixed)],
+		[z0_cylind_fixed,z0_cylind_fixed],
+		linewidth = 2, color = :black
+	)
+	lines!(ax11, 
+		[0, (ρ0_fixed+dρ_fixed)*cos(ϕ0_fixed+dϕ_fixed)],
+		[0, (ρ0_fixed+dρ_fixed)*sin(ϕ0_fixed+dϕ_fixed)],
+		[z0_cylind_fixed,z0_cylind_fixed],
+		linewidth = 2, color = :black, linestyle = :dash
+	)
+
+	# Add horizontal lines for guidance in differential element top plane
+	lines!(ax11, 
+		[0, (ρ0_fixed+dρ_fixed)*cos(ϕ0_fixed)],
+		[0, (ρ0_fixed+dρ_fixed)*sin(ϕ0_fixed)],
+		[z0_cylind_fixed+dz_cylind_fixed,z0_cylind_fixed+dz_cylind_fixed],
+		linewidth = 2, color = :black
+	)
+	lines!(ax11, 
+		[0, (ρ0_fixed+dρ_fixed)*cos(ϕ0_fixed+dϕ_fixed)],
+		[0, (ρ0_fixed+dρ_fixed)*sin(ϕ0_fixed+dϕ_fixed)],
+		[z0_cylind_fixed+dz_cylind_fixed,z0_cylind_fixed+dz_cylind_fixed],
+		linewidth = 2, color = :black
+	)
+	# diff element dρ
+	lines!(ax11, 
+		[ρ0_fixed*cos(ϕ0_fixed+dϕ_fixed), (ρ0_fixed+dρ_fixed)*cos(ϕ0_fixed+dϕ_fixed)],
+		[ρ0_fixed*sin(ϕ0_fixed+dϕ_fixed), (ρ0_fixed+dρ_fixed)*sin(ϕ0_fixed+dϕ_fixed)],
+		[z0_cylind_fixed+dz_cylind_fixed,z0_cylind_fixed+dz_cylind_fixed],
+		linewidth = 2, color = :green
+	)
+
+	# Add curves in xy plane
+	
+	lines!(ax11, 
+		(ρ0_fixed+dρ_fixed)*cos.(dϕ_range_cylind_fixed),
+		(ρ0_fixed+dρ_fixed)*sin.(dϕ_range_cylind_fixed),
+		fill(0, length(dϕ_range_cylind_fixed)),
+		linewidth = 2, color = :black
+	)
+	lines!(ax11, 
+		ρ0_fixed*cos.(dϕ_range_cylind_fixed),
+		ρ0_fixed*sin.(dϕ_range_cylind_fixed),
+		fill(0, length(dϕ_range_cylind_fixed)),
+		linewidth = 2, color = :black
+	)
+	
+	# Add curves in differential element bottom plane
+	lines!(ax11, 
+		(ρ0_fixed+dρ_fixed)*cos.(dϕ_range_cylind_fixed),
+		(ρ0_fixed+dρ_fixed)*sin.(dϕ_range_cylind_fixed),
+		fill(z0_cylind_fixed, length(dϕ_range_cylind_fixed)),
+		linewidth = 2, color = :black
+	)
+	lines!(ax11, 
+		ρ0_fixed*cos.(dϕ_range_cylind_fixed),
+		ρ0_fixed*sin.(dϕ_range_cylind_fixed),
+		fill(z0_cylind_fixed, length(dϕ_range_cylind_fixed)),
+		linewidth = 2, color = :black, linestyle = :dash
+	)
+
+	# Add curves in differential element top plane
+	lines!(ax11, 
+		(ρ0_fixed+dρ_fixed)*cos.(dϕ_range_cylind_fixed),
+		(ρ0_fixed+dρ_fixed)*sin.(dϕ_range_cylind_fixed),
+		fill(z0_cylind_fixed+dz_cylind_fixed, length(dϕ_range_cylind_fixed)),
+		linewidth = 2, color = :black
+	)
+	# diff element ρd𝜙
+	lines!(ax11, 
+		ρ0_fixed*cos.(dϕ_range_cylind_fixed),
+		ρ0_fixed*sin.(dϕ_range_cylind_fixed),
+		fill(z0_cylind_fixed+dz_cylind_fixed, length(dϕ_range_cylind_fixed)),
+		linewidth = 2, color = :red
+	)
+
+	# Add ϕ angle and dϕ curves
+	
+	lines!(ax11, 
+		0.5*cos.(ϕ_range_cylind_fixed),
+		0.5*sin.(ϕ_range_cylind_fixed),
+		fill(0, length(ϕ_range_cylind_fixed)),
+		linewidth = 2, color = :red
+	)
+	lines!(ax11, 
+		1.0*cos.(dϕ_range_cylind_fixed),
+		1.0*sin.(dϕ_range_cylind_fixed),
+		fill(0, length(dϕ_range_cylind_fixed)),
+		linewidth = 2, color = :red
+	)
+###############################################################################
+
+################################ADDING LABELS##################################
+	text!(ax11, L"\itphi", position = (1.5*cos(ϕ0_fixed/2.5), 1.5*sin(ϕ0_fixed/2.5), 0), color = :red, fontsize = 20)
+	text!(ax11, L"d\itphi", position = (1.7*cos(ϕ0_fixed), 1.7*sin(ϕ0_fixed), 0), color = :red, fontsize = 20)
+
+	text!(ax11, L"dz", position = (1.05*(ρ0_fixed+dρ_fixed)*cos(ϕ0_fixed+dϕ_fixed), 1.05*(ρ0_fixed+dρ_fixed)*sin(ϕ0_fixed+dϕ_fixed), z0_cylind_fixed+dz_cylind_fixed/3), color = :blue, fontsize = 20)
+	text!(ax11, L"z", position = (0, -0.3, z0_cylind_fixed-0.5), color = :black, fontsize = 20)
+	text!(ax11, L"z+dz", position = (0, -1, z0_cylind_fixed+0.5), color = :black, fontsize = 20)
+
+	text!(ax11, L"ρd\itphi", position = (0.8*ρ0_fixed*cos(ϕ0_fixed), 0.8*ρ0_fixed*sin(ϕ0_fixed), z0_cylind_fixed+dz_cylind_fixed), color = :red, fontsize = 20)
+
+	text!(ax11, L"dρ", position = ((ρ0_fixed+dρ_fixed/3)*cos(ϕ0_fixed+dϕ_fixed), (ρ0_fixed+dρ_fixed/3)*sin(ϕ0_fixed+dϕ_fixed), z0_cylind_fixed+dz_cylind_fixed+0.2), color = :green, fontsize = 20)
+	text!(ax10, L"ρ", position = ((ρ0_fixed/2)*cos(ϕ0_fixed), (ρ0_fixed/2)*sin(ϕ0_fixed), z0_cylind_fixed-0.9), color = :black, fontsize = 20)
+
+	
+	fig11
+	
+end
+
+# ╔═╡ ec589092-6751-4272-b58b-05bd32e6acfb
+begin
+
+	# Create figure
+	fig12 = Figure()
+	ax12 = Axis3(fig12[1,1], title = L" \textbf{Diferencial de superficie $d\vec{S}=ρ d 𝜙 dρ \hat{a}_z$}", xlabel = "X", ylabel = "Y", zlabel = "Z", azimuth = 0.15*π )
+	hidedecorations!(ax12)
+	hidespines!(ax12)
+
+	# **Set limits to fully include the box**
+	xlims!(ax12, -1, 4)
+	ylims!(ax12, -1, 4)
+	zlims!(ax12, -1, 5)
+
+	# Draw full axis lines with labels for the legend
+	lines!(ax12, [0, 3.5], [0, 0], [0, 0], color = :black, linewidth = 2)
+	lines!(ax12, [0, 0], [0, 3.5], [0, 0], color = :black, linewidth = 2)
+	lines!(ax12, [0, 0], [0, 0], [0, 3.5], color = :black, linewidth = 2)
+
+	# Add text labels for the axes
+	text!(ax12, "X", position = (4, -0.5, 0), color = :black, fontsize = 20)
+	text!(ax12, "Y", position = (0, 4, 0), color = :black, fontsize = 20)
+	text!(ax12, "Z", position = (0, 0, 4), color = :black, fontsize = 20)
+	
+	# Draw coordinate axes correctly
+	arrows!(ax12, [0, 0, 0], [0, 0, 0], [0, 0, 0], [3.5, 0, 0], 
+                     [0, 3.5, 0], [0, 0, 3.5], linewidth = 4, 
+                     color = [:black, :black, :black], arrowsize = 0.1, 
+                     lengthscale = 1.0)
+
+########################PLOT DIFFERENTIAL VOLUME##########################
+	
+	surface!(ax12, bottomFaceCylind[1], bottomFaceCylind[2], bottomFaceCylind[3], colormap = [:blue], alpha = 0.3 )
+	surface!(ax12, topFaceCylind[1], topFaceCylind[2], topFaceCylind[3], colormap = [:black], alpha = 1 )
+	surface!(ax12, frontFaceCylind[1], frontFaceCylind[2], frontFaceCylind[3], colormap = [:black], alpha = 0.3 )
+	surface!(ax12, backFaceCylind[1], backFaceCylind[2], backFaceCylind[3], colormap = [:blue], alpha = 0.3 )
+	surface!(ax12, leftFaceCylind[1], leftFaceCylind[2], leftFaceCylind[3], colormap = [:blue], alpha = 0.3 )
+	surface!(ax12, rightFaceCylind[1], rightFaceCylind[2], rightFaceCylind[3], colormap = [:blue], alpha = 0.5 )
+
+###################################################################################
+	
+#############################ADDING LINES AND CURVES###############################
+	# Add vertical lines for guidance
+	lines!(ax12, 
+		[ρ0_fixed*cos(ϕ0_fixed),ρ0_fixed*cos(ϕ0_fixed)], # x positions
+		[ρ0_fixed*sin(ϕ0_fixed),ρ0_fixed*sin(ϕ0_fixed)], # y positions
+		[0, z0_cylind_fixed + dz_cylind_fixed], # z positions
+		linewidth = 2, color = :black
+	)
+	lines!(ax12, 
+		[(ρ0_fixed+dρ_fixed)*cos(ϕ0_fixed),(ρ0_fixed+dρ_fixed)*cos(ϕ0_fixed)], # x positions
+		[(ρ0_fixed+dρ_fixed)*sin(ϕ0_fixed),(ρ0_fixed+dρ_fixed)*sin(ϕ0_fixed)], # y positions
+		[0, z0_cylind_fixed + dz_cylind_fixed], # z positions
+		linewidth = 2, color = :black
+	)
+	lines!(ax12, 
+		[(ρ0_fixed+dρ_fixed)*cos(ϕ0_fixed+dϕ_fixed),(ρ0_fixed+dρ_fixed)*cos(ϕ0_fixed+dϕ_fixed)], # x positions
+		[(ρ0_fixed+dρ_fixed)*sin(ϕ0_fixed+dϕ_fixed),(ρ0_fixed+dρ_fixed)*sin(ϕ0_fixed+dϕ_fixed)], # y positions
+		[0, z0_cylind_fixed + dz_cylind_fixed], # z positions
+		linewidth = 2, color = :black
+	)
+	# diff element dz
+	lines!(ax12, 
+		[(ρ0_fixed+dρ_fixed)*cos(ϕ0_fixed+dϕ_fixed),(ρ0_fixed+dρ_fixed)*cos(ϕ0_fixed+dϕ_fixed)], # x positions
+		[(ρ0_fixed+dρ_fixed)*sin(ϕ0_fixed+dϕ_fixed),(ρ0_fixed+dρ_fixed)*sin(ϕ0_fixed+dϕ_fixed)], # y positions
+		[z0_cylind_fixed, z0_cylind_fixed + dz_cylind_fixed], # z positions
+		linewidth = 2, color = :blue
+	)
+	lines!(ax12, 
+		[ρ0_fixed*cos(ϕ0_fixed+dϕ_fixed),ρ0_fixed*cos(ϕ0_fixed+dϕ_fixed)], # x positions
+		[ρ0_fixed*sin(ϕ0_fixed+dϕ_fixed),ρ0_fixed*sin(ϕ0_fixed+dϕ_fixed)], # y positions
+		[0, z0_cylind_fixed + dz_cylind_fixed], # z positions
+		linewidth = 2, color = :black, linestyle = :dash
+	)
+
+	# Add horizontal lines for guidance in xy plane
+	lines!(ax12, 
+		[0, (ρ0_fixed+dρ_fixed)*cos(ϕ0_fixed)],
+		[0, (ρ0_fixed+dρ_fixed)*sin(ϕ0_fixed)],
+		[0,0],
+		linewidth = 2, color = :black
+	)
+	lines!(ax12, 
+		[0, (ρ0_fixed+dρ_fixed)*cos(ϕ0_fixed+dϕ_fixed)],
+		[0, (ρ0_fixed+dρ_fixed)*sin(ϕ0_fixed+dϕ_fixed)],
+		[0,0],
+		linewidth = 2, color = :black
+	)
+
+	# Add horizontal lines for guidance in differential element bottom plane
+	lines!(ax12, 
+		[0, (ρ0_fixed+dρ_fixed)*cos(ϕ0_fixed)],
+		[0, (ρ0_fixed+dρ_fixed)*sin(ϕ0_fixed)],
+		[z0_cylind_fixed,z0_cylind_fixed],
+		linewidth = 2, color = :black
+	)
+	lines!(ax12, 
+		[0, (ρ0_fixed+dρ_fixed)*cos(ϕ0_fixed+dϕ_fixed)],
+		[0, (ρ0_fixed+dρ_fixed)*sin(ϕ0_fixed+dϕ_fixed)],
+		[z0_cylind_fixed,z0_cylind_fixed],
+		linewidth = 2, color = :black, linestyle = :dash
+	)
+
+	# Add horizontal lines for guidance in differential element top plane
+	lines!(ax12, 
+		[0, (ρ0_fixed+dρ_fixed)*cos(ϕ0_fixed)],
+		[0, (ρ0_fixed+dρ_fixed)*sin(ϕ0_fixed)],
+		[z0_cylind_fixed+dz_cylind_fixed,z0_cylind_fixed+dz_cylind_fixed],
+		linewidth = 2, color = :black
+	)
+	lines!(ax12, 
+		[0, (ρ0_fixed+dρ_fixed)*cos(ϕ0_fixed+dϕ_fixed)],
+		[0, (ρ0_fixed+dρ_fixed)*sin(ϕ0_fixed+dϕ_fixed)],
+		[z0_cylind_fixed+dz_cylind_fixed,z0_cylind_fixed+dz_cylind_fixed],
+		linewidth = 2, color = :black
+	)
+	# diff element dρ
+	lines!(ax12, 
+		[ρ0_fixed*cos(ϕ0_fixed+dϕ_fixed), (ρ0_fixed+dρ_fixed)*cos(ϕ0_fixed+dϕ_fixed)],
+		[ρ0_fixed*sin(ϕ0_fixed+dϕ_fixed), (ρ0_fixed+dρ_fixed)*sin(ϕ0_fixed+dϕ_fixed)],
+		[z0_cylind_fixed+dz_cylind_fixed,z0_cylind_fixed+dz_cylind_fixed],
+		linewidth = 2, color = :green
+	)
+
+	# Add curves in xy plane
+	
+	lines!(ax12, 
+		(ρ0_fixed+dρ_fixed)*cos.(dϕ_range_cylind_fixed),
+		(ρ0_fixed+dρ_fixed)*sin.(dϕ_range_cylind_fixed),
+		fill(0, length(dϕ_range_cylind_fixed)),
+		linewidth = 2, color = :black
+	)
+	lines!(ax12, 
+		ρ0_fixed*cos.(dϕ_range_cylind_fixed),
+		ρ0_fixed*sin.(dϕ_range_cylind_fixed),
+		fill(0, length(dϕ_range_cylind_fixed)),
+		linewidth = 2, color = :black
+	)
+	
+	# Add curves in differential element bottom plane
+	lines!(ax12, 
+		(ρ0_fixed+dρ_fixed)*cos.(dϕ_range_cylind_fixed),
+		(ρ0_fixed+dρ_fixed)*sin.(dϕ_range_cylind_fixed),
+		fill(z0_cylind_fixed, length(dϕ_range_cylind_fixed)),
+		linewidth = 2, color = :black
+	)
+	lines!(ax10, 
+		ρ0_fixed*cos.(dϕ_range_cylind_fixed),
+		ρ0_fixed*sin.(dϕ_range_cylind_fixed),
+		fill(z0_cylind_fixed, length(dϕ_range_cylind_fixed)),
+		linewidth = 2, color = :black, linestyle = :dash
+	)
+
+	# Add curves in differential element top plane
+	lines!(ax12, 
+		(ρ0_fixed+dρ_fixed)*cos.(dϕ_range_cylind_fixed),
+		(ρ0_fixed+dρ_fixed)*sin.(dϕ_range_cylind_fixed),
+		fill(z0_cylind_fixed+dz_cylind_fixed, length(dϕ_range_cylind_fixed)),
+		linewidth = 2, color = :black
+	)
+	# diff element ρd𝜙
+	lines!(ax12, 
+		ρ0_fixed*cos.(dϕ_range_cylind_fixed),
+		ρ0_fixed*sin.(dϕ_range_cylind_fixed),
+		fill(z0_cylind_fixed+dz_cylind_fixed, length(dϕ_range_cylind_fixed)),
+		linewidth = 2, color = :red
+	)
+
+	# Add ϕ angle and dϕ curves
+	
+	lines!(ax12, 
+		0.5*cos.(ϕ_range_cylind_fixed),
+		0.5*sin.(ϕ_range_cylind_fixed),
+		fill(0, length(ϕ_range_cylind_fixed)),
+		linewidth = 2, color = :red
+	)
+	lines!(ax12, 
+		1.0*cos.(dϕ_range_cylind_fixed),
+		1.0*sin.(dϕ_range_cylind_fixed),
+		fill(0, length(dϕ_range_cylind_fixed)),
+		linewidth = 2, color = :red
+	)
+###############################################################################
+
+################################ADDING LABELS##################################
+	text!(ax12, L"\itphi", position = (1.5*cos(ϕ0_fixed/2.5), 1.5*sin(ϕ0_fixed/2.5), 0), color = :red, fontsize = 20)
+	text!(ax12, L"d\itphi", position = (1.7*cos(ϕ0_fixed), 1.7*sin(ϕ0_fixed), 0), color = :red, fontsize = 20)
+
+	text!(ax12, L"dz", position = (1.05*(ρ0_fixed+dρ_fixed)*cos(ϕ0_fixed+dϕ_fixed), 1.05*(ρ0_fixed+dρ_fixed)*sin(ϕ0_fixed+dϕ_fixed), z0_cylind_fixed+dz_cylind_fixed/3), color = :blue, fontsize = 20)
+	text!(ax12, L"z", position = (0, -0.3, z0_cylind_fixed-0.5), color = :black, fontsize = 20)
+	text!(ax12, L"z+dz", position = (0, -1, z0_cylind_fixed+0.5), color = :black, fontsize = 20)
+
+	text!(ax12, L"ρd\itphi", position = (0.8*ρ0_fixed*cos(ϕ0_fixed), 0.8*ρ0_fixed*sin(ϕ0_fixed), z0_cylind_fixed+dz_cylind_fixed), color = :red, fontsize = 20)
+
+	text!(ax12, L"dρ", position = ((ρ0_fixed+dρ_fixed/3)*cos(ϕ0_fixed+dϕ_fixed), (ρ0_fixed+dρ_fixed/3)*sin(ϕ0_fixed+dϕ_fixed), z0_cylind_fixed+dz_cylind_fixed+0.2), color = :green, fontsize = 20)
+	text!(ax10, L"ρ", position = ((ρ0_fixed/2)*cos(ϕ0_fixed), (ρ0_fixed/2)*sin(ϕ0_fixed), z0_cylind_fixed-0.9), color = :black, fontsize = 20)
+
+	# Draw surface unit vector
+	arrows!(ax12, 
+		[Point3f((ρ0_fixed+dρ_fixed/2)*cos(ϕ0_fixed+dϕ_fixed/2), (ρ0_fixed+dρ_fixed/2)*sin(ϕ0_fixed+dϕ_fixed/2), z0_cylind_fixed + dz_cylind_fixed+0.5 )], 
+		[Vec3f(0, 0, 1)], color = :blue, arrowsize = 0.05, lengthscale = 0.2
+	)
+	#:head, :lineend, :tailend, :headstart or :center
+
+	#Unit vector
+	text!(ax12, L"\hat{a}_z", position = ((ρ0_fixed+dρ_fixed/2)*cos(ϕ0_fixed+dϕ_fixed/2), (ρ0_fixed+dρ_fixed/2)*sin(ϕ0_fixed+dϕ_fixed/2), z0_cylind_fixed + dz_cylind_fixed + 0.7 ), color = :blue, fontsize = 20)
+	
+	fig12
+	
+end
+
+# ╔═╡ 8403bf5a-2ef1-4465-9462-6f3da19b4594
+# There are issues with the align option in Makie, i had to fix the arrow position manually
+# https://github.com/MakieOrg/Makie.jl/issues/3039
+# https://github.com/MakieOrg/Makie.jl/pull/2884
 
 # ╔═╡ 7f5fa0bc-4343-4a39-91f1-ebdaa6e3f61c
 md"""
@@ -3362,6 +3790,9 @@ version = "3.6.0+0"
 # ╟─7721ed95-7ffa-4050-85dc-9fdc304e81d4
 # ╟─25c07e49-3eaf-4638-8710-7093aa61492a
 # ╟─6dc032bf-31e0-4860-aee0-a0c0f66536a0
+# ╟─76752dea-6dc9-4a68-bf04-70e246b1c091
+# ╟─ec589092-6751-4272-b58b-05bd32e6acfb
+# ╟─8403bf5a-2ef1-4465-9462-6f3da19b4594
 # ╟─7f5fa0bc-4343-4a39-91f1-ebdaa6e3f61c
 # ╟─fd175a60-5e0d-4ec9-86dc-9da65f4511e7
 # ╟─28e68492-0984-40a4-b934-c672f4cdadef
