@@ -57,7 +57,7 @@ Para instalar **Pluto.jl**, sigue estos pasos:
    Pluto.run()
 
 ### Ajustes Manuales y Arreglos Temporales
-Hay un inconveniente al graficar con la función arrow() usando CairoMakie en 3D. La función siempre crea la flecha de vector utilizando el parametro position como centro de la flecha y no como inicio, razón por la cual los vectores unitarios mostrados en las gráficas tuvieron que ajustarse manualmente. Para más información sobre esto y otros inconvenientes que puedan ocurrir, se puede consultar la siguiente lista [Issues](https://github.com/MakieOrg/Makie.jl/issues?q=state%3Aopen%20label%3A%22arrows%22)
+Hay un inconveniente al graficar con la función arrow() usando CairoMakie en 3D. La función siempre crea la flecha de vector utilizando el parametro position como centro de la flecha y no como inicio, razón por la cual los vectores unitarios mostrados en las gráficas tuvieron que ajustarse manualmente. Para más información sobre esto y otros inconvenientes que puedan ocurrir, se puede consultar la siguiente lista [Issues](https://github.com/MakieOrg/Makie.jl/issues?q=state%3Aopen%20label%3A%22arrows%22).
 
 ### Contribuciones
 
