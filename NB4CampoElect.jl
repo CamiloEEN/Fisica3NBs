@@ -154,7 +154,7 @@ scatter!(ax1, [0], [0], color=:red ,markersize=15, label = L"Q_1" )
 
 # Plot the electric field vectors
 
-arrows!(ax1, origins, vectors, color=:blue, colormap = :blues, lengthscale=0.1, label = L"$\vec{E}_1(\vec{r})$")
+arrows!(ax1, origins, vectors, color=:black, colormap = :blues, lengthscale=0.1, label = L"$\vec{E}_1(\vec{r})$")
 
 Legend(fig1[1,2], ax1, halign = :right, valign = :center)
 
@@ -174,32 +174,100 @@ Un gran inconveniente de estos gráficos es que los vectores cerca de la carga a
 
 # ╔═╡ 6664dacc-d003-4651-b8ab-d1777d33da89
 begin
-# Electric field function
-function electric_field(x, y)
-    dx, dy = x, y  # Charge at (0,0)
-    r = sqrt(dx^2 + dy^2)
 
-    if r > 0.2  # Avoid singularity at charge position
-        E = k * Q1 / r^2
-        return Point2(E * dx / r, E * dy / r)
-    else
-        return Point2(0.0, 0.0)
-    end
-end
 
+θ_range_strplt = LinRange(0, 2π, 15)
+r_range_strplt = LinRange(0.1, 2, 6)
+# x_range_strplt = [r*cos.(θ_range_strplt) for r in r_range_strplt]
+# y_range_strplt = [r*sin.(θ_range_strplt) for r in r_range_strplt]
+
+
+	
+#x_range_stream 
 # Create figure and axis
 fig2 = Figure()
 ax2 = Axis(fig2[1, 1], title="Líneas de campo eléctrico", xlabel="x", ylabel="y")
 
 # Plot charge as a red dot
-scatter!(ax2, [0], [0], color=:red, markersize=15)
+scatter!(ax2, [0], [0], color=:red, markersize=15, label = L"Q_1>0")
 
 # Plot the electric field as streamlines
-streamplot!(ax2, electric_field, x_range, y_range, colormap=:blues, gridsize=(30, 30))
+for θ in θ_range_strplt
+	lines!(ax2, r_range_strplt.*cos(θ), r_range_strplt.*sin(θ), color = :black, linewidth = 2 )
+	arrows!(ax2, [cos(θ)], [sin(θ)], [cos(θ)], [sin(θ)], color = :black,  label = L"$\vec{E}_1(\vec{r})$", linewidth =2, arrowsize = 15 )
+	arrows!(ax2, [cos(θ)/2], [sin(θ)/2], [cos(θ)/2], [sin(θ)/2], color = :black,  label = L"$\vec{E}_1(\vec{r})$", linewidth =2, arrowsize = 15 )
+end
+
+# Draw density boxes
+vertices1 = [
+	Point2f(0.25, -0.25),
+	Point2f(0.5, -0.25),
+	Point2f(0.5, 0.25),
+	Point2f(0.25, 0.25)
+]
+
+vertices2 = [
+	Point2f(1, -0.25),
+	Point2f(1.25, -0.25),
+	Point2f(1.25, 0.25),
+	Point2f(1, 0.25)
+]
+
+poly!(ax2, vertices1, color=(:white, 0), strokewidth=2, strokecolor=:blue)
+poly!(ax2, vertices2, color=(:white, 0), strokewidth=2, strokecolor=:blue)
+
+Legend(fig2[1,2], ax2, halign = :right, valign = :center, unique = true)
 
 fig2
 
 end
+
+# ╔═╡ 3afc402f-81a1-4340-ac1e-622e0a5c9e5c
+md"""
+No solo es más facíl de dibujar y evita la superposición de vectores, también permite identificar que tan intenso es el campo por la densidad de lineas en una región, observe que el primer rectangulo 🟦 a la izquierda contiene 3 líneas de campo mientras el rectangulo de la derecha solo contiene una.
+"""
+
+# ╔═╡ f1e039ff-e713-41f9-b8f8-c58ee55b9519
+begin
+	# Create figure
+	fig3 = Figure()
+
+	##############################Positive Charge##############################
+	# Create positive charge axis
+	ax31 = Axis(fig3[1, 1], title="Líneas de campo eléctrico Q_1 >0", xlabel="x", ylabel="y")
+	
+	# Plot charge as a red dot
+	scatter!(ax31, [0], [0], color=:red, markersize=15, label = L"Q_1>0")
+	
+	# Plot the electric field as streamlines
+	for θ in θ_range_strplt
+		lines!(ax31, r_range_strplt.*cos(θ), r_range_strplt.*sin(θ), color = :black, linewidth = 2 )
+		arrows!(ax31, [cos(θ)], [sin(θ)], [cos(θ)], [sin(θ)], color = :black,  label = L"$\vec{E}_1(\vec{r})$", linewidth =2, arrowsize = 15 )
+		arrows!(ax31, [cos(θ)/2], [sin(θ)/2], [cos(θ)/2], [sin(θ)/2], color = :black,  label = L"$\vec{E}_1(\vec{r})$", linewidth =2, arrowsize = 15 )
+	end
+
+
+	##############################Negative Charge##############################
+	ax32 = Axis(fig3[1, 2], title="Líneas de campo eléctrico Q_1 <0", xlabel="x", ylabel="y")
+
+	# Plot charge as a blue dot
+	scatter!(ax32, [0], [0], color=:blue, markersize=15, label = L"Q_1<0")
+	
+	# Plot the electric field as streamlines
+	for θ in θ_range_strplt
+		lines!(ax32, r_range_strplt.*cos(θ), r_range_strplt.*sin(θ), color = :black, linewidth = 2 )
+		arrows!(ax32, [3*cos(θ)], [3*sin(θ)], [-cos(θ)], [-sin(θ)], color = :black,  label = L"$\vec{E}_1(\vec{r})$", linewidth =2, arrowsize = 15 )
+		arrows!(ax32, [2*cos(θ)/2], [2*sin(θ)/2], [-cos(θ)/2], [-sin(θ)/2], color = :black,  label = L"$\vec{E}_1(\vec{r})$", linewidth =2, arrowsize = 15 )
+	end
+
+	
+	fig3
+end
+
+# ╔═╡ 97f0bbda-8b18-4b4d-8f55-6aaf2e000d26
+md"""
+# Distribuciones de carga
+"""
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -1781,6 +1849,9 @@ version = "3.6.0+0"
 # ╟─5fa70483-65a0-4bb5-86f3-7fe936038f94
 # ╟─16b7271a-f8c0-4e32-b4e8-dc85b425e939
 # ╟─bdeaf75c-6acf-42c0-9613-d8c8e018a1d0
-# ╠═6664dacc-d003-4651-b8ab-d1777d33da89
+# ╟─6664dacc-d003-4651-b8ab-d1777d33da89
+# ╟─3afc402f-81a1-4340-ac1e-622e0a5c9e5c
+# ╟─f1e039ff-e713-41f9-b8f8-c58ee55b9519
+# ╟─97f0bbda-8b18-4b4d-8f55-6aaf2e000d26
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
