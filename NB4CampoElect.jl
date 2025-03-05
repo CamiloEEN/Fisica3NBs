@@ -323,7 +323,7 @@ $\begin{align}
 Donde $\vec{r}_2=(1,1,4)$ y $\vec{r}=(x,y,z)$. Calculando la resta de vectores y su respectiva norma tenemos
 
 $\begin{align}
-	\vec{E}_2(\vec{r}) &=  K \frac{Q_2}{\left( \sqrt{ (x-2)^2 + (y-1)^2 + (z-4)^2} \right)^3} 
+	\vec{E}_2(\vec{r}) &=  K \frac{Q_2}{\left( \sqrt{ (x-1)^2 + (y-1)^2 + (z-4)^2} \right)^3} 
 \begin{pmatrix} 
 x-1 \\
 y-1 \\
@@ -357,7 +357,7 @@ x-2 \\
 y+1 \\
 z-2
 \end{pmatrix} \\
-&+ K \frac{Q_2}{\left( \sqrt{ (x-2)^2 + (y-1)^2 + (z-4)^2} \right)^3} 
+&+ K \frac{Q_2}{\left( \sqrt{ (x-1)^2 + (y-1)^2 + (z-4)^2} \right)^3} 
 \begin{pmatrix} 
 x-1 \\
 y-1 \\
@@ -388,7 +388,7 @@ Q_3\vec{E}(\vec{r}_3)&=
 0+1 \\
 6-2
 \end{pmatrix} \\
-&+ K \frac{Q_3Q_2}{\left( \sqrt{ (0-2)^2 + (0-1)^2 + (6-4)^2} \right)^3} 
+&+ K \frac{Q_3Q_2}{\left( \sqrt{ (0-1)^2 + (0-1)^2 + (6-4)^2} \right)^3} 
 \begin{pmatrix} 
 0-1 \\
 0-1 \\
@@ -405,7 +405,7 @@ Q_3\vec{E}(\vec{r}_3)&=
 -2 \\
 1 \\
 4
-\end{pmatrix} + K \frac{Q_3Q_2}{\left( \sqrt{ 4 + 1 + 4} \right)^3} 
+\end{pmatrix} + K \frac{Q_3Q_2}{\left( \sqrt{ 1 + 1 + 4} \right)^3} 
 \begin{pmatrix} 
 -1 \\
 -1 \\
@@ -417,7 +417,7 @@ Q_3\vec{E}(\vec{r}_3)&=
 -2 \\
 1 \\
 4
-\end{pmatrix} + K \frac{Q_3Q_2}{\left( 3 \right)^3} 
+\end{pmatrix} + K \frac{Q_3Q_2}{\left( \sqrt{6} \right)^3} 
 \begin{pmatrix} 
 -1 \\
 -1 \\
@@ -451,7 +451,7 @@ $\begin{align}
 -2 \\
 1 \\
 4
-\end{pmatrix} + K \frac{Q_3Q_2}{3^3} 
+\end{pmatrix} + K \frac{Q_3Q_2}{\left( \sqrt{6} \right)^3} 
 \begin{pmatrix} 
 -1 \\
 -1 \\
@@ -463,7 +463,7 @@ $\begin{align}
 -2 \\
 1 \\
 4
-\end{pmatrix} +  \frac{Q_2}{3^3} 
+\end{pmatrix} +  \frac{Q_2}{\left( \sqrt{6} \right)^3} 
 \begin{pmatrix} 
 -1 \\
 -1 \\
@@ -475,7 +475,7 @@ $\begin{align}
 -2 \\
 1 \\
 4
-\end{pmatrix} +  \frac{(-1)}{3^3} 
+\end{pmatrix} +  \frac{(-1)}{\left( \sqrt{6} \right)^3} 
 \begin{pmatrix} 
 -1 \\
 -1 \\
@@ -496,7 +496,7 @@ $\begin{align}
 -2 \\
 1 \\
 4
-\end{pmatrix} -  \frac{1}{3^3} 
+\end{pmatrix} -  \frac{1}{\left( \sqrt{6} \right)^3} 
 \begin{pmatrix} 
 -1 \\
 -1 \\
@@ -504,9 +504,9 @@ $\begin{align}
 \end{pmatrix}
 \right) N \\
 \vec{F}_3 &=  \begin{pmatrix} 
--0.4075  \\
-5.2038 \\
-0.8151
+2.383  \\
+7.994  \\
+-4.766 
 \end{pmatrix} \times 10^6 N 
 \end{align}$
 """
