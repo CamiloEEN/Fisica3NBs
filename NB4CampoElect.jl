@@ -25,9 +25,8 @@ end
 # ╔═╡ 2f457cdf-ea5b-42d5-b4ee-50ddece13f96
 begin
 	using CairoMakie
-	import GeometryBasics
-	using LinearAlgebra
-	using Statistics 
+	using LinearAlgebra 
+	using LaTeXStrings
 end
 
 # ╔═╡ b7680757-ad0e-4b3f-be3a-c9795f468feb
@@ -77,7 +76,7 @@ donde $\vec{r}_1$ es el vector posición de carga $Q_1$ y $\vec{r} = (x,y,z)$ es
 
 # ╔═╡ 257f04e5-6004-4e57-8658-b3b48374526a
 md"""
-## Definición
+## Definición 📑
 """
 
 # ╔═╡ 32784b92-8fef-41fc-8b28-8edf6b4b0637
@@ -102,7 +101,7 @@ md"""!!! info "📚 Nota 1:"
 
 # ╔═╡ 7c17fd2a-88a6-46fa-9b7f-8fd22fc88988
 md"""
-## Líneas de campo
+## Líneas de campo 🔆
 """
 
 # ╔═╡ 55b4f4a4-31ac-4144-a5be-2dda3e7515bf
@@ -264,25 +263,276 @@ begin
 	fig3
 end
 
-# ╔═╡ 97f0bbda-8b18-4b4d-8f55-6aaf2e000d26
+# ╔═╡ 708c051b-66df-4807-bec8-5cbe4ba03159
 md"""
-# Distribuciones de carga
+## Ejemplo 🎯
+"""
+
+# ╔═╡ d85f9465-f3f8-4d82-b88f-0dcffd5c6a9b
+md"""
+Dos cargas puntuales de $Q_1=2C$ y $Q_2=-1C$ se ubican en $(2,-1,2)$ y $(1,1,4)$ respectivamente. Calcule:
+
+ a) El campo eléctrico producido por la carga $Q_1$.
+
+ b) El campo eléctrico producido por la carga $Q_2$.
+
+ c) El campo eléctrico producido por las dos cargas.
+
+ d) La fuerza que siente una tercera carga puntual $Q_3=10mC$ en (0,0,6).
+
+ e) ¿Cual seria la fuerza sobre la carga  $Q_3$ del inciso anterior si esta hubiese sido ubicada en el origen?
+
+"""
+
+# ╔═╡ c3421719-df48-42c7-9aee-853fc8fecec3
+html"<h3>a) El campo eléctrico producido por la carga  Q<sub>1</sub></h3>"
+
+
+# ╔═╡ 92695b27-397d-4eee-9fcf-e725fc953871
+md"""
+Haciendo uso de la definición mostrada al inicio del notebook
+
+$\begin{align}
+	\vec{E}_1(\vec{r}) &=  K \frac{Q_1}{||\vec{r}-\vec{r}_1||^3} (\vec{r}-\vec{r}_1)
+	\end{align}$
+
+Donde $\vec{r}_1=(2,-1,2)$ y $\vec{r}=(x,y,z)$. Calculando la resta de vectores y su respectiva norma tenemos
+
+$\begin{align}
+	\vec{E}_1(\vec{r}) &=  K \frac{Q_1}{\left( \sqrt{ (x-2)^2 + (y+1)^2 + (z-2)^2} \right)^3} 
+\begin{pmatrix} 
+x-2 \\
+y+1 \\
+z-2
+\end{pmatrix}
+	\end{align}$
+
+"""
+
+# ╔═╡ 97f0bbda-8b18-4b4d-8f55-6aaf2e000d26
+html"<h3>b) El campo eléctrico producido por la carga  Q<sub>2</sub></h3>"
+
+# ╔═╡ c22f05e2-f75b-4792-9aa9-d503137ae2da
+md"""
+De manera analoga al inciso anterior 
+
+$\begin{align}
+	\vec{E}_2(\vec{r}) &=  K \frac{Q_2}{||\vec{r}-\vec{r}_2||^3} (\vec{r}-\vec{r}_2)
+	\end{align}$
+
+Donde $\vec{r}_2=(1,1,4)$ y $\vec{r}=(x,y,z)$. Calculando la resta de vectores y su respectiva norma tenemos
+
+$\begin{align}
+	\vec{E}_2(\vec{r}) &=  K \frac{Q_2}{\left( \sqrt{ (x-2)^2 + (y-1)^2 + (z-4)^2} \right)^3} 
+\begin{pmatrix} 
+x-1 \\
+y-1 \\
+z-4
+\end{pmatrix}
+	\end{align}$
+
+"""
+
+# ╔═╡ f1a523ec-db95-4d6b-8026-d5bbfccacedf
+html"<h3>c) El campo eléctrico producido por las dos cargas.</h3>"
+
+# ╔═╡ 8d096de3-42cc-47e1-8dac-530cd47c4d6a
+md"""
+El campo eléctrico producido por ambas cargas es simplemente la suma de los campos generados por cada carga de forma individual
+
+
+$\begin{align}
+\vec{E}(\vec{r})&= \vec{E}_1(\vec{r}) + \vec{E}_2(\vec{r}) \\
+\vec{E}(\vec{r})&= K \frac{Q_1}{||\vec{r}-\vec{r}_1||^3} (\vec{r}-\vec{r}_1)
++ K \frac{Q_2}{||\vec{r}-\vec{r}_2||^3} (\vec{r}-\vec{r}_2)
+\end{align}$
+
+o
+
+$\begin{align}
+\vec{E}(\vec{r})&= 
+ K \frac{Q_1}{\left( \sqrt{ (x-2)^2 + (y+1)^2 + (z-2)^2} \right)^3} 
+\begin{pmatrix} 
+x-2 \\
+y+1 \\
+z-2
+\end{pmatrix} \\
+&+ K \frac{Q_2}{\left( \sqrt{ (x-2)^2 + (y-1)^2 + (z-4)^2} \right)^3} 
+\begin{pmatrix} 
+x-1 \\
+y-1 \\
+z-4
+\end{pmatrix}
+\end{align}$
+
+
+"""
+
+# ╔═╡ eb05c07a-4aed-43cc-b8ae-e6e0e4972d6c
+html"<h3>d) La fuerza que siente una tercera carga puntual Q<sub>3</sub>=10mC en (0,0,6).</h3>"
+
+# ╔═╡ f9ffb885-243a-419a-8c22-2dfca4d94e1a
+md"""
+La carga $Q_3$ siente la fuerza ejercida por las cargas $Q_1$ y $Q_2$, sin embargo, dado que ya hemos calculado el campo eléctrico total $\vec{E}(\vec{r})$ válido para cualquier punto en el espacio ($\vec{r}=(x,y,z)$), podemos simplementar calcular la fuerza neta sobre la carga $Q_3$ $\vec{F}_3$ como
+
+$\vec{F}_3 = Q_3\vec{E}(\vec{r}_3) = Q_3\vec{E}(0,0,6)$
+
+donde $\vec{r}_3 = (0,0,6)$ es la posición de la carga $Q_3$. En resumen
+
+
+$\begin{align}
+Q_3\vec{E}(\vec{r}_3)&= 
+ K \frac{Q_3Q_1}{\left( \sqrt{ (0-2)^2 + (0+1)^2 + (6-2)^2} \right)^3} 
+\begin{pmatrix} 
+0-2 \\
+0+1 \\
+6-2
+\end{pmatrix} \\
+&+ K \frac{Q_3Q_2}{\left( \sqrt{ (0-2)^2 + (0-1)^2 + (6-4)^2} \right)^3} 
+\begin{pmatrix} 
+0-1 \\
+0-1 \\
+6-4
+\end{pmatrix}
+\end{align}$
+
+simplificando
+
+$\begin{align}
+Q_3\vec{E}(\vec{r}_3)&= 
+ K \frac{Q_3Q_1}{\left( \sqrt{ 4 + 1 + 16} \right)^3} 
+\begin{pmatrix} 
+-2 \\
+1 \\
+4
+\end{pmatrix} + K \frac{Q_3Q_2}{\left( \sqrt{ 4 + 1 + 4} \right)^3} 
+\begin{pmatrix} 
+-1 \\
+-1 \\
+2
+\end{pmatrix} \\
+Q_3\vec{E}(\vec{r}_3)&= 
+ K \frac{Q_3Q_1}{\left( \sqrt{21} \right)^3} 
+\begin{pmatrix} 
+-2 \\
+1 \\
+4
+\end{pmatrix} + K \frac{Q_3Q_2}{\left( 3 \right)^3} 
+\begin{pmatrix} 
+-1 \\
+-1 \\
+2
+\end{pmatrix}
+\end{align}$
+
+"""
+
+# ╔═╡ 9400aac6-5dba-4d2a-a287-370e1859572b
+md"""
+El problema se reduce a reemplazar valores y evaluar una simple suma de vectores. Note además que el resultado es identico al que se hubiese obtenido con la ley de Coulomb:
+
+$\begin{align}
+\vec{F}_3 &= \vec{F}_{13} + \vec{F}_{23}\\
+\vec{F}_3 &=  K \frac{Q_1Q_3}{||\vec{r}-\vec{r}_1||^3} (\vec{r}-\vec{r}_1)
++ K \frac{Q_2Q_3}{||\vec{r}-\vec{r}_2||^3} (\vec{r}-\vec{r}_2)
+\end{align}$
+
+
+"""
+
+# ╔═╡ 8626fa57-86ff-41eb-82f8-6498c5399d6a
+md"""
+Siguiendo con el ejemplo
+
+$\begin{align}
+\vec{F}_3&= 
+ K \frac{Q_3Q_1}{\left( \sqrt{21} \right)^3} 
+\begin{pmatrix} 
+-2 \\
+1 \\
+4
+\end{pmatrix} + K \frac{Q_3Q_2}{3^3} 
+\begin{pmatrix} 
+-1 \\
+-1 \\
+2
+\end{pmatrix} \\
+\vec{F}_3 &= KQ_3 \left(  
+  \frac{Q_1}{\left( \sqrt{21} \right)^3} 
+\begin{pmatrix} 
+-2 \\
+1 \\
+4
+\end{pmatrix} +  \frac{Q_2}{3^3} 
+\begin{pmatrix} 
+-1 \\
+-1 \\
+2
+\end{pmatrix} \right) \\
+\vec{F}_3 &= 9 \times 10^9 \times 10 \times 10^{-3} \left(  
+  \frac{2}{\left( \sqrt{21} \right)^3} 
+\begin{pmatrix} 
+-2 \\
+1 \\
+4
+\end{pmatrix} +  \frac{(-1)}{3^3} 
+\begin{pmatrix} 
+-1 \\
+-1 \\
+2
+\end{pmatrix}
+\right)
+\end{align}$
+"""
+
+# ╔═╡ 4ab1103c-e98e-4d88-a5a6-58a9297ac354
+md"""
+Si todo está en unidades internacionales la respuesta debe quedar en Newtons
+
+$\begin{align}
+\vec{F}_3 &= 90 \times 10^6  \left(  
+  \frac{2}{\left( \sqrt{21} \right)^3} 
+\begin{pmatrix} 
+-2 \\
+1 \\
+4
+\end{pmatrix} -  \frac{1}{3^3} 
+\begin{pmatrix} 
+-1 \\
+-1 \\
+2
+\end{pmatrix}
+\right) N \\
+\vec{F}_3 &=  \begin{pmatrix} 
+-0.4075  \\
+5.2038 \\
+0.8151
+\end{pmatrix} \times 10^6 N 
+\end{align}$
+"""
+
+# ╔═╡ 5f1c5b9d-16cc-4736-80aa-1857a8679112
+html"<h3>e) ¿Cual seria la fuerza sobre la carga  Q<sub>3</sub> del inciso anterior si esta hubiese sido ubicada en el origen?</h3>"
+
+# ╔═╡ c89c44d2-1d63-4dff-b5c6-7c6069d4bdd6
+md"""
+Aqui se evidencia una de las ventajas de usar el campo eléctrico. Si la posición de la carga $Q_3$ cambia de $(0,0,6)\to(0,0,0)$ simplemente debemos evaluar el campo eléctrico $\vec{E}(\vec{r})$ en $\vec{r}=(0,0,0)$ y multiplicar el resultado por el valor de la carga $Q_3$
+
+$\vec{F}_3 = Q_3\vec{E}(0,0,0)$
 """
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
 CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
-GeometryBasics = "5c1252a2-5f33-56bf-86c9-59e7332b4326"
+LaTeXStrings = "b964fa9f-0449-5b57-a5c2-d3ea65f4040f"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
-Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 
 [compat]
 CairoMakie = "~0.13.1"
-GeometryBasics = "~0.5.5"
+LaTeXStrings = "~1.4.0"
 PlutoUI = "~0.7.60"
-Statistics = "~1.11.1"
 """
 
 # ╔═╡ 00000000-0000-0000-0000-000000000002
@@ -291,7 +541,7 @@ PLUTO_MANIFEST_TOML_CONTENTS = """
 
 julia_version = "1.11.3"
 manifest_format = "2.0"
-project_hash = "5297eafb0759a05ca91641cc6598985556cdde1d"
+project_hash = "9b8026ab1f88d3193e3e06aad897bffb892b9950"
 
 [[deps.AbstractFFTs]]
 deps = ["LinearAlgebra"]
@@ -1852,6 +2102,20 @@ version = "3.6.0+0"
 # ╟─6664dacc-d003-4651-b8ab-d1777d33da89
 # ╟─3afc402f-81a1-4340-ac1e-622e0a5c9e5c
 # ╟─f1e039ff-e713-41f9-b8f8-c58ee55b9519
+# ╟─708c051b-66df-4807-bec8-5cbe4ba03159
+# ╟─d85f9465-f3f8-4d82-b88f-0dcffd5c6a9b
+# ╟─c3421719-df48-42c7-9aee-853fc8fecec3
+# ╟─92695b27-397d-4eee-9fcf-e725fc953871
 # ╟─97f0bbda-8b18-4b4d-8f55-6aaf2e000d26
+# ╟─c22f05e2-f75b-4792-9aa9-d503137ae2da
+# ╟─f1a523ec-db95-4d6b-8026-d5bbfccacedf
+# ╟─8d096de3-42cc-47e1-8dac-530cd47c4d6a
+# ╟─eb05c07a-4aed-43cc-b8ae-e6e0e4972d6c
+# ╟─f9ffb885-243a-419a-8c22-2dfca4d94e1a
+# ╟─9400aac6-5dba-4d2a-a287-370e1859572b
+# ╟─8626fa57-86ff-41eb-82f8-6498c5399d6a
+# ╟─4ab1103c-e98e-4d88-a5a6-58a9297ac354
+# ╟─5f1c5b9d-16cc-4736-80aa-1857a8679112
+# ╟─c89c44d2-1d63-4dff-b5c6-7c6069d4bdd6
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
