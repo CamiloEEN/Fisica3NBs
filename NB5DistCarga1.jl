@@ -13,6 +13,7 @@ end
 # ╔═╡ 7cd136d8-eb9c-45ff-98ff-75a82ccba3c1
 begin
 	using CairoMakie
+	import GeometryBasics
 	using LinearAlgebra 
 	using LaTeXStrings
 	using Random
@@ -382,7 +383,165 @@ end
 
 # ╔═╡ bb60497f-8c9c-455b-a16e-d29a742b8df6
 md"""
-### Ejemplo 🎯  (en construcción 👷🚧)
+### Ejemplo 🎯 : Anillo cargado (en construcción 👷🚧)
+"""
+
+# ╔═╡ bc24bb0d-dbc2-4ba3-b6c5-f0005bc08ffa
+md"""
+Un anillo circular de radio $a$ porta una carga uniforme $\rho_L(C/m)$ y está situado en el plano xy con eje en el eje z.
+
+a) Demuestre que:
+
+$\vec{E}(0,0,h)=\frac{\rho_L ah}{2\epsilon_0 [h^2 + a^2]^{3/2}}\hat{a}_z$
+
+b) ¿Que valores de $h$ produce el valor máximo de $\vec{E}$?
+
+c) Si la carga total del anillo es $Q$, halle $\vec{E}$ cuando $a \to 0$.
+"""
+
+# ╔═╡ cf806ac4-57ab-4dee-b92e-25465848882d
+md"""
+#### Paso 1: Dibujar
+"""
+
+# ╔═╡ e52e9e7e-256f-406d-a87b-f8594a18687f
+begin
+	
+	# Create figure and 3D axis
+	figEj31 = Figure()
+	axEj31 = Axis3(figEj31[1,1], title = "Anillo cargado",
+	           xlabel = "X", ylabel = "Y", zlabel = "Z", azimuth = 0.15*π, aspect = (1.5,1.5,2), width=800, height=400)
+	
+
+	# Draw full axis lines with labels for the legend
+	lines!(axEj31, [0, 3], [0, 0], [0, 0], color = :grey, linewidth = 2)
+	lines!(axEj31, [0, 0], [0, 4], [0, 0], color = :grey, linewidth = 2)
+	lines!(axEj31, [0, 0], [0, 0], [0, 10], color = :grey, linewidth = 2)
+
+	# Add text labels for the axes
+	text!(axEj31, L"$x$", position = (4, -1, 0), color = :grey, fontsize = 20)
+	text!(axEj31, L"$y$", position = (0, 5, 0), color = :grey, fontsize = 20)
+	text!(axEj31, L"$z$", position = (0, 0, 10.5), color = :grey, fontsize = 20)
+	
+	# Draw coordinate axes correctly
+	arrows!(axEj31, [0, 0, 0], [0, 0, 0], [0, 0, 0], [3, 0, 0], 
+                     [0, 4, 0], [0, 0, 10], linewidth = 4, 
+                     color = [:grey, :grey, :grey], arrowsize = 0.1, 
+                     lengthscale = 1.0)
+
+	# Draw charged circle
+	θ_ring_range = LinRange(0, 2π, 50)
+
+	x_ring_pos = 2*cos.(θ_ring_range)
+	y_ring_pos = 2*sin.(θ_ring_range)
+
+	lines!(axEj31, x_ring_pos, y_ring_pos, fill(0, length(θ_ring_range)), color = :black, linewidth = 2)
+
+	# Draw radius line
+	lines!(axEj31, [0,0], [0,-2], [0,0], color = :blue, linewidth = 2)
+	text!(axEj31, L"$a$", position = (0, -1, 0), color = :black, fontsize = 20)
+
+	# Draw point where i want to evaluate the field
+	scatter!(axEj31, Point3f(0,0,7), color = :blue, markersize = 20)
+	text!(axEj31, L"$(0,0,h)$", position = (0, -3, 7), color = :black, fontsize = 20)
+	
+	# Show the figure
+	hidespines!(axEj31)
+	hidedecorations!(axEj31)
+	
+	figEj31
+	
+end
+
+# ╔═╡ 84f6f3d7-1805-4c1c-af54-9487fe37f431
+md"""
+Note que el anillo cargado se ha dibujado en el plano xy. Adicionalmente se deben dibujar otros dos vectores $\vec{r}$ y $\vec{r}^{\prime}$. $\vec{r}$ es un vector que parte del origen y apunta hacia donde se desea evaluar el campo, mientras que $\vec{r}^{\prime}$ parte del origen y apunta hacia cualquier punto sobre la distribución de carga, es decir, hacia cualquier punto sobre el anillo.
+"""
+
+# ╔═╡ b0743257-ca5d-4f17-b00a-d959a80f1a3f
+begin
+	
+	# Create figure and 3D axis
+	figEj32 = Figure()
+	axEj32 = Axis3(figEj32[1,1], title = "Anillo cargado",
+	           xlabel = "X", ylabel = "Y", zlabel = "Z", azimuth = 0.15*π, aspect = (1.5,1.5,2), width=800, height=400)
+	
+
+	# Draw full axis lines with labels for the legend
+	lines!(axEj32, [0, 3], [0, 0], [0, 0], color = :grey, linewidth = 2)
+	lines!(axEj32, [0, 0], [0, 4], [0, 0], color = :grey, linewidth = 2)
+	lines!(axEj32, [0, 0], [0, 0], [0, 10], color = :grey, linewidth = 2)
+
+	# Add text labels for the axes
+	text!(axEj32, L"$x$", position = (4, -1, 0), color = :grey, fontsize = 20)
+	text!(axEj32, L"$y$", position = (0, 5, 0), color = :grey, fontsize = 20)
+	text!(axEj32, L"$z$", position = (0, 0, 10.5), color = :grey, fontsize = 20)
+	
+	# Draw coordinate axes correctly
+	arrows!(axEj32, [0, 0, 0], [0, 0, 0], [0, 0, 0], [3, 0, 0], 
+                     [0, 4, 0], [0, 0, 10], linewidth = 0.2, 
+                      arrowsize = 0.1, 
+                     lengthscale = 1.0)
+
+	# # Draw charged circle
+	# θ_ring_range = LinRange(0, 2π, 50)
+
+	# x_ring_pos = 2*cos.(θ_ring_range)
+	# y_ring_pos = 2*sin.(θ_ring_range)
+
+	lines!(axEj32, x_ring_pos, y_ring_pos, fill(0, length(θ_ring_range)), color = :black, linewidth = 2)
+
+	# Draw radius line
+	lines!(axEj32, [0,0], [0,-2], [0,0], color = :blue, linewidth = 2)
+	text!(axEj32, L"$a$", position = (0, -1, 0), color = :black, fontsize = 20)
+
+	# Draw point where i want to evaluate the field
+	scatter!(axEj32, Point3f(0,0,7), color = :blue, markersize = 20)
+	text!(axEj32, L"$(0,0,h)$", position = (0, -3, 7), color = :black, fontsize = 20)
+
+	# Coordinates of the diferential element
+	xdif_pos = 2*cos(3*π/4)
+	ydif_pos = 2*sin(3*π/4)
+	
+	# Draw r vector
+	lines!(axEj32, [0,0], [0,0], [0,6.5], color = :red, linewidth = 2)
+	arrows!(axEj32, [Point3f(0,0,0)], [Vec3f(0,0,6.2)], color = :red, arrowsize = 0.05, linewidth = 2, lengthscale = 1.0)
+	text!(axEj32, L"$\vec{r}$", position = (0, -1, 3), color = :red, fontsize = 20)
+
+	# Draw r' vector
+	lines!(axEj32, [0,xdif_pos], [0,ydif_pos], [0,0], color = :red, linewidth = 2)
+	arrows!(axEj32, [Point3f(0,0,0)], [Vec3f(xdif_pos,ydif_pos,0)], color = :red, arrowsize = 0.05, linewidth = 2, lengthscale = 0.85)
+	text!(axEj32, L"$\vec{r}^{\prime}$", position = (-0.2, 0.2, 0), color = :red, fontsize = 20)
+
+	# Draw r-r' vector
+	lines!(axEj32, [xdif_pos,0], [ydif_pos,0], [0,7], color = :green, linewidth = 2)
+	arrows!(axEj32, [Point3f(xdif_pos,ydif_pos,0)], [Vec3f(-xdif_pos,-ydif_pos,7)], color = :green, arrowsize = 0.05, linewidth = 2, lengthscale = 0.95)
+	text!(axEj32, L"$\vec{r}-\vec{r}^{\prime}$", position = (xdif_pos/2, ydif_pos/2, 4), color = :green, fontsize = 20, rotation = -π/3)
+	
+	# Show the figure
+	hidespines!(axEj32)
+	hidedecorations!(axEj32)
+	
+	figEj32
+	
+end
+
+# ╔═╡ caca93e5-2a7f-4a61-9e68-b43487359f5c
+md"""
+donde
+
+$\vec{r} = 
+\begin{pmatrix}
+0 \\
+0 \\
+h
+\end{pmatrix}, \qquad 
+\vec{r}^{\prime} =
+\begin{pmatrix}
+x' \\
+y'\\
+0
+\end{pmatrix}$
 """
 
 # ╔═╡ 528e34f8-4609-4e45-a22e-43a6e0f240cb
@@ -474,6 +633,7 @@ md"""!!! info "Distribución delta de Dirac 📊"
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
 CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
+GeometryBasics = "5c1252a2-5f33-56bf-86c9-59e7332b4326"
 LaTeXStrings = "b964fa9f-0449-5b57-a5c2-d3ea65f4040f"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
@@ -481,6 +641,7 @@ Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 
 [compat]
 CairoMakie = "~0.13.1"
+GeometryBasics = "~0.5.5"
 LaTeXStrings = "~1.4.0"
 PlutoUI = "~0.7.60"
 """
@@ -491,7 +652,7 @@ PLUTO_MANIFEST_TOML_CONTENTS = """
 
 julia_version = "1.11.3"
 manifest_format = "2.0"
-project_hash = "f024ebd20848be2d79e8158f17d79206083cc2d7"
+project_hash = "9f5d4dd3ce5d58063b92a2fdb0999f970ce30174"
 
 [[deps.AbstractFFTs]]
 deps = ["LinearAlgebra"]
@@ -2055,6 +2216,12 @@ version = "3.6.0+0"
 # ╟─0cac082b-0089-416e-a48f-2d453bc50483
 # ╟─5eee3f1f-00d7-41f2-a1c1-a6f6da08fa1a
 # ╟─bb60497f-8c9c-455b-a16e-d29a742b8df6
+# ╟─bc24bb0d-dbc2-4ba3-b6c5-f0005bc08ffa
+# ╟─cf806ac4-57ab-4dee-b92e-25465848882d
+# ╟─e52e9e7e-256f-406d-a87b-f8594a18687f
+# ╟─84f6f3d7-1805-4c1c-af54-9487fe37f431
+# ╟─b0743257-ca5d-4f17-b00a-d959a80f1a3f
+# ╟─caca93e5-2a7f-4a61-9e68-b43487359f5c
 # ╟─528e34f8-4609-4e45-a22e-43a6e0f240cb
 # ╟─c73119aa-0039-4983-a195-92b4108864af
 # ╟─7ed0b957-989a-4dac-a231-14914c460c5b
