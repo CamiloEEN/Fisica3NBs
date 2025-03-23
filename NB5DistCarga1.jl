@@ -4,6 +4,18 @@
 using Markdown
 using InteractiveUtils
 
+# This Pluto notebook uses @bind for interactivity. When running this notebook outside of Pluto, the following 'mock version' of @bind gives bound variables a default value (instead of an error).
+macro bind(def, element)
+    #! format: off
+    quote
+        local iv = try Base.loaded_modules[Base.PkgId(Base.UUID("6e696c72-6542-2067-7265-42206c756150"), "AbstractPlutoDingetjes")].Bonds.initial_value catch; b -> missing; end
+        local el = $(esc(element))
+        global $(esc(def)) = Core.applicable(Base.get, el) ? Base.get(el) : iv(el)
+        el
+    end
+    #! format: on
+end
+
 # ╔═╡ f3c3f980-fd07-11ef-29f0-4908f2e61cbc
 begin
 	using PlutoUI
@@ -13,7 +25,7 @@ end
 # ╔═╡ 7cd136d8-eb9c-45ff-98ff-75a82ccba3c1
 begin
 	using CairoMakie
-	import GeometryBasics
+	#import GeometryBasics
 	using LinearAlgebra 
 	using LaTeXStrings
 	using Random
@@ -289,6 +301,8 @@ begin
 	text!(ax3, "Diferencial \n de área", position = (8, 2.5), fontsize = 20)
 
 	arrows!(ax3, [Point2f(6.25, 4), Point2f(7.5, 4), Point2f(8.5, 4)], [Vec2f(0,-0.5), Vec2f(0,-2.5), Vec2f(0,-0.5)], linewidth = 2)
+
+	hidedecorations!(ax3)
 	
 	fig3
 end
@@ -383,7 +397,7 @@ end
 
 # ╔═╡ bb60497f-8c9c-455b-a16e-d29a742b8df6
 md"""
-### Ejemplo 🎯 : Anillo cargado (en construcción 👷🚧)
+### Ejemplo 🎯 : Anillo cargado
 """
 
 # ╔═╡ bc24bb0d-dbc2-4ba3-b6c5-f0005bc08ffa
@@ -399,9 +413,14 @@ b) ¿Que valores de $h$ produce el valor máximo de $\vec{E}$?
 c) Si la carga total del anillo es $Q$, halle $\vec{E}$ cuando $a \to 0$.
 """
 
+# ╔═╡ ac26de17-200d-43bf-b05e-c145bdc736c9
+md"""
+Comenzemos con el inciso a)
+"""
+
 # ╔═╡ cf806ac4-57ab-4dee-b92e-25465848882d
 md"""
-#### Paso 1: Dibujar
+#### Paso 1: Dibujar y determinar los vectores $\vec{r}$ y $\vec{r}^{\prime}$
 """
 
 # ╔═╡ e52e9e7e-256f-406d-a87b-f8594a18687f
@@ -544,6 +563,330 @@ y'\\
 \end{pmatrix}$
 """
 
+# ╔═╡ b998433c-e81f-4993-b079-8a448f08ca28
+md"""
+#### Paso 2: Calcular los vectores $\vec{r}-\vec{r}^{\prime}$ y $||\vec{r}-\vec{r}^{\prime}||$
+"""
+
+# ╔═╡ ca83e3ff-2a77-41d1-84a4-d6ac052c0325
+md"""
+Note que
+
+$\vec{r}-\vec{r}^{\prime}=
+\begin{pmatrix}
+0 \\
+0 \\
+h
+\end{pmatrix}
+-
+\begin{pmatrix}
+x' \\
+y'\\
+0
+\end{pmatrix}
+=
+\begin{pmatrix}
+-x' \\
+-y' \\
+h
+\end{pmatrix}$
+
+"""
+
+# ╔═╡ 634ae105-bcb1-4316-9d7e-8313b0c3ea04
+md"""
+y
+
+$||\vec{r}-\vec{r}^{\prime}||=\sqrt{(-x')^2+(-y')^2+h^2}=\sqrt{\rho'^2+h^2}$
+
+"""
+
+# ╔═╡ f5fa9b19-67a5-4475-a06b-d6a77737e511
+md"""
+donde se hizo uso de $\rho'^2=x'^2+y'^2$.
+
+Como el anillo está centrado en el origen, $\rho'$ acaba siendo el radio del anillo, por lo tanto 
+
+$||\vec{r}-\vec{r}^{\prime}||=\sqrt{a^2+h^2}$
+"""
+
+# ╔═╡ 138534c0-fa55-4096-9810-51a99a4ff8ad
+md"""
+#### Paso 3: Dividir el anillo en varios segmentos y tratar cada segmento como si fuera una carga puntual
+"""
+
+# ╔═╡ b023b20c-095e-44df-a8fe-7a0d8c6350f8
+md"""
+El truco para encontrar el campo eléctrico producido por el anillo es asumir que el anillo se puede partir en $N$ segmentos y cada segmento del anillo se comporta como una carga puntual como se muestra en la figura:
+"""
+
+# ╔═╡ 7952d78d-98d3-452b-9b0c-4678cb780f87
+md"""
+N = $(@bind Nej3 PlutoUI.Slider(1:1:20, default = 5, show_value = true))
+"""
+
+# ╔═╡ 9194dfae-5aad-4fe5-a084-e9d58e45ea17
+begin
+	figEj33 = Figure()
+	axEj33 = Axis(figEj33[1,1], title = "Anillo cargado visto desde arriba partido en N=$Nej3 segmentos",
+	           xlabel = "X", ylabel = "Y", aspect = 1)
+
+	# Draw charged ring
+	lines!(axEj33, x_ring_pos, y_ring_pos, color = :black, linewidth = 2)
+
+	# Draw segments separating the ring in N segments
+	for n in range(1,Nej3)
+		lines!(axEj33, [(2-0.5)*cos(2π*n/Nej3),(2+0.5)*cos(2π*n/Nej3)], [(2-0.5)*sin(2π*n/Nej3),(2+0.5)*sin(2π*n/Nej3)], color = :red, linewidth = 2)
+	end
+
+	# Highlight first segment
+	θ_segment_range = LinRange(0, 2π/Nej3, 50)
+
+	x_segment_pos = 2*cos.(θ_segment_range)
+	y_segment_pos = 2*sin.(θ_segment_range)
+
+	lines!(axEj33, x_segment_pos, y_segment_pos, color = :red, linewidth = 2)
+
+	# Draw text indicating the diferential charge
+	text!(axEj33, L"$Q_{seg}=\frac{Q_T}{N}$", position = (2.2*cos(π/Nej3), 2.2*sin(π/Nej3)), color = :red, fontsize = 20)
+
+	xlims!(axEj33, -4,4)
+	ylims!(axEj33, -4,4)
+
+	hidedecorations!(axEj33)
+
+	figEj33
+
+end
+
+# ╔═╡ 24ff44bc-d55e-4ed0-9dbe-05d2cdda755c
+md"""
+Si la carga total del anillo es $Q_T$ y está uniformemente cargado, cada segmento debe de tener una porción de la carga total, es decir, $Q_T/N$ donde N=$Nej3 es el número de segmentos.
+"""
+
+# ╔═╡ d4f56007-f1e7-47c3-a6d5-f40ea13a859d
+md"""
+Note que si seguimos aumentando el valor de $N$ los segmentos se vuelven cada vez más pequeños y si $N\to \infty$ los segmentos se vuelven tan pequeños que se convierten en puntos. En este caso, cada segmento se comporta como una carga puntual y la carga que porta cada segmento se puede ver como un diferencial de carga:
+
+$dQ= \lim_{N \to \infty} \frac{Q_T}{N}$
+"""
+
+# ╔═╡ d5bac905-09d6-47ae-9d98-592f79bb2b99
+md"""
+Si el campo eléctrico debido a una carga puntual $Q_i$ está dado por 
+
+$\begin{align}
+	\vec{E}_i(\vec{r}) &=  K \frac{Q_i}{||\vec{r}-\vec{r}_i||^3} (\vec{r}-\vec{r}_i)
+	\end{align}$
+"""
+
+# ╔═╡ b11c1ff1-0497-4c7d-b0da-d4b4b6cef30e
+md"""
+el diferencial de campo eléctrico $d\vec{E}(\vec{r})$ debido a un diferencial de carga $dQ$ debe estár dado por:
+
+$\begin{align}
+	d\vec{E}(\vec{r}) &=  K \frac{dQ}{||\vec{r}-\vec{r}^{\prime}||^3} (\vec{r}-\vec{r}^{\prime})
+	\end{align}$
+"""
+
+# ╔═╡ 31967846-d7f4-4c69-8c68-49d65fec5c5a
+md"""
+donde $\vec{r}$ es el vector posición donde se desea evaluar el campo y $\vec{r}^{\prime}$ es el vector posición de dicho diferencial de carga.
+"""
+
+# ╔═╡ 69c488e3-ae8a-4584-820e-c330736bc41a
+md"""
+#### Paso 4: Determinar $dQ$ en términos de un diferencial de longitud
+"""
+
+# ╔═╡ ba255c75-7406-47e8-b205-98e08ceaf31b
+md"""
+Si la distribución continua de carga es lineal, está debe tener asociada una densidad lineal de carga 
+
+$\rho_L=\frac{dQ}{dl}$
+
+por lo que podemos aproximar $dQ$ simplemente como
+
+$dQ=\rho_{L}dl$
+"""
+
+# ╔═╡ bd52ab1c-75c0-49ec-ad6b-bac89fcaf746
+md"""
+El diferencial dl se determina de acuerdo a la coordenada que deba ser integrada para recorrer todo el anillo. En coordenadas cilíndricas si se desea recorrer todos los puntos sobre una circunferencia cuyo eje de simetría es el eje z, se debe integrar la variable $ϕ$ cuyo diferencial de longitud asociado es $\rho dϕ$. Por lo tanto,
+
+$dQ=\rho_L\rho dϕ$
+"""
+
+# ╔═╡ 1d6573b3-8f34-405e-a7f3-501ff4e92a0c
+md"""
+#### Paso 5: Reemplazar todo lo encontrado anteriormente en el diferencial de campo eléctrico $d\vec{E}(\vec{r})$ e integrar sobre la distribución
+"""
+
+# ╔═╡ 1cf06059-8d24-415d-a93d-121644c3efa5
+md"""
+Recordemos que
+
+$\begin{align}
+	d\vec{E}(\vec{r}) &=  K \frac{dQ}{||\vec{r}-\vec{r}^{\prime}||^3} (\vec{r}-\vec{r}^{\prime})
+	\end{align}$
+
+donde
+
+$dQ=\rho_L\rho' dϕ'$
+
+$\vec{r}-\vec{r}^{\prime}=
+\begin{pmatrix}
+-x' \\
+-y' \\
+h
+\end{pmatrix}
+= -x' \hat{a}_x  -y' \hat{a}_y + h\hat{a}_z
+=-\rho'(\cos(\phi') \hat{a}_x  + \sin(\phi')\hat{a}_y) + h\hat{a}_z$
+
+$||\vec{r}-\vec{r}^{\prime}||=\sqrt{a^2+h^2}$
+"""
+
+# ╔═╡ 0e8c170e-ae9e-4ee2-86d2-5ca985a53cb4
+md"""
+Por lo tanto el diferencial de campo eléctrico debido a un diferencial de línea sobre el anillo cargado en $\vec{r}^{\prime}$ es:
+
+$\begin{align}
+	d\vec{E}(0,0,h) &=  K \frac{\rho_L\rho' dϕ'}{(\sqrt{a^2+h^2})^3} (-\rho'(\cos(\phi') \hat{a}_x  + \sin(\phi')\hat{a}_y) + h\hat{a}_z)
+\end{align}$
+"""
+
+# ╔═╡ 56c1ae08-d1f2-4fbd-87f8-8a82fafe5f11
+md"""
+Para sumar cada contribución sobre el anillo se integra sobre todo el anillo ($0 \to 2\pi$)
+
+$\begin{align}
+	\vec{E}(0,0,h) &= \int_0^{2\pi} K \frac{\rho_La}{(\sqrt{a^2+h^2})^3} (-a(\cos(\phi') \hat{a}_x  + \sin(\phi')\hat{a}_y) + h\hat{a}_z)dϕ'
+\end{align}$
+"""
+
+# ╔═╡ dbc40bb0-3307-4660-b456-9be049a9fc8a
+md"""
+Recordando que $K$, $\rho_L$, $h$ y $\rho'=a$ son constantes dentro de la integral tenemos que
+
+$\begin{align}
+	\vec{E}(0,0,h) &= K \frac{\rho_La}{(\sqrt{a^2+h^2})^3}  \int_0^{2\pi}(-a(\cos(\phi') \hat{a}_x  + \sin(\phi')\hat{a}_y) + h\hat{a}_z)dϕ'
+\end{align}$
+"""
+
+# ╔═╡ 2ab45ce3-658e-486a-ba91-5c6eeec6f8cc
+md"""
+Note que podemos separar esta integral en tres partes:
+
+$\begin{align}
+	\vec{E}(0,0,h) &= K \frac{\rho_La}{(\sqrt{a^2+h^2})^3}  (I_x \hat{a}_x  + I_y\hat{a}_y + I_z\hat{a}_z)
+\end{align}$
+
+donde
+
+$I_x=-a\int_0^{2\pi}\cos(\phi')dϕ' =0$
+$I_y=-a\int_0^{2\pi}\sin(\phi')dϕ' =0$
+$I_y=h\int_0^{2\pi}dϕ' =2 \pi h$
+"""
+
+# ╔═╡ 68316437-f9f1-4d80-8ad9-b8681570a8f0
+md"""
+Finalmente el campo eléctrico resultante solo tiene componente z
+
+$\begin{align}
+	\vec{E}(0,0,h) &= K \frac{2 \pi\rho_Lah}{(\sqrt{a^2+h^2})^3}  \hat{a}_z
+\end{align}$
+
+Recordando que $K=\frac{1}{4\pi \epsilon_0}$
+
+$\begin{align}
+	\vec{E}(0,0,h) &=  \frac{\rho_Lah}{2\epsilon_0(\sqrt{a^2+h^2})^3}  \hat{a}_z
+\end{align}$
+"""
+
+# ╔═╡ 80bd5c1a-027b-44bb-b785-c912936a0011
+md"""
+b) ¿Que valores de $h$ produce el valor máximo de $\vec{E}$?
+
+Dado que el campo solo tiene componente a lo largo del eje z, basta con encontrar un el máximo de esa componente
+
+$\begin{align}
+	E_z(0,0,h) &=  \frac{\rho_Lah}{2\epsilon_0(a^2+h^2)^{3/2}} 
+\end{align}$
+
+$\begin{align}
+	\frac{dE_z}{dh} &=  \frac{\rho_La}{2\epsilon_0(a^2+h^2)^{3/2}} - \frac{3}{2}\frac{\rho_Lah^2}{2\epsilon_0(a^2+h^2)^{5/2}} 2h
+\end{align}$
+
+Evaluando esta derivada en una altura donde el campo es máximo ($h=h_{max}$)
+
+$\begin{align}
+	\frac{dE_z}{dh} \bigg\rvert_{h=h_{max}} &=  \frac{\rho_La}{2\epsilon_0(a^2+h_{max}^2)^{3/2}} - 3\frac{\rho_Lah_{max}^2}{2\epsilon_0(a^2+h_{max}^2)^{5/2}} =0 \\
+\end{align}$
+
+"""
+
+# ╔═╡ 9527cd28-53d9-452c-b14d-11a88927a2ae
+md"""
+Multiplicando toda la ecuación por $(a^2+h_{max}^2)^{3/2}$
+
+$\begin{align}
+  \frac{\rho_La}{2\epsilon_0} - 3\frac{\rho_Lah_{max}^2}{2\epsilon_0(a^2+h_{max}^2)} =0 
+\end{align}$
+
+$\begin{align}
+  \frac{\cancel{\rho_La}}{\cancel{2\epsilon_0}} = 3\frac{\cancel{\rho_La}h_{max}^2}{\cancel{2\epsilon_0}(a^2+h_{max}^2)}  
+\end{align}$
+
+$\begin{align}
+ a^2+h_{max}^2  = 3h_{max}^2
+\end{align}$
+
+$\begin{align}
+ a^2  = 2h_{max}^2
+\end{align}$
+
+$\begin{align}
+ h_{max}=\pm \frac{a}{\sqrt{2}}
+\end{align}$
+"""
+
+# ╔═╡ a37bc9fe-2d9e-41c1-8a08-60f6b7d62ef7
+md"""
+Se obtienen dos valores de $h_{max}$ y hacen referencia a dos puntos, uno encima del anillo y otro por debajo del anillo, ambos a la misma distancia del centro del anillo.
+"""
+
+# ╔═╡ 026aabdd-1ce3-4828-bc38-979685ad326c
+md"""
+Por último c) Si la carga total del anillo es $Q$, halle $\vec{E}$ cuando $a \to 0$.
+"""
+
+# ╔═╡ 28ac50a2-497a-40af-b0e2-399c050a6a6d
+md"""
+
+Si la carga total es $Q$ y como la densidad lineal de carga es uniforme, entonces
+
+$\rho_L=\frac{Q}{2\pi a}$
+
+por lo tanto,
+
+$\begin{align}
+	\vec{E}(0,0,h) &=  \frac{Q}{2\pi a}\frac{ah}{2\epsilon_0(\sqrt{a^2+h^2})^3}  \hat{a}_z \\
+	&=\frac{1}{4\pi\epsilon_0 } \frac{Q h}{(\sqrt{a^2+h^2})^3}\hat{a}_z 
+\end{align}$
+
+Si $a\to 0$
+
+$\begin{align}
+	\vec{E}(0,0,h) 	&= \frac{1}{4\pi\epsilon_0 } \frac{Q h}{h^3}\hat{a}_z \\
+	\vec{E}(0,0,h) &= \frac{1}{4\pi\epsilon_0 } \frac{Q }{h^2}\hat{a}_z
+\end{align}$
+"""
+
+# ╔═╡ af5e6f87-9884-4a7d-b06c-6686402da649
+md"""
+El resultado es el campo eléctrico producido por una carga puntual ubicada en el origen lo cual tiene sentido pues un anillo circular cuyo radio tiende a cero se transforma en un punto en el espacio.
+"""
+
 # ╔═╡ 528e34f8-4609-4e45-a22e-43a6e0f240cb
 html"<h2>Distribuciones no continuas de carga en 0D ⚫  <h2>"
 
@@ -633,7 +976,6 @@ md"""!!! info "Distribución delta de Dirac 📊"
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
 CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
-GeometryBasics = "5c1252a2-5f33-56bf-86c9-59e7332b4326"
 LaTeXStrings = "b964fa9f-0449-5b57-a5c2-d3ea65f4040f"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
@@ -641,7 +983,6 @@ Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 
 [compat]
 CairoMakie = "~0.13.1"
-GeometryBasics = "~0.5.5"
 LaTeXStrings = "~1.4.0"
 PlutoUI = "~0.7.60"
 """
@@ -652,7 +993,7 @@ PLUTO_MANIFEST_TOML_CONTENTS = """
 
 julia_version = "1.11.3"
 manifest_format = "2.0"
-project_hash = "9f5d4dd3ce5d58063b92a2fdb0999f970ce30174"
+project_hash = "f024ebd20848be2d79e8158f17d79206083cc2d7"
 
 [[deps.AbstractFFTs]]
 deps = ["LinearAlgebra"]
@@ -2217,11 +2558,41 @@ version = "3.6.0+0"
 # ╟─5eee3f1f-00d7-41f2-a1c1-a6f6da08fa1a
 # ╟─bb60497f-8c9c-455b-a16e-d29a742b8df6
 # ╟─bc24bb0d-dbc2-4ba3-b6c5-f0005bc08ffa
+# ╟─ac26de17-200d-43bf-b05e-c145bdc736c9
 # ╟─cf806ac4-57ab-4dee-b92e-25465848882d
 # ╟─e52e9e7e-256f-406d-a87b-f8594a18687f
 # ╟─84f6f3d7-1805-4c1c-af54-9487fe37f431
 # ╟─b0743257-ca5d-4f17-b00a-d959a80f1a3f
 # ╟─caca93e5-2a7f-4a61-9e68-b43487359f5c
+# ╟─b998433c-e81f-4993-b079-8a448f08ca28
+# ╟─ca83e3ff-2a77-41d1-84a4-d6ac052c0325
+# ╟─634ae105-bcb1-4316-9d7e-8313b0c3ea04
+# ╟─f5fa9b19-67a5-4475-a06b-d6a77737e511
+# ╟─138534c0-fa55-4096-9810-51a99a4ff8ad
+# ╟─b023b20c-095e-44df-a8fe-7a0d8c6350f8
+# ╟─7952d78d-98d3-452b-9b0c-4678cb780f87
+# ╟─9194dfae-5aad-4fe5-a084-e9d58e45ea17
+# ╟─24ff44bc-d55e-4ed0-9dbe-05d2cdda755c
+# ╟─d4f56007-f1e7-47c3-a6d5-f40ea13a859d
+# ╟─d5bac905-09d6-47ae-9d98-592f79bb2b99
+# ╟─b11c1ff1-0497-4c7d-b0da-d4b4b6cef30e
+# ╟─31967846-d7f4-4c69-8c68-49d65fec5c5a
+# ╟─69c488e3-ae8a-4584-820e-c330736bc41a
+# ╟─ba255c75-7406-47e8-b205-98e08ceaf31b
+# ╟─bd52ab1c-75c0-49ec-ad6b-bac89fcaf746
+# ╟─1d6573b3-8f34-405e-a7f3-501ff4e92a0c
+# ╟─1cf06059-8d24-415d-a93d-121644c3efa5
+# ╟─0e8c170e-ae9e-4ee2-86d2-5ca985a53cb4
+# ╟─56c1ae08-d1f2-4fbd-87f8-8a82fafe5f11
+# ╟─dbc40bb0-3307-4660-b456-9be049a9fc8a
+# ╟─2ab45ce3-658e-486a-ba91-5c6eeec6f8cc
+# ╟─68316437-f9f1-4d80-8ad9-b8681570a8f0
+# ╟─80bd5c1a-027b-44bb-b785-c912936a0011
+# ╟─9527cd28-53d9-452c-b14d-11a88927a2ae
+# ╟─a37bc9fe-2d9e-41c1-8a08-60f6b7d62ef7
+# ╟─026aabdd-1ce3-4828-bc38-979685ad326c
+# ╟─28ac50a2-497a-40af-b0e2-399c050a6a6d
+# ╟─af5e6f87-9884-4a7d-b06c-6686402da649
 # ╟─528e34f8-4609-4e45-a22e-43a6e0f240cb
 # ╟─c73119aa-0039-4983-a195-92b4108864af
 # ╟─7ed0b957-989a-4dac-a231-14914c460c5b
