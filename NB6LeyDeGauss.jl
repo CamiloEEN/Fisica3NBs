@@ -13,7 +13,7 @@ end
 # ╔═╡ b5c6ee87-e8d5-44c9-abcf-5bd8eedeba06
 begin
 	using CairoMakie
-	import GeometryBasics
+	using GeometryBasics
 	using LaTeXStrings
 end
 
@@ -303,6 +303,61 @@ $\vec{E}=\frac{Q_T}{4\pi \epsilon }\frac{r}{ R^3}\hat{a}_{r}$
 
 dado que $\vec{D}=\epsilon\vec{E}$
 """
+
+# ╔═╡ db62dc79-9c36-4356-b894-9bd8647900e8
+md"""
+## Ejemplo 🎯: Campo eléctrico debido a una línea de carga infinita
+"""
+
+# ╔═╡ 8810cdeb-070c-463b-808a-ef8d60cf8065
+md"""
+Considere una línea infinita de carga uniforme $\rho_L$ (C/m) se ubica a lo largo del eje z. Calcule el vector densidad de fluj $\vec{D}$ en cualquier punto del espacio $\rho > 0$
+"""
+
+# ╔═╡ b29bef07-241e-46e4-8acb-77c6d745519d
+begin
+# Create a figure and 3D axis
+fig3 = Figure()
+ax3 = Axis3(fig3[1, 1], title = "Esfera uniformemente cargada (caso r>R)", aspect = :data, azimuth = 0.2*π)
+
+# Draw full axis lines with labels for the legend
+	lines!(ax3, [0, 5], [0, 0], [0, 0], color = :black, linewidth = 2)
+	lines!(ax3, [0, 0], [0, 5], [0, 0], color = :black, linewidth = 2)
+	lines!(ax3, [0, 0], [0, 0], [-5, 5], color = :red, linewidth = 2)
+
+	# Add text labels for the axes
+	text!(ax3, "X", position = (6, 0, 0), color = :black, fontsize = 20)
+	text!(ax3, "Y", position = (0, 5, 0), color = :black, fontsize = 20)
+	text!(ax3, "Z", position = (0, 0, 5.5), color = :black, fontsize = 20)
+	
+	# Draw coordinate axes correctly
+	arrows!(ax3, [0, 0, 0], [0, 0, 0], [0, 0, 0], [5, 0, 0], 
+                     [0, 5, 0], [0, 0, 5], linewidth = 4, 
+                     color = [:black, :black, :black], arrowsize = 0.1, 
+                     lengthscale = 1.0)
+	
+
+	# Draw Gaussian Cylinder
+	GaussianCylinder = Cylinder(Point3f(0, 0, -2), Point3f(0, 0, 2), 1.0) 
+	mesh!(ax3, GaussianCylinder, color = (:blue, 0.1), label = "Cilíndro Gaussiano")
+
+	# Draw top and bottom circles of the Gaussian cylinder
+	
+	θ_range = LinRange(0, 2π, 20)
+	x_circle_pos = cos.(θ_range)
+	x_circle_pos = sin.(θ_range)
+
+	
+	
+# Customize axis
+hidespines!(ax3)
+hidedecorations!(ax3)
+
+
+#Legend(fig1[1, 2], ax1, "Legend Title")
+	
+fig3
+end
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -1893,5 +1948,8 @@ version = "3.6.0+0"
 # ╟─48e82580-2cd4-4e49-8230-c73da0d5822d
 # ╟─a8f632e2-3aa6-4377-81e5-3d8844b9379c
 # ╟─b1779627-065c-4322-a85b-d4233707e3a1
+# ╟─db62dc79-9c36-4356-b894-9bd8647900e8
+# ╟─8810cdeb-070c-463b-808a-ef8d60cf8065
+# ╠═b29bef07-241e-46e4-8acb-77c6d745519d
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
